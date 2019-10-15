@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sps/pages/home.dart';
 import 'package:sps/pages/login.dart';
 import 'package:sps/services/auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 enum AuthStatus {
   NOT_DETERMINED,
@@ -21,15 +22,16 @@ class RootPage extends StatefulWidget {
 class _RootPageState extends State<RootPage> {
   AuthStatus authStatus = AuthStatus.NOT_DETERMINED;
   String _userId = "";
+  FirebaseUser _firebaseUser;
 
   @override
   void initState() {
     super.initState();
     widget.auth.getCurrentUser().then((user) {
-      print(user);
       setState(() {
         if (user != null) {
           _userId = user?.uid;
+          _firebaseUser = user;
         }
         authStatus =
         user?.uid == null ? AuthStatus.NOT_LOGGED_IN : AuthStatus.LOGGED_IN;
@@ -66,6 +68,7 @@ class _RootPageState extends State<RootPage> {
 
   @override
   Widget build(BuildContext context) {
+    print(_firebaseUser);
     switch (authStatus) {
       case AuthStatus.NOT_DETERMINED:
         return buildWaitingScreen();
