@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-// import 'package:google_sign_in/google_sign_in.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 void main() => runApp(MyApp());
 
@@ -43,6 +43,7 @@ class _MyAppState extends State<MyApp> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       // stretch across width of screen
                       children: <Widget>[
+                        _buildSeperator(),
                         _buildFacebookLoginButton(),
                         _buildGoogleLoginButton(),
                       ],
@@ -52,6 +53,33 @@ class _MyAppState extends State<MyApp> {
               ],
             ),
           )),
+    );
+  }
+
+  Container _buildSeperator() {
+    return Container(
+        padding: EdgeInsets.all(16),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+                child: Divider(
+                  color: Colors.black,
+                  indent: 24,
+                  endIndent: 12,
+                )
+            ),
+
+            Text("OR"),
+
+            Expanded(
+                child: Divider(
+                  color: Colors.black,
+                  indent: 12,
+                  endIndent: 24,
+                )
+            ),
+          ]
+      )
     );
   }
 
@@ -117,6 +145,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void initiateSignIn(String type) {
+    print('Login attempt with ' + type);
     _handleSignIn(type).then((result) {
       if (result == 1) {
         setState(() {
@@ -145,18 +174,19 @@ class _MyAppState extends State<MyApp> {
         } else
           return 0;
         break;
-      /* case "G":
+      case "G":
         try {
           GoogleSignInAccount googleSignInAccount = await _handleGoogleSignIn();
           final googleAuth = await googleSignInAccount.authentication;
           final googleAuthCred = GoogleAuthProvider.getCredential(
               idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
-          final user = await firebaseAuth.signInWithCredential(googleAuthCred);
-          print("User : " + user.additionalUserInfo.username);
+          final user = (await firebaseAuth.signInWithCredential(googleAuthCred)).user;
+          print("User : " + user.displayName);
           return 1;
         } catch (error) {
+          print(error);
           return 0;
-        } */
+        }
     }
     return 0;
   }
@@ -179,10 +209,10 @@ class _MyAppState extends State<MyApp> {
     return facebookLoginResult;
   }
 
-  /* Future<GoogleSignInAccount> _handleGoogleSignIn() async {
+  Future<GoogleSignInAccount> _handleGoogleSignIn() async {
     GoogleSignIn googleSignIn = GoogleSignIn(
         scopes: ['email', 'https://www.googleapis.com/auth/contacts.readonly']);
     GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
     return googleSignInAccount;
-  } */
+  }
 }
