@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:sps/services/auth.dart';
+import 'package:sps/models/models.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux/redux.dart';
+
+typedef OnLoginCallback = Function(FirebaseUser user);
 
 class LoginSignupPage extends StatefulWidget {
   LoginSignupPage({this.auth, this.loginCallback});
 
   final BaseAuth auth;
-  final VoidCallback loginCallback;
+  final OnLoginCallback loginCallback;
 
   @override
   State<StatefulWidget> createState() => new _LoginSignupPageState();
@@ -50,10 +56,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         setState(() {
           _isLoading = false;
         });
-
-        if (userId.length > 0 && userId != null && _isLoginForm) {
-          widget.loginCallback();
-        }
+        storeCurrentUser(userId);
       } catch (e) {
         print('Error: $e');
         setState(() {
@@ -77,6 +80,14 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
     super.initState();
   }
 
+  void storeCurrentUser(String userId) {
+    if (userId != null && userId.length > 0) {
+      widget.auth.getCurrentUser().then((user) {
+        widget.loginCallback(user);
+      });
+    }
+  }
+
   void resetForm() {
     _formKey.currentState.reset();
     _errorMessage = "";
@@ -91,16 +102,25 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-        appBar: new AppBar(
-          title: new Text('Straight Pool Sheet'),
-        ),
-        body: Stack(
-          children: <Widget>[
-            _showForm(),
-            _showCircularProgress(),
-          ],
-        ));
+    return new StoreConnector<AppState, FirebaseUser>(
+      converter: (Store<AppState> store) {
+        return store.state.activeUser;
+      },
+      builder: (context, user) {
+        print('###user');
+        print(user);
+        return new Scaffold(
+            appBar: new AppBar(
+              title: new Text('Straight Pool Sheet'),
+            ),
+            body: Stack(
+              children: <Widget>[
+                _showForm(),
+                _showCircularProgress(),
+              ],
+            )
+        );
+      });
   }
 
   Widget _showCircularProgress() {
@@ -139,9 +159,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
     return RaisedButton(
       onPressed: () {
         widget.auth.handleSocialSignIn("G").then((String userId) {
-          if (userId.length > 0 && userId != null) {
-            widget.loginCallback();
-          }
+          storeCurrentUser(userId);
         });
       },
       color: Colors.white,
@@ -162,9 +180,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         materialTapTargetSize: MaterialTapTargetSize.padded,
         onPressed: () {
           widget.auth.handleSocialSignIn("FB").then((String userId) {
-            if (userId.length > 0 && userId != null) {
-              widget.loginCallback();
-            }
+            storeCurrentUser(userId);
           });
         },
         color: Color.fromRGBO(27, 76, 213, 1),
@@ -193,7 +209,6 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
               showEmailInput(),
               showPasswordInput(),
               showPrimaryButton(),
-              showSecondaryButton(),
               showSeperator(),
               showFacebookLoginButton(),
               showGoogleLoginButton(),

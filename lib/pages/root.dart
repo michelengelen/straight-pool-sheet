@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:sps/pages/home.dart';
 import 'package:sps/pages/login.dart';
 import 'package:sps/services/auth.dart';
+import 'package:sps/models/models.dart';
+import 'package:sps/actions/actions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux/redux.dart';
 
 enum AuthStatus {
   NOT_DETERMINED,
@@ -68,29 +72,39 @@ class _RootPageState extends State<RootPage> {
 
   @override
   Widget build(BuildContext context) {
-    print(_firebaseUser);
-    switch (authStatus) {
-      case AuthStatus.NOT_DETERMINED:
-        return buildWaitingScreen();
-        break;
-      case AuthStatus.NOT_LOGGED_IN:
-        return new LoginSignupPage(
-          auth: widget.auth,
-          loginCallback: loginCallback,
-        );
-        break;
-      case AuthStatus.LOGGED_IN:
-        if (_userId.length > 0 && _userId != null) {
-          return new HomePage(
-            userId: _userId,
-            auth: widget.auth,
-            logoutCallback: logoutCallback,
+    return new StoreConnector<AppState, OnLoginCallback>(
+      converter: (Store<AppState> store) {
+        return (FirebaseUser user) {
+          store.dispatch(
+            UserLoadedAction(user),
           );
-        } else
-          return buildWaitingScreen();
-        break;
-      default:
-        return buildWaitingScreen();
-    }
+        };
+      },
+      builder: (context, OnLoginCallback onLogin) {
+        switch (authStatus) {
+          case AuthStatus.NOT_DETERMINED:
+            return buildWaitingScreen();
+            break;
+          case AuthStatus.NOT_LOGGED_IN:
+            return new LoginSignupPage(
+              auth: widget.auth,
+              loginCallback: onLogin,
+            );
+            break;
+          case AuthStatus.LOGGED_IN:
+            if (_userId.length > 0 && _userId != null) {
+              return new HomePage(
+                userId: _userId,
+                auth: widget.auth,
+                logoutCallback: logoutCallback,
+              );
+            } else
+              return buildWaitingScreen();
+            break;
+          default:
+            return buildWaitingScreen();
+        }
+      },
+    );
   }
 }
