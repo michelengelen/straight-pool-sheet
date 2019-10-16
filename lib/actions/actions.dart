@@ -1,12 +1,35 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:redux/redux.dart';
+import 'package:redux_thunk/redux_thunk.dart';
 
-class ClearCompletedAction {}
+import 'package:sps/services/auth.dart';
+
+final Auth auth = new Auth();
+
+class AppIsLoading {}
+class AppIsLoaded {}
+class AppErrorAction {}
 
 class ToggleAllAction {}
 
 class LoadTodosAction {}
 
-class UserNotLoadedAction {}
+ThunkAction loadUserAction() {
+  return (Store store) async {
+    store.dispatch(AppIsLoading());
+    new Future(() async {
+      auth.getCurrentUser()
+        .then((user) {
+          print('######### USER: $user');
+          store.dispatch(UserLoadedAction(user));
+          store.dispatch(AppIsLoaded());
+        })
+        .catchError((error) {
+          print('### ERROR: $error');
+        });
+    });
+  };
+}
 
 class UserLoadedAction {
   final FirebaseUser user;
@@ -15,9 +38,11 @@ class UserLoadedAction {
 
   @override
   String toString() {
-    return 'TodosLoadedAction{user: $user}';
+    return 'UserLoadedAction{user: $user}';
   }
 }
+
+class UserNotLoadedAction {}
 
 /*
 class UpdateTodoAction {

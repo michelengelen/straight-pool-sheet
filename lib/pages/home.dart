@@ -1,47 +1,37 @@
-// import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:sps/services/auth.dart';
+import 'package:sps/constants/keys.dart';
 
-class HomePage extends StatefulWidget {
-  HomePage({Key key, this.auth, this.userId, this.logoutCallback})
-      : super(key: key);
+class HomeScreen extends StatefulWidget {
+  final void Function() onInit;
 
-  final BaseAuth auth;
-  final VoidCallback logoutCallback;
-  final String userId;
+  HomeScreen({@required this.onInit}) : super(key: Keys.homeScreen);
 
   @override
-  State<StatefulWidget> createState() => new _HomePageState();
+  HomeScreenState createState() {
+    return new HomeScreenState();
+  }
 }
 
-class _HomePageState extends State<HomePage> {
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
+class HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
+    widget.onInit();
     super.initState();
   }
 
-  signOut() async {
-    try {
-      await widget.auth.signOut();
-      widget.logoutCallback();
-    } catch (e) {
-      print(e);
-    }
-  }
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text('Flutter login demo'),
+        title: new Text('HomePage'),
         actions: <Widget>[
           new FlatButton(
             child: new Text(
               'Logout',
               style: new TextStyle(fontSize: 17.0, color: Colors.white)),
-              onPressed: signOut
+              onPressed: () {print('### BTNpress');},
             )
         ],
       ),
