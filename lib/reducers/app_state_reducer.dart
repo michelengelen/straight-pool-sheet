@@ -9,7 +9,7 @@ import 'package:sps/reducers/auth_reducer.dart';
 AppState appReducer(AppState state, action) {
   return AppState(
     isLoading: loadingReducer(state.isLoading, action),
-    activeUser: authReducer(state.activeUser, action),
+    auth: authReducer(state.auth, action),
     // todos: todosReducer(state.todos, action),
     // activeFilter: visibilityReducer(state.activeFilter, action),
     // activeTab: tabsReducer(state.activeTab, action),

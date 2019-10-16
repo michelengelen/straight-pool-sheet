@@ -1,30 +1,30 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
+import 'package:sps/models/auth_state.dart';
 
 @immutable
 class AppState {
   final bool isLoading;
-  final FirebaseUser activeUser;
+  final AuthState auth;
 
   AppState({
     this.isLoading = false,
-    this.activeUser,
+    this.auth,
   });
 
   factory AppState.loading() => AppState(isLoading: true);
 
   AppState copyWith({
     bool isLoading,
-    FirebaseUser activeUser,
+    AuthState auth,
   }) {
     return AppState(
       isLoading: isLoading ?? this.isLoading,
-      activeUser: activeUser ?? this.activeUser,
+      auth: auth ?? this.auth,
     );
   }
 
   @override
-  int get hashCode => isLoading.hashCode ^ activeUser.hashCode;
+  int get hashCode => isLoading.hashCode ^ auth.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -32,10 +32,10 @@ class AppState {
       other is AppState &&
           runtimeType == other.runtimeType &&
           isLoading == other.isLoading &&
-          activeUser == other.activeUser;
+          auth == other.auth;
 
   @override
   String toString() {
-    return 'AppState: {isLoading: $isLoading, activeUser: $activeUser}';
+    return 'AppState: {isLoading: $isLoading, auth: $auth}';
   }
 }

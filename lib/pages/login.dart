@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sps/models/auth_state.dart';
 import 'package:sps/services/auth.dart';
 import 'package:sps/models/models.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -102,9 +103,9 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new StoreConnector<AppState, FirebaseUser>(
+    return new StoreConnector<AppState, AuthState>(
       converter: (Store<AppState> store) {
-        return store.state.activeUser;
+        return store.state.auth;
       },
       builder: (context, user) {
         print('###user');

@@ -1,16 +1,16 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:redux/redux.dart';
 import 'package:sps/actions/actions.dart';
+import 'package:sps/models/models.dart';
 
-final authReducer = combineReducers<FirebaseUser>([
-  TypedReducer<FirebaseUser, UserLoadedAction>(_setUser),
-  TypedReducer<FirebaseUser, UserNotLoadedAction>(_unSetUser),
+final authReducer = combineReducers<AuthState>([
+  TypedReducer<AuthState, UserLoadedAction>(_setUser),
+  TypedReducer<AuthState, UserNotLoadedAction>(_unSetUser),
 ]);
 
-FirebaseUser _setUser(FirebaseUser state, action) {
+AuthState _setUser(AuthState state, action) {
   return action.user;
 }
 
-FirebaseUser _unSetUser(FirebaseUser state, action) {
+AuthState _unSetUser(AuthState state, action) {
   return null;
 }
