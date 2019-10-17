@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:sps/actions/actions.dart';
 import 'package:sps/models/auth_state.dart';
-import 'package:sps/services/auth.dart';
 import 'package:sps/models/models.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
+import 'package:sps/services/auth.dart';
 
-typedef OnLoginCallback = Function(FirebaseUser user);
+final Auth auth = new Auth();
 
-class LoginSignupPage extends StatefulWidget {
-  LoginSignupPage({this.auth, this.loginCallback});
+class LoginSignup extends StatefulWidget {
+  LoginSignup({this.onLogin, this.onSocialLogin});
 
-  final BaseAuth auth;
-  final OnLoginCallback loginCallback;
+  final Function onLogin;
+  final Function onSocialLogin;
 
   @override
-  State<StatefulWidget> createState() => new _LoginSignupPageState();
+  State<StatefulWidget> createState() => new _LoginSignupState();
 }
 
-class _LoginSignupPageState extends State<LoginSignupPage> {
+class _LoginSignupState extends State<LoginSignup> {
   final _formKey = new GlobalKey<FormState>();
 
   String _email;
@@ -48,10 +48,10 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       String userId = "";
       try {
         if (_isLoginForm) {
-          userId = await widget.auth.signIn(_email, _password);
+          userId = await auth.signIn(_email, _password);
           print('Signed in: $userId');
         } else {
-          userId = await widget.auth.signUp(_email, _password);
+          userId = await auth.signUp(_email, _password);
           print('Signed up user: $userId');
         }
         setState(() {
@@ -83,8 +83,8 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
 
   void storeCurrentUser(String userId) {
     if (userId != null && userId.length > 0) {
-      widget.auth.getCurrentUser().then((user) {
-        widget.loginCallback(user);
+      auth.getCurrentUser().then((user) {
+        widget.onLogin(user);
       });
     }
   }
@@ -107,14 +107,11 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       converter: (Store<AppState> store) {
         return store.state.auth;
       },
-      builder: (context, user) {
+      builder: (context, auth) {
         print('###user');
-        print(user);
-        return new Scaffold(
-            appBar: new AppBar(
-              title: new Text('Straight Pool Sheet'),
-            ),
-            body: Stack(
+        print(auth);
+        return new Container(
+            child: Stack(
               children: <Widget>[
                 _showForm(),
                 _showCircularProgress(),
@@ -158,11 +155,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
 
   Widget showGoogleLoginButton() {
     return RaisedButton(
-      onPressed: () {
-        widget.auth.handleSocialSignIn("G").then((String userId) {
-          storeCurrentUser(userId);
-        });
-      },
+      onPressed: () { widget.onSocialLogin("G"); },
       color: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       textColor: Color.fromRGBO(122, 122, 122, 1),
@@ -179,11 +172,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   Widget showFacebookLoginButton() {
     return RaisedButton(
         materialTapTargetSize: MaterialTapTargetSize.padded,
-        onPressed: () {
-          widget.auth.handleSocialSignIn("FB").then((String userId) {
-            storeCurrentUser(userId);
-          });
-        },
+        onPressed: () { widget.onSocialLogin("FB"); },
         color: Color.fromRGBO(27, 76, 213, 1),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         textColor: Colors.white,

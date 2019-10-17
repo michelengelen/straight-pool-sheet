@@ -8,11 +8,53 @@ final Auth auth = new Auth();
 
 class AppIsLoading {}
 class AppIsLoaded {}
-class AppErrorAction {}
+
+class AppErrorAction {
+  final String errorMessage;
+
+  AppErrorAction(this.errorMessage);
+
+  @override
+  String toString() {
+    return 'AppErrorAction{errorMessage: $errorMessage}';
+  }
+}
 
 class ToggleAllAction {}
 
 class LoadTodosAction {}
+
+ThunkAction socialLogin(String type) {
+  return (Store store) async {
+    store.dispatch(AppIsLoading());
+    new Future(() async {
+      AuthResponse authResponse;
+      switch (type) {
+        case "FB":
+          authResponse = await auth.handleFacebookLogin();
+          break;
+        case "G":
+          authResponse = await auth.handleGoogleLogin();
+          break;
+        default:
+          authResponse = new AuthResponse(
+            user: null,
+            error: true,
+            cancelled: false,
+            message: "Something went terribly wrong!",
+          );
+          break;
+      }
+      if (authResponse != null && (!authResponse.error || !authResponse.cancelled)) {
+        store.dispatch(UserLoadedAction(authResponse.user));
+        store.dispatch(AppIsLoaded());
+      } else {
+        store.dispatch(AppIsLoaded());
+        store.dispatch(AppErrorAction(authResponse.message));
+      }
+    });
+  };
+}
 
 ThunkAction loadUserAction() {
   return (Store store) async {
@@ -25,6 +67,8 @@ ThunkAction loadUserAction() {
           store.dispatch(AppIsLoaded());
         })
         .catchError((error) {
+          store.dispatch(UserNotLoadedAction());
+          store.dispatch(AppIsLoaded());
           print('### ERROR: $error');
         });
     });

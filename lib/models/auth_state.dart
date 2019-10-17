@@ -12,11 +12,18 @@ class AuthState {
     this.status = AuthStatus.NOT_DETERMINED,
   });
 
+  factory AuthState.initial() {
+    return new AuthState(
+      user: null,
+      status: AuthStatus.NOT_LOGGED_IN,
+    );
+  }
+
   AuthState copyWith({
     FirebaseUser user,
     AuthStatus status,
   }) {
-    return AuthState(
+    return new AuthState(
       user: user ?? this.user,
       status: status ?? this.status,
     );

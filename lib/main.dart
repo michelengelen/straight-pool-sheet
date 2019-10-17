@@ -14,7 +14,7 @@ void main() => runApp(SPS());
 class SPS extends StatelessWidget {
   final store = Store<AppState>(
     appReducer,
-    initialState: AppState.loading(),
+    initialState: AppState.initial(),
     middleware: [thunkMiddleware],
   );
 

@@ -13,6 +13,13 @@ class AppState {
 
   factory AppState.loading() => AppState(isLoading: true);
 
+  factory AppState.initial() {
+    return new AppState(
+      isLoading: true,
+      auth: AuthState.initial(),
+    );
+  }
+
   AppState copyWith({
     bool isLoading,
     AuthState auth,
