@@ -75,6 +75,17 @@ ThunkAction loadUserAction() {
   };
 }
 
+ThunkAction logoutUserAction() {
+  return (Store store) async {
+    store.dispatch(AppIsLoading());
+    new Future(() async {
+      await auth.logOut();
+      store.dispatch(UserNotLoadedAction());
+      store.dispatch(AppIsLoaded());
+    });
+  };
+}
+
 class UserLoadedAction {
   final FirebaseUser user;
 

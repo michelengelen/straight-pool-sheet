@@ -32,7 +32,7 @@ abstract class BaseAuth {
 
   Future<void> sendEmailVerification();
 
-  Future<void> signOut();
+  Future<void> logOut();
 
   Future<bool> isEmailVerified();
 
@@ -64,7 +64,8 @@ class Auth implements BaseAuth {
     return user;
   }
 
-  Future<void> signOut() async {
+  Future<void> logOut() async {
+    print('#### logout!');
     return _firebaseAuth.signOut();
   }
 

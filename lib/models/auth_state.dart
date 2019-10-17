@@ -24,7 +24,7 @@ class AuthState {
     AuthStatus status,
   }) {
     return new AuthState(
-      user: user ?? this.user,
+      user: user,
       status: status ?? this.status,
     );
   }

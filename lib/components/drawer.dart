@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 
-class Menu extends StatelessWidget {
+class DrawerMenuView extends StatelessWidget {
+  final Function onLogout;
+
+  DrawerMenuView({
+    this.onLogout,
+  });
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -25,10 +31,16 @@ class Menu extends StatelessWidget {
             },
           ),
           ListTile(
-            title: Text('Item 2'),
+            leading: Icon(
+              Icons.lock,
+              color: Colors.red,
+              size: 24.0,
+              semanticLabel: 'Log out the current user',
+            ),
+            title: Text('Logout'),
             onTap: () {
-              // Update the state of the app.
-              // ...
+              Navigator.pop(context);
+              onLogout();
             },
           ),
         ],
