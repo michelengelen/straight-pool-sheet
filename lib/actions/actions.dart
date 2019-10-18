@@ -24,9 +24,18 @@ class ToggleAllAction {}
 
 class LoadTodosAction {}
 
+void _toggleAppLoading(Store store, bool shouldLoad) {
+  final bool isLoading = store.state.isLoading;
+  if (!isLoading && shouldLoad) {
+    store.dispatch(AppIsLoading());
+  } else if (isLoading && !shouldLoad) {
+    store.dispatch(AppIsLoaded());
+  }
+}
+
 ThunkAction socialLogin(String type) {
   return (Store store) async {
-    store.dispatch(AppIsLoading());
+    _toggleAppLoading(store, true);
     new Future(() async {
       AuthResponse authResponse;
       switch (type) {
@@ -47,28 +56,25 @@ ThunkAction socialLogin(String type) {
       }
       if (authResponse != null && (!authResponse.error || !authResponse.cancelled)) {
         store.dispatch(UserLoadedAction(authResponse.user));
-        store.dispatch(AppIsLoaded());
-      } else {
-        store.dispatch(AppIsLoaded());
-        store.dispatch(AppErrorAction(authResponse.message));
-      }
+      } else store.dispatch(AppErrorAction(authResponse.message));
+      _toggleAppLoading(store, false);
     });
   };
 }
 
 ThunkAction loadUserAction() {
   return (Store store) async {
-    store.dispatch(AppIsLoading());
+    _toggleAppLoading(store, true);
     new Future(() async {
       auth.getCurrentUser()
         .then((user) {
           print('######### USER: $user');
           store.dispatch(UserLoadedAction(user));
-          store.dispatch(AppIsLoaded());
+          _toggleAppLoading(store, false);
         })
         .catchError((error) {
           store.dispatch(UserNotLoadedAction());
-          store.dispatch(AppIsLoaded());
+          _toggleAppLoading(store, false);
           print('### ERROR: $error');
         });
     });

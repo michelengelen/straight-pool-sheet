@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import 'package:sps/components/loading.dart';
 import 'package:sps/components/welcome.dart';
 import 'package:sps/constants/keys.dart';
 import 'package:sps/container/drawer.dart';
@@ -36,35 +35,28 @@ class HomeScreenState extends State<HomeScreen> {
       builder: (context, state) {
         final bool isLoading = state.isLoading;
         final FirebaseUser user = state.auth.user;
-        var body = new List<Widget>();
-        if (user != null) {
-          body.add(new WelcomeComponent(user: user));
-        } else {
-          body.add(new LoginSignupScreen());
-        }
-        if (isLoading) {
-          var loader = new Stack(
-            children: [
-              new Opacity(
-                opacity: 0.8,
-                // The green box must be a child of the AnimatedOpacity widget.
-                child: const ModalBarrier(dismissible: false, color: Colors.black),
-              ),
-              new Center(
-                child: new CircularProgressIndicator(),
-              ),
-            ],
-          );
-          body.add(loader);
-        }
+        print(user);
         return new Scaffold(
-          endDrawer: new DrawerMenu(),
+          drawer: new DrawerMenu(),
           appBar: new AppBar(
             title: new Text('HomePage'),
           ),
-          body: new Stack(
-            children: body,
-          )
+          body: new AnimatedSwitcher(
+              duration: Duration(milliseconds: 600),
+              child: isLoading ?
+                new Stack(
+                  children: [
+                    new ModalBarrier(
+                        dismissible: false,
+                        color: Colors.black
+                    ),
+                    new Center(
+                      child: new CircularProgressIndicator(),
+                    ),
+                  ],
+                ) :
+                user != null ? new WelcomeComponent(user: user) : new LoginSignupScreen()
+          ),
         );
       },
     );

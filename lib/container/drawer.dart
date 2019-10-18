@@ -16,6 +16,7 @@ class DrawerMenu extends StatelessWidget {
       builder: (context, vm) {
         return DrawerMenuView(
           onLogout: vm.logoutUser,
+          auth: vm.authState,
         );
       },
     );
@@ -24,9 +25,11 @@ class DrawerMenu extends StatelessWidget {
 
 class _ViewModel {
   final Function logoutUser;
+  final AuthState authState;
 
   _ViewModel({
     @required this.logoutUser,
+    @required this.authState,
   });
 
   static _ViewModel fromStore(Store<AppState> store) {
@@ -34,6 +37,7 @@ class _ViewModel {
       logoutUser: () {
         store.dispatch(logoutUserAction());
       },
+      authState: store.state.auth,
     );
   }
 }
