@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:sps/constants/constants.dart';
 import 'package:sps/constants/routes.dart';
@@ -35,7 +36,7 @@ class DrawerMenuView extends StatelessWidget {
     return value;
   }
 
-  _getDrawerHeader() {
+  _getDrawerHeader(context) {
     if (auth.status == AuthStatus.LOGGED_IN && auth.user != null) {
       final String queryParam =
           auth.user.providerId.startsWith("facebook") ? "?width=400" : "";
@@ -45,7 +46,7 @@ class DrawerMenuView extends StatelessWidget {
         currentAccountPicture: auth.user.photoUrl != null
             ? CircleAvatar(
                 backgroundColor: Colors.blue,
-                backgroundImage: NetworkImage(auth.user.photoUrl + queryParam),
+                backgroundImage: CachedNetworkImageProvider(auth.user.photoUrl + queryParam),
               )
             : CircleAvatar(
                 backgroundColor: Colors.blue,
@@ -59,7 +60,7 @@ class DrawerMenuView extends StatelessWidget {
             icon: Icon(Icons.settings),
             tooltip: 'Settings',
             onPressed: () {
-              print('Settings');
+              Navigator.popAndPushNamed(context, Routes.settings);
             },
           ),
         ],
@@ -85,7 +86,7 @@ class DrawerMenuView extends StatelessWidget {
         // Important: Remove any padding from the ListView.
         padding: EdgeInsets.zero,
         children: <Widget>[
-          _getDrawerHeader(),
+          _getDrawerHeader(context),
           new ListTile(
             leading: Icon(
               Icons.home,
@@ -95,7 +96,7 @@ class DrawerMenuView extends StatelessWidget {
             title: Text('Home'),
             selected: currentRoute == Routes.home,
             onTap: () {
-              print('### tabbed home item');
+              Navigator.popAndPushNamed(context, Routes.home);
             },
           ),
           ListTile(

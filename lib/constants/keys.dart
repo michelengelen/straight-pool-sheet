@@ -6,7 +6,8 @@ class Keys {
 
   // Home Screens
   static final homeScreen = const Key('__homeScreen__');
-  static final loginSignupScreen = const Key('__loginSignupScreen__');
+  static final profileScreen = const Key('__profileScreen__');
+  static final settingsScreen = const Key('__settingsScreen__');
   static final snackbar = const Key('__snackbar__');
   static Key snackbarAction(String id) => Key('__snackbar_action_${id}__');
 

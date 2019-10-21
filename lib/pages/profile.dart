@@ -7,9 +7,9 @@ import 'package:sps/constants/keys.dart';
 import 'package:sps/models/app_state.dart';
 
 class ProfileScreen extends StatelessWidget {
-  final void Function() onInit;
+  // final void Function() onInit;
 
-  ProfileScreen({@required this.onInit}) : super(key: Keys.homeScreen);
+  ProfileScreen() : super(key: Keys.profileScreen);
 
   @override
   Widget build(BuildContext context) {
