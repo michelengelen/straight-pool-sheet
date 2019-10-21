@@ -8,6 +8,16 @@ import 'package:sps/models/models.dart';
 
 class DrawerMenu extends StatelessWidget {
   DrawerMenu({Key key}) : super(key: key);
+  String getCurrentRouteName(context) {
+    String currentRouteName;
+
+    Navigator.popUntil(context, (route) {
+      currentRouteName = route.settings.name;
+      return true;
+    });
+
+    return currentRouteName;
+  }
 
   @override
   Widget build(BuildContext context) {

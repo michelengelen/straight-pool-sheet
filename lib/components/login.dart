@@ -8,9 +8,14 @@ import 'package:sps/services/auth.dart';
 final Auth auth = new Auth();
 
 class LoginSignup extends StatefulWidget {
-  LoginSignup({this.onLogin, this.onSocialLogin});
+  LoginSignup({
+    this.onLogin,
+    this.onRegister,
+    this.onSocialLogin,
+  });
 
   final Function onLogin;
+  final Function onRegister;
   final Function onSocialLogin;
 
   @override
@@ -47,10 +52,10 @@ class _LoginSignupState extends State<LoginSignup> {
       String userId = "";
       try {
         if (_isLoginForm) {
-          userId = await auth.signIn(_email, _password);
+          userId = (await auth.signIn(_email, _password)).uid;
           print('Signed in: $userId');
         } else {
-          userId = await auth.signUp(_email, _password);
+          userId = (await auth.register(_email, _password)).uid;
           print('Signed up user: $userId');
         }
         setState(() {
@@ -134,22 +139,25 @@ class _LoginSignupState extends State<LoginSignup> {
 
   Widget showSeperator() {
     return Container(
-        padding: EdgeInsets.all(16),
-        child: Row(children: <Widget>[
-          Expanded(
-              child: Divider(
-            color: Colors.black,
+      padding: EdgeInsets.all(16),
+      child: Row(children: <Widget>[
+        Expanded(
+          child: Divider(
+            thickness: 3,
             indent: 24,
             endIndent: 12,
-          )),
-          Text("OR"),
-          Expanded(
-              child: Divider(
-            color: Colors.black,
+          ),
+        ),
+        Text("OR"),
+        Expanded(
+          child: Divider(
+            thickness: 3,
             indent: 12,
             endIndent: 24,
-          )),
-        ]));
+          ),
+        ),
+      ])
+    );
   }
 
   Widget showGoogleLoginButton() {
@@ -198,6 +206,7 @@ class _LoginSignupState extends State<LoginSignup> {
               showEmailInput(),
               showPasswordInput(),
               showPrimaryButton(),
+              showSecondaryButton(),
               showSeperator(),
               showFacebookLoginButton(),
               showGoogleLoginButton(),

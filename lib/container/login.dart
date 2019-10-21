@@ -16,6 +16,7 @@ class LoginSignupScreen extends StatelessWidget {
       builder: (context, vm) {
         return LoginSignup(
           onLogin: vm.onLogin,
+          onRegister: vm.onRegister,
           onSocialLogin: vm.onSocialLogin,
         );
       },
@@ -25,10 +26,12 @@ class LoginSignupScreen extends StatelessWidget {
 
 class _ViewModel {
   final Function onLogin;
+  final Function onRegister;
   final Function onSocialLogin;
 
   _ViewModel({
     @required this.onLogin,
+    @required this.onRegister,
     @required this.onSocialLogin,
   });
 
@@ -36,6 +39,9 @@ class _ViewModel {
     return _ViewModel(
       onLogin: () {
         store.dispatch(loadUserAction());
+      },
+      onRegister: (String email, String password) {
+        store.dispatch(registerUserAction(email, password));
       },
       onSocialLogin: (String type) {
         store.dispatch(socialLogin(type));

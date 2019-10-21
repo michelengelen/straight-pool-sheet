@@ -24,9 +24,9 @@ class AuthResponse {
 }
 
 abstract class BaseAuth {
-  Future<String> signIn(String email, String password);
+  Future<FirebaseUser> signIn(String email, String password);
 
-  Future<String> signUp(String email, String password);
+  Future<FirebaseUser> register(String email, String password);
 
   Future<FirebaseUser> getCurrentUser();
 
@@ -44,18 +44,18 @@ abstract class BaseAuth {
 class Auth implements BaseAuth {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-  Future<String> signIn(String email, String password) async {
+  Future<FirebaseUser> signIn(String email, String password) async {
     AuthResult result = await _firebaseAuth.signInWithEmailAndPassword(
         email: email, password: password);
     FirebaseUser user = result.user;
-    return user.uid;
+    return user;
   }
 
-  Future<String> signUp(String email, String password) async {
+  Future<FirebaseUser> register(String email, String password) async {
     AuthResult result = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email, password: password);
     FirebaseUser user = result.user;
-    return user.uid;
+    return user;
   }
 
   Future<FirebaseUser> getCurrentUser() async {
@@ -130,13 +130,15 @@ class Auth implements BaseAuth {
     GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
     print(googleSignInAccount.toString());
     final googleAuth = await googleSignInAccount.authentication;
-    final googleAuthCred = GoogleAuthProvider.getCredential(
+    final AuthCredential googleAuthCred = GoogleAuthProvider.getCredential(
         idToken: googleAuth.idToken,
         accessToken: googleAuth.accessToken,
     );
-    final user = (await _firebaseAuth.signInWithCredential(googleAuthCred)).user;
+    final response = await _firebaseAuth.signInWithCredential(googleAuthCred);
+    print('response!!!!!!!');
+    print(response.toString());
     final AuthResponse authResponse = new AuthResponse(
-      user: user,
+      user: response.user,
       error: false,
       cancelled: false,
       message: null,
