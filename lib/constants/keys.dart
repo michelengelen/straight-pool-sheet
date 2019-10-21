@@ -1,6 +1,9 @@
 import 'package:flutter/widgets.dart';
 
 class Keys {
+  // Wrapper
+  static final wrapper = const Key('__wrapper__');
+
   // Home Screens
   static final homeScreen = const Key('__homeScreen__');
   static final loginSignupScreen = const Key('__loginSignupScreen__');

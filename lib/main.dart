@@ -7,6 +7,7 @@ import 'package:sps/actions/actions.dart';
 import 'package:sps/constants/routes.dart';
 import 'package:sps/pages/home.dart';
 import 'package:sps/models/models.dart';
+import 'package:sps/pages/profile.dart';
 import 'package:sps/reducers/app_state_reducer.dart';
 
 void main() => runApp(SPS());
@@ -35,11 +36,7 @@ class SPS extends StatelessWidget {
               );
             },
             Routes.profile: (context) {
-              return Container(
-                child: Center(
-                  child: new Text('Profile'),
-                ),
-              );
+              return ProfileScreen();
             },
           },
         ),

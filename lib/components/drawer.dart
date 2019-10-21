@@ -102,12 +102,12 @@ class DrawerMenuView extends StatelessWidget {
             leading: Icon(
               Icons.person_pin,
               size: 24.0,
-              semanticLabel: 'Home Screen',
+              semanticLabel: 'Profile Screen',
             ),
             title: Text('Profile'),
             selected: currentRoute == Routes.profile,
             onTap: () {
-              print('### tabbed profile item');
+              Navigator.popAndPushNamed(context, Routes.profile);
             },
           ),
           ListTile(

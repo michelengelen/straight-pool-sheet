@@ -9,6 +9,8 @@ final Auth auth = new Auth();
 class AppIsLoading {}
 class AppIsLoaded {}
 
+class ToggleTheme {}
+
 class AppErrorAction {
   final String errorMessage;
 
