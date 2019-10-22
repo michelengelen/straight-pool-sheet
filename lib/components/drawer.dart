@@ -87,7 +87,7 @@ class DrawerMenuView extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           _getDrawerHeader(context),
-          new ListTile(
+          ListTile(
             leading: Icon(
               Icons.home,
               size: 24.0,
@@ -111,23 +111,17 @@ class DrawerMenuView extends StatelessWidget {
               Navigator.popAndPushNamed(context, Routes.profile);
             },
           ),
-          ListTile(
+          if (isUserLoggedIn) ListTile(
             leading: Icon(
-              isUserLoggedIn ? Icons.lock : Icons.lock_open,
-              color: isUserLoggedIn ? Colors.red : Theme.of(context).accentColor,
+              Icons.lock,
+              color: Colors.red,
               size: 24.0,
-              semanticLabel: 'Log ${isUserLoggedIn ? 'out' : 'in'} the current user',
+              semanticLabel: 'Log out the current user',
             ),
-            title: Text(isUserLoggedIn ? 'Logout' : 'Login'),
+            title: new Text('Logout'),
             onTap: () {
-              if (isUserLoggedIn) {
-                onLogout();
-              }
-              if (currentRoute != Routes.home){
-                Navigator.popAndPushNamed(context, Routes.home);
-              } else {
-                Navigator.pop(context);
-              }
+              onLogout();
+              Navigator.popAndPushNamed(context, Routes.home);
             },
           ),
         ],
