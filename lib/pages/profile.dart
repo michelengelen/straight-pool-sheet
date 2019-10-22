@@ -17,7 +17,6 @@ class ProfileScreen extends StatelessWidget {
       converter: (Store<AppState> store) => store.state,
       builder: (context, state) {
         final FirebaseUser user = state.auth.user;
-        print(user);
         return new Wrapper(
           title: 'Profile',
           child: new Center(

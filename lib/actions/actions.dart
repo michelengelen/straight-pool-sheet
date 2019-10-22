@@ -79,14 +79,12 @@ ThunkAction loadUserAction() {
     new Future(() async {
       auth.getCurrentUser()
         .then((user) {
-          print('######### USER: $user');
           store.dispatch(UserLoadedAction(user));
           _toggleAppLoading(store, false);
         })
         .catchError((error) {
           store.dispatch(UserNotLoadedAction());
           _toggleAppLoading(store, false);
-          print('### ERROR: $error');
         });
     });
   };

@@ -112,8 +112,6 @@ class _LoginSignupState extends State<LoginSignup> {
         return store.state.auth;
       },
       builder: (context, auth) {
-        print('###user');
-        print(auth);
         return new Container(
             child: Stack(
               children: <Widget>[
