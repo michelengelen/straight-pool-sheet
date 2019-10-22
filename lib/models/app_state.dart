@@ -1,4 +1,5 @@
 import 'package:meta/meta.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sps/models/auth_state.dart';
 import 'package:sps/models/settings_state.dart';
 
@@ -16,11 +17,11 @@ class AppState {
 
   factory AppState.loading() => AppState(isLoading: true);
 
-  factory AppState.initial() {
+  factory AppState.initial(SharedPreferences settings) {
     return new AppState(
       isLoading: true,
       auth: AuthState.initial(),
-      settings: SettingsState.initial(),
+      settings: SettingsState.initial(settings),
     );
   }
 

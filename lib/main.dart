@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sps/actions/actions.dart';
 
 import 'package:sps/constants/routes.dart';
@@ -11,14 +12,24 @@ import 'package:sps/models/models.dart';
 import 'package:sps/pages/profile.dart';
 import 'package:sps/reducers/app_state_reducer.dart';
 
-void main() => runApp(SPS());
+void main() async {
+  SharedPreferences _sprefs = await SharedPreferences.getInstance();
 
-class SPS extends StatelessWidget {
   final store = Store<AppState>(
     appReducer,
-    initialState: AppState.initial(),
+    initialState: AppState.initial(_sprefs),
     middleware: [thunkMiddleware],
   );
+
+  runApp(SPS(store: store));
+}
+
+class SPS extends StatelessWidget {
+  final Store<AppState> store;
+
+  SPS({
+    @required this.store,
+  });
 
   @override
   Widget build(BuildContext context) {

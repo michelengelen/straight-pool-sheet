@@ -1,15 +1,27 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:sps/services/auth.dart';
 
 final Auth auth = new Auth();
 
-class AppIsLoading {}
 class AppIsLoaded {}
 
 class ToggleTheme {}
+
+ThunkAction toggleTheme(bool previous) {
+  return (Store store) async {
+    new Future(() async {
+      SharedPreferences _sprefs = await SharedPreferences.getInstance();
+      _sprefs.setBool('darkMode', !previous);
+      store.dispatch(ToggleTheme());
+    });
+  };
+}
+
+class AppIsLoading {}
 
 class AppErrorAction {
   final String errorMessage;

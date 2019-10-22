@@ -1,4 +1,5 @@
 import 'package:meta/meta.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 @immutable
 class SettingsState {
@@ -10,10 +11,10 @@ class SettingsState {
     this.language,
   });
 
-  factory SettingsState.initial() {
+  factory SettingsState.initial(SharedPreferences settings) {
     return new SettingsState(
-      darkMode: false,
-      language: 'en',
+      darkMode: settings.getBool('darkMode') ?? false,
+      language: settings.getString('language') ?? 'en',
     );
   }
 

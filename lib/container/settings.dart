@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:sps/actions/actions.dart';
+import 'package:sps/actions/actions.dart' as prefix0;
 import 'package:sps/pages/settings.dart';
 import 'package:sps/models/models.dart';
 
@@ -30,9 +31,10 @@ class _ViewModel {
   });
 
   static _ViewModel fromStore(Store<AppState> store) {
+    final darkMode = store.state.settings.darkMode;
     return _ViewModel(
       toggleTheme: () {
-        store.dispatch(ToggleTheme());
+        store.dispatch(prefix0.toggleTheme(darkMode));
       },
     );
   }
