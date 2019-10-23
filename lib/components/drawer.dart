@@ -85,8 +85,25 @@ class DrawerMenuView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    String _getCurrentRouteName() {
+      String currentRouteName;
+
+      Navigator.popUntil(context, (route) {
+        currentRouteName = route.settings.name;
+        return true;
+      });
+
+      return currentRouteName;
+    }
+
+    String currentRoute = _getCurrentRouteName();
+
+    Function() _getNavigation(String route) {
+      if (route == currentRoute) return () => Navigator.pop(context);
+      return () => Navigator.popAndPushNamed(context, route);
+    }
     final isUserLoggedIn = auth.status == AuthStatus.LOGGED_IN;
-    final currentRoute = _getCurrentRouteName(context);
     return Drawer(
       // Add a ListView to the drawer. This ensures the user can scroll
       // through the options in the drawer if there isn't enough vertical
@@ -104,13 +121,7 @@ class DrawerMenuView extends StatelessWidget {
             ),
             title: Text(S.of(context).screen_home_title),
             selected: currentRoute == Routes.home,
-            onTap: () {
-              if (currentRoute == Routes.home) {
-                Navigator.pop(context);
-              } else {
-                Navigator.popAndPushNamed(context, Routes.home);
-              }
-            },
+            onTap: _getNavigation(Routes.home),
           ),
           ListTile(
             leading: Icon(
@@ -120,13 +131,7 @@ class DrawerMenuView extends StatelessWidget {
             ),
             title: Text(S.of(context).screen_profile_title),
             selected: currentRoute == Routes.profile,
-            onTap: () {
-              if (currentRoute == Routes.profile) {
-                Navigator.pop(context);
-              } else {
-                Navigator.popAndPushNamed(context, Routes.profile);
-              }
-            },
+            onTap: _getNavigation(Routes.profile),
           ),
           if (isUserLoggedIn) ListTile(
             leading: Icon(

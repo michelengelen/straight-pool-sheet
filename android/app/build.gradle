@@ -1,3 +1,5 @@
+configurations.all {exclude group: 'com.android.support', module: 'support-v4'}
+
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {

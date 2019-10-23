@@ -9,10 +9,12 @@ import 'package:sps/models/app_state.dart';
 class Wrapper extends StatelessWidget {
   final String title;
   final Widget child;
+  final Widget tapBar;
 
   Wrapper({
     @required this.title,
     @required this.child,
+    this.tapBar,
   }) : super(key: Keys.wrapper);
 
   @override
@@ -23,6 +25,7 @@ class Wrapper extends StatelessWidget {
         return new Scaffold(
           drawer: new DrawerMenu(),
           appBar: new AppBar(
+            bottom: tapBar ?? null,
             title: new Text(title),
           ),
           body: new AnimatedSwitcher(
