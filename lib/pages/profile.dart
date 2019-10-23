@@ -4,6 +4,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:sps/components/wrapper.dart';
 import 'package:sps/constants/keys.dart';
+import 'package:sps/generated/i18n.dart';
 import 'package:sps/models/app_state.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -16,7 +17,7 @@ class ProfileScreen extends StatelessWidget {
       builder: (context, state) {
         final FirebaseUser user = state.auth.user;
         return new Wrapper(
-          title: 'Profile',
+          title: S.of(context).screen_profile_title,
           child: new Center(
             child: new Text(user.displayName + "'s Profile Page"),
           ),

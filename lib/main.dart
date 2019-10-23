@@ -4,8 +4,8 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sps/actions/actions.dart';
 
+import 'package:sps/actions/actions.dart';
 import 'package:sps/constants/routes.dart';
 import 'package:sps/container/settings.dart';
 import 'package:sps/pages/home.dart';
@@ -57,6 +57,8 @@ class SPS extends StatelessWidget {
               Routes.home: (context) {
                 return HomeScreen(
                   onInit: () {
+                    final Locale systemLocale = Localizations.localeOf(context);
+                    StoreProvider.of<AppState>(context).dispatch(changeLocaleAction(systemLocale.languageCode));
                     StoreProvider.of<AppState>(context).dispatch(loadUserAction());
                   },
                 );

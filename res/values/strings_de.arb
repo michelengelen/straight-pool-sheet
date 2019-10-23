@@ -1,8 +1,17 @@
 {
   "app_title": "14/1 Helper",
-  "drawer_home": "Startseite",
-  "drawer_profile": "Profil",
-  "drawer_logout": "Ausloggen",
+  "screen_home_title": "Startseite",
+  "icon_home_semantic": "Zur Startseite wechseln",
+  "screen_profile_title": "Profil",
+  "icon_profile_semantic": "Zur Profilseite wechseln",
+  "screen_settings_title": "Einstellungen",
+  "icon_settings_semantic": "Zur Profilseite wechseln",
+  "setting_language_title": "Sprache",
+  "setting_language_subtitle": "Aktuell ausgewählte Sprache: $languageCode",
+  "setting_darkMode_title": "Dark mode",
+  "setting_darkMode_subtitle": "Dark mode aktivieren",
+  "logout": "Abmelden",
+  "icon_logout_semantic": "Den aktuellen Nutzer abmelden",
   "locales_en": "Englisch",
   "locales_de": "Deutsch"
 }

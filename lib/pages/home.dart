@@ -6,6 +6,7 @@ import 'package:sps/components/welcome.dart';
 import 'package:sps/components/wrapper.dart';
 import 'package:sps/constants/keys.dart';
 import 'package:sps/container/login.dart';
+import 'package:sps/generated/i18n.dart';
 import 'package:sps/models/app_state.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -35,7 +36,7 @@ class HomeScreenState extends State<HomeScreen> {
       builder: (context, state) {
         final FirebaseUser user = state.auth.user;
         return new Wrapper(
-          title: 'HomePage',
+          title: S.of(context).screen_home_title,
           child: user != null
               ? new WelcomeComponent(user: user)
               : new LoginSignupScreen(),

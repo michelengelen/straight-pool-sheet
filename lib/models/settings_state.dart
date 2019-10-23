@@ -14,7 +14,7 @@ class SettingsState {
   factory SettingsState.initial(SharedPreferences settings) {
     return new SettingsState(
       darkMode: settings.getBool('darkMode') ?? false,
-      locale: 'en',
+      locale: settings.getString('languageCode') ?? 'de',
     );
   }
 

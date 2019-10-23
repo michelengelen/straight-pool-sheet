@@ -9,6 +9,16 @@ final Auth auth = new Auth();
 
 class AppIsLoaded {}
 
+ThunkAction changeLocaleAction(String languageCode) {
+  return (Store store) async {
+    new Future(() async {
+      SharedPreferences _sprefs = await SharedPreferences.getInstance();
+      _sprefs.setString('lnguageCode', languageCode);
+      store.dispatch(ChangeLanguageAction(languageCode));
+    });
+  };
+}
+
 class ChangeLanguageAction {
   final String locale;
 

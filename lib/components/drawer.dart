@@ -59,8 +59,11 @@ class DrawerMenuView extends StatelessWidget {
               ),
         otherAccountsPictures: <Widget>[
           IconButton(
-            icon: Icon(Icons.settings),
-            tooltip: 'Settings',
+            icon: Icon(
+              Icons.settings,
+              semanticLabel: S.of(context).icon_settings_semantic,
+            ),
+            tooltip: S.of(context).icon_settings_semantic,
             onPressed: () {
               if (currentRoute == Routes.settings) {
                 Navigator.pop(context);
@@ -97,9 +100,9 @@ class DrawerMenuView extends StatelessWidget {
             leading: Icon(
               Icons.home,
               size: 24.0,
-              semanticLabel: S.of(context).drawer_home,
+              semanticLabel: S.of(context).icon_home_semantic,
             ),
-            title: Text(S.of(context).drawer_home),
+            title: Text(S.of(context).screen_home_title),
             selected: currentRoute == Routes.home,
             onTap: () {
               if (currentRoute == Routes.home) {
@@ -113,9 +116,9 @@ class DrawerMenuView extends StatelessWidget {
             leading: Icon(
               Icons.person_pin,
               size: 24.0,
-              semanticLabel: S.of(context).drawer_profile,
+              semanticLabel: S.of(context).icon_profile_semantic,
             ),
-            title: Text(S.of(context).drawer_profile),
+            title: Text(S.of(context).screen_profile_title),
             selected: currentRoute == Routes.profile,
             onTap: () {
               if (currentRoute == Routes.profile) {
@@ -130,9 +133,9 @@ class DrawerMenuView extends StatelessWidget {
               Icons.lock,
               color: Colors.red,
               size: 24.0,
-              semanticLabel: 'Log out the current user',
+              semanticLabel: S.of(context).icon_logout_semantic,
             ),
-            title: new Text(S.of(context).drawer_logout),
+            title: new Text(S.of(context).logout),
             onTap: () {
               if (currentRoute == Routes.home) {
                 // use Navigators maybePop method, because it returns a Future

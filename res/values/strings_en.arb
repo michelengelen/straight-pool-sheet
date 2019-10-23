@@ -1,8 +1,17 @@
 {
   "app_title": "Straight Pool Sheet",
-  "drawer_home": "Home",
-  "drawer_profile": "Profile",
-  "drawer_logout": "Logout",
+  "screen_home_title": "Home",
+  "icon_home_semantic": "go to Home Screen",
+  "screen_profile_title": "Profile",
+  "icon_profile_semantic": "go to User Profile Screen",
+  "screen_settings_title": "Settings",
+  "icon_settings_semantic": "go to Settings Screen",
+  "setting_language_title": "Language",
+  "setting_language_subtitle": "Currently selected language: $languageCode",
+  "setting_darkMode_title": "Dark mode",
+  "setting_darkMode_subtitle": "Enable dark mode",
+  "logout": "Logout",
+  "icon_logout_semantic": "Log out the current user",
   "locales_en": "English",
   "locales_de": "German"
 }

@@ -22,11 +22,20 @@ class S implements WidgetsLocalizations {
   TextDirection get textDirection => TextDirection.ltr;
 
   String get app_title => "Straight Pool Sheet";
-  String get drawer_home => "Home";
-  String get drawer_logout => "Logout";
-  String get drawer_profile => "Profile";
+  String get icon_home_semantic => "go to Home Screen";
+  String get icon_logout_semantic => "Log out the current user";
+  String get icon_profile_semantic => "go to User Profile Screen";
+  String get icon_settings_semantic => "go to Settings Screen";
   String get locales_de => "German";
   String get locales_en => "English";
+  String get logout => "Logout";
+  String get screen_home_title => "Home";
+  String get screen_profile_title => "Profile";
+  String get screen_settings_title => "Settings";
+  String get setting_darkMode_subtitle => "Enable dark mode";
+  String get setting_darkMode_title => "Dark mode";
+  String get setting_language_title => "Language";
+  String setting_language_subtitle(String languageCode) => "Currently selected language: $languageCode";
 }
 
 class $de extends S {
@@ -36,17 +45,35 @@ class $de extends S {
   TextDirection get textDirection => TextDirection.ltr;
 
   @override
-  String get drawer_home => "Startseite";
+  String get icon_home_semantic => "Zur Startseite wechseln";
   @override
-  String get drawer_profile => "Profil";
+  String get icon_logout_semantic => "Den aktuellen Nutzer abmelden";
   @override
   String get app_title => "14/1 Helper";
   @override
   String get locales_en => "Englisch";
   @override
-  String get drawer_logout => "Ausloggen";
+  String get screen_settings_title => "Einstellungen";
+  @override
+  String get screen_profile_title => "Profil";
+  @override
+  String get icon_profile_semantic => "Zur Profilseite wechseln";
   @override
   String get locales_de => "Deutsch";
+  @override
+  String get screen_home_title => "Startseite";
+  @override
+  String get icon_settings_semantic => "Zur Profilseite wechseln";
+  @override
+  String get setting_language_title => "Sprache";
+  @override
+  String get logout => "Abmelden";
+  @override
+  String get setting_darkMode_subtitle => "Dark mode aktivieren";
+  @override
+  String get setting_darkMode_title => "Dark mode";
+  @override
+  String setting_language_subtitle(String languageCode) => "Aktuell ausgewählte Sprache: $languageCode";
 }
 
 class $en extends S {
