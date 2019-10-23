@@ -9,14 +9,25 @@ final Auth auth = new Auth();
 
 class AppIsLoaded {}
 
-class ToggleTheme {}
+class ChangeLanguageAction {
+  final String locale;
 
-ThunkAction toggleTheme(bool previous) {
+  ChangeLanguageAction(this.locale);
+
+  @override
+  String toString() {
+    return 'ChangeLanguageAction{locale: $locale}';
+  }
+}
+
+class ToggleThemeAction {}
+
+ThunkAction toggleThemeAction(bool previous) {
   return (Store store) async {
     new Future(() async {
       SharedPreferences _sprefs = await SharedPreferences.getInstance();
       _sprefs.setBool('darkMode', !previous);
-      store.dispatch(ToggleTheme());
+      store.dispatch(ToggleThemeAction());
     });
   };
 }

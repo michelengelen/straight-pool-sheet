@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
@@ -11,6 +12,7 @@ import 'package:sps/pages/home.dart';
 import 'package:sps/models/models.dart';
 import 'package:sps/pages/profile.dart';
 import 'package:sps/reducers/app_state_reducer.dart';
+import 'package:sps/generated/i18n.dart';
 
 void main() async {
   SharedPreferences _sprefs = await SharedPreferences.getInstance();
@@ -39,6 +41,16 @@ class SPS extends StatelessWidget {
         converter: (Store<AppState> store) => store.state.settings,
         builder: (context, settings) {
           return MaterialApp(
+            locale: new Locale(settings.locale, ""),
+            localizationsDelegates: [
+              S.delegate,
+              GlobalCupertinoLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+            ],
+            supportedLocales: S.delegate.supportedLocales,
+            localeResolutionCallback:
+                S.delegate.resolution(fallback: new Locale("en", "")),
             title: 'Straight Pool Sheet',
             theme: settings.darkMode ? ThemeData.dark() : ThemeData.light(),
             routes: {

@@ -2,6 +2,11 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>en</string>
+		<string>de</string>
+	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -39,28 +44,28 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-    <key>CFBundleURLTypes</key>
-    <array>
-        <dict>
-    		<key>CFBundleTypeRole</key>
-    		<string>Editor</string>
-            <key>CFBundleURLSchemes</key>
-            <array>
-                <string>fb273836016784078</string>
-                <string>com.googleusercontent.apps.606764946846-s0shmc1h3i9auoct82gopamsnsd7hmbb</string>
-            </array>
-        </dict>
-    </array>
-    <key>FacebookAppID</key>
-    <string>273836016784078</string>
-    <key>FacebookDisplayName</key>
-    <string>Straight Pool Sheet</string>
-    <key>LSApplicationQueriesSchemes</key>
-    <array>
-        <string>fbapi</string>
-        <string>fb-messenger-share-api</string>
-        <string>fbauth2</string>
-        <string>fbshareextension</string>
-    </array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb273836016784078</string>
+				<string>com.googleusercontent.apps.606764946846-s0shmc1h3i9auoct82gopamsnsd7hmbb</string>
+			</array>
+		</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>273836016784078</string>
+	<key>FacebookDisplayName</key>
+	<string>Straight Pool Sheet</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
+	</array>
 </dict>
 </plist>

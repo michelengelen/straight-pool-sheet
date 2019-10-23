@@ -4,32 +4,32 @@ import 'package:shared_preferences/shared_preferences.dart';
 @immutable
 class SettingsState {
   final bool darkMode;
-  final String language;
+  final String locale;
 
   SettingsState({
     this.darkMode,
-    this.language,
+    this.locale,
   });
 
   factory SettingsState.initial(SharedPreferences settings) {
     return new SettingsState(
       darkMode: settings.getBool('darkMode') ?? false,
-      language: settings.getString('language') ?? 'en',
+      locale: 'en',
     );
   }
 
   SettingsState copyWith({
     bool darkMode,
-    String language
+    String locale
   }) {
     return new SettingsState(
       darkMode: darkMode ?? this.darkMode,
-      language: language ?? this.language,
+      locale: locale ?? this.locale,
     );
   }
 
   @override
-  int get hashCode => darkMode.hashCode ^ language.hashCode;
+  int get hashCode => darkMode.hashCode ^ locale.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -37,10 +37,10 @@ class SettingsState {
           other is SettingsState &&
               runtimeType == other.runtimeType &&
               darkMode == other.darkMode &&
-              language == other.language;
+              locale == other.locale;
 
   @override
   String toString() {
-    return 'SettingsState: {darkMode: $darkMode, language: $language}';
+    return 'SettingsState: {darkMode: $darkMode, locale: $locale}';
   }
 }

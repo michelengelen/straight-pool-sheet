@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:sps/constants/constants.dart';
 import 'package:sps/constants/routes.dart';
+import 'package:sps/generated/i18n.dart';
 import 'package:sps/models/auth_state.dart';
 
 class DrawerMenuView extends StatelessWidget {
@@ -37,6 +38,7 @@ class DrawerMenuView extends StatelessWidget {
   }
 
   _getDrawerHeader(context) {
+    final currentRoute = _getCurrentRouteName(context);
     if (auth.status == AuthStatus.LOGGED_IN && auth.user != null) {
       final String queryParam =
           auth.user.providerId.startsWith("facebook") ? "?width=400" : "";
@@ -60,7 +62,11 @@ class DrawerMenuView extends StatelessWidget {
             icon: Icon(Icons.settings),
             tooltip: 'Settings',
             onPressed: () {
-              Navigator.popAndPushNamed(context, Routes.settings);
+              if (currentRoute == Routes.settings) {
+                Navigator.pop(context);
+              } else {
+                Navigator.popAndPushNamed(context, Routes.settings);
+              }
             },
           ),
         ],
@@ -91,24 +97,32 @@ class DrawerMenuView extends StatelessWidget {
             leading: Icon(
               Icons.home,
               size: 24.0,
-              semanticLabel: 'Home Screen',
+              semanticLabel: S.of(context).drawer_home,
             ),
-            title: Text('Home'),
+            title: Text(S.of(context).drawer_home),
             selected: currentRoute == Routes.home,
             onTap: () {
-              Navigator.popAndPushNamed(context, Routes.home);
+              if (currentRoute == Routes.home) {
+                Navigator.pop(context);
+              } else {
+                Navigator.popAndPushNamed(context, Routes.home);
+              }
             },
           ),
           ListTile(
             leading: Icon(
               Icons.person_pin,
               size: 24.0,
-              semanticLabel: 'Profile Screen',
+              semanticLabel: S.of(context).drawer_profile,
             ),
-            title: Text('Profile'),
+            title: Text(S.of(context).drawer_profile),
             selected: currentRoute == Routes.profile,
             onTap: () {
-              Navigator.popAndPushNamed(context, Routes.profile);
+              if (currentRoute == Routes.profile) {
+                Navigator.pop(context);
+              } else {
+                Navigator.popAndPushNamed(context, Routes.profile);
+              }
             },
           ),
           if (isUserLoggedIn) ListTile(
@@ -118,10 +132,16 @@ class DrawerMenuView extends StatelessWidget {
               size: 24.0,
               semanticLabel: 'Log out the current user',
             ),
-            title: new Text('Logout'),
+            title: new Text(S.of(context).drawer_logout),
             onTap: () {
-              onLogout();
-              Navigator.popAndPushNamed(context, Routes.home);
+              if (currentRoute == Routes.home) {
+                // use Navigators maybePop method, because it returns a Future
+                // If we would use .pop() here the rendering of the Profile Page
+                // would run into an error, because the state gets updated beforehand
+                Navigator.maybePop(context).then(onLogout);
+              } else {
+                Navigator.popAndPushNamed(context, Routes.home).then(onLogout);
+              }
             },
           ),
         ],
