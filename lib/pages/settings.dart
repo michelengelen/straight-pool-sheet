@@ -6,6 +6,18 @@ import 'package:sps/models/settings_state.dart';
 
 final List<Locale> supportedLanguages = S.delegate.supportedLocales;
 
+_getLanguageString(context, languageCode) {
+  switch (languageCode) {
+    case "de":
+      return S.of(context).locales_de;
+      break;
+    case "en":
+    default:
+      return S.of(context).locales_en;
+      break;
+  }
+}
+
 class Settings extends StatelessWidget {
   final void Function() toggleTheme;
   final void Function(String locale) switchLocale;
@@ -46,7 +58,7 @@ class Settings extends StatelessWidget {
                     },
                     itemBuilder: (BuildContext context) => supportedLanguages.map((Locale item) => PopupMenuItem(
                         value: item.languageCode,
-                        child: new Text(item.languageCode),
+                        child: new Text(_getLanguageString(context, item.languageCode)),
                       )).toList(),
                   ),
                 ),
