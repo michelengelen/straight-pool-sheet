@@ -26,25 +26,12 @@ class TabbedWrapper extends StatelessWidget {
             drawer: new DrawerMenu(),
             appBar: new AppBar(
               bottom: TabBar(
-                tabs: tabs.map((tab) => tab['icon']).toList(),
+                tabs: tabs.map<Widget>((tab) => tab['icon']).toList(),
               ),
               title: new Text(title),
             ),
             body: TabBarView(
-              children: isLoading ?
-                [
-                  new Stack(
-                    children: [
-                      new ModalBarrier(
-                          dismissible: false,
-                          color: Colors.black
-                      ),
-                      new Center(
-                        child: new CircularProgressIndicator(),
-                      ),
-                    ],
-                  )
-                ] : tabs.map((tab) => tab['view']).toList(),
+              children: tabs.map<Widget>((tab) => tab['view']).toList(),
             ),
           ),
         );
