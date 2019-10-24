@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>606764946846-s0shmc1h3i9auoct82gopamsnsd7hmbb.apps.googleusercontent.com</string>
+	<string>606764946846-u2404iqah9aahccf19ipd0nrlfiukdnf.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.606764946846-s0shmc1h3i9auoct82gopamsnsd7hmbb</string>
+	<string>com.googleusercontent.apps.606764946846-u2404iqah9aahccf19ipd0nrlfiukdnf</string>
 	<key>API_KEY</key>
 	<string>AIzaSyDAUnTCmuh3JU_G1FYTq1r92sYwkcdiuL4</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>sneaky.peak.straightPoolSheet</string>
+	<string>net.pro-billard.straight-pool-sheet</string>
 	<key>PROJECT_ID</key>
 	<string>straight-pool-sheet</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,7 +29,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:606764946846:ios:232ca1e969f8a8e4</string>
+	<string>1:606764946846:ios:98abf624b634221a84728f</string>
 	<key>DATABASE_URL</key>
 	<string>https://straight-pool-sheet.firebaseio.com</string>
 </dict>

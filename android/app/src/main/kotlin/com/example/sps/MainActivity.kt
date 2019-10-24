@@ -1,4 +1,4 @@
-package sneaky.peak.straightPoolSheet
+package net.pro-billard.straight-pool-sheet
 
 import android.os.Bundle
 

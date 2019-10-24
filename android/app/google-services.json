@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:606764946846:android:5c10d5e4bf18adfa84728f",
         "android_client_info": {
-          "package_name": "sneaky.peak.straightPoolSheet"
+          "package_name": "net.pro-billard.straight-pool-sheet"
         }
       },
       "oauth_client": [
@@ -35,7 +35,7 @@
               "client_id": "606764946846-s0shmc1h3i9auoct82gopamsnsd7hmbb.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "sneaky.peak.straightPoolSheet"
+                "bundle_id": "net.pro-billard.straight-pool-sheet"
               }
             }
           ]
