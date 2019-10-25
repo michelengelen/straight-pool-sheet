@@ -53,10 +53,8 @@ class _LoginSignupState extends State<LoginSignup> {
       try {
         if (_isLoginForm) {
           userId = (await auth.signIn(_email, _password)).uid;
-          print('Signed in: $userId');
         } else {
           userId = (await auth.register(_email, _password)).uid;
-          print('Signed up user: $userId');
         }
         setState(() {
           _isLoading = false;

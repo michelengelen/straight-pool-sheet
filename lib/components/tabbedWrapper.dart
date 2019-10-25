@@ -25,8 +25,12 @@ class TabbedWrapper extends StatelessWidget {
           child: new Scaffold(
             drawer: new DrawerMenu(),
             appBar: new AppBar(
+              bottomOpacity: 1,
               bottom: TabBar(
-                tabs: isLoading ? [Tab(child: new CircularProgressIndicator())] : tabs.map<Widget>((tab) => Tab(icon: tab['icon'])).toList(),
+                tabs: isLoading ?
+                  [
+                    Tab(child: new CircularProgressIndicator()),
+                  ] : tabs.map<Widget>((tab) => Tab(icon: tab['icon'])).toList(),
               ),
               title: new Text(title),
             ),

@@ -9,15 +9,11 @@ final List<Locale> supportedLanguages = S.delegate.supportedLocales;
 _getLanguageString(context, languageCode) {
   switch (languageCode) {
     case "de":
-      return S
-          .of(context)
-          .locales_de;
+      return S.of(context).locales_de;
       break;
     case "en":
     default:
-      return S
-          .of(context)
-          .locales_en;
+      return S.of(context).locales_en;
       break;
   }
 }
@@ -36,7 +32,6 @@ class Settings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool darkMode = currentSettings.darkMode;
-    print(currentSettings);
     final List<Map<String, Widget>> tabs = [
       {
         "icon": Icon(Icons.settings),
@@ -46,13 +41,18 @@ class Settings extends StatelessWidget {
             children: ListTile.divideTiles(
               context: context,
               tiles: [
+                ListTile(
+                  title: Text(
+                    "App-Settings",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
                 SwitchListTile(
-                  title: Text(S
-                      .of(context)
-                      .setting_darkMode_title),
-                  subtitle: Text(S
-                      .of(context)
-                      .setting_darkMode_subtitle),
+                  title: Text(S.of(context).setting_darkMode_title),
+                  subtitle: Text(S.of(context).setting_darkMode_subtitle),
                   value: darkMode,
                   onChanged: (bool value) {
                     toggleTheme();
@@ -62,24 +62,22 @@ class Settings extends StatelessWidget {
                   ),
                 ),
                 ListTile(
-                  title: Text(S
-                      .of(context)
-                      .setting_language_title),
+                  title: Text(S.of(context).setting_language_title),
                   subtitle: Text(S.of(context).setting_language_subtitle(
-                    _getLanguageString(context, currentSettings.locale),
-                  )),
+                        _getLanguageString(context, currentSettings.locale),
+                      )),
                   leading: Icon(Icons.flag),
                   trailing: PopupMenuButton<String>(
                     onSelected: (String locale) {
                       switchLocale(locale);
                     },
-                    itemBuilder: (BuildContext context) =>
-                        supportedLanguages.map((Locale item) =>
-                            PopupMenuItem(
+                    itemBuilder: (BuildContext context) => supportedLanguages
+                        .map((Locale item) => PopupMenuItem(
                               value: item.languageCode,
                               child: new Text(_getLanguageString(
                                   context, item.languageCode)),
-                            )).toList(),
+                            ))
+                        .toList(),
                   ),
                 ),
               ],
@@ -95,10 +93,8 @@ class Settings extends StatelessWidget {
       }
     ];
     return new TabbedWrapper(
-        title: S
-            .of(context)
-            .screen_settings_title,
-        tabs: tabs,
+      title: S.of(context).screen_settings_title,
+      tabs: tabs,
     );
   }
 }

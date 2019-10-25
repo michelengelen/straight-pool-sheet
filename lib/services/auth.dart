@@ -127,15 +127,12 @@ class Auth implements BaseAuth {
         ]
     );
     GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
-    print(googleSignInAccount.toString());
     final googleAuth = await googleSignInAccount.authentication;
     final AuthCredential googleAuthCred = GoogleAuthProvider.getCredential(
         idToken: googleAuth.idToken,
         accessToken: googleAuth.accessToken,
     );
     final response = await _firebaseAuth.signInWithCredential(googleAuthCred);
-    print('response!!!!!!!');
-    print(response.toString());
     final AuthResponse authResponse = new AuthResponse(
       user: response.user,
       error: false,
