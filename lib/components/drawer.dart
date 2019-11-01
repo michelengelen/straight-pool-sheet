@@ -37,52 +37,6 @@ class DrawerMenuView extends StatelessWidget {
     return value;
   }
 
-  _getDrawerHeader(context) {
-    final currentRoute = _getCurrentRouteName(context);
-    if (auth.status == AuthStatus.LOGGED_IN && auth.user != null) {
-      final String queryParam =
-          auth.user.providerId.startsWith("facebook") ? "?width=400" : "";
-      return UserAccountsDrawerHeader(
-        accountName: Text(auth.user.displayName),
-        accountEmail: Text(auth.user.email),
-        currentAccountPicture: auth.user.photoUrl != null
-            ? CircleAvatar(
-                backgroundColor: Colors.blue,
-                backgroundImage: CachedNetworkImageProvider(auth.user.photoUrl + queryParam),
-              )
-            : CircleAvatar(
-                backgroundColor: Colors.blue,
-                child: Text(
-                  _getInitials(auth.user.displayName),
-                  style: TextStyle(fontSize: 40.0),
-                ),
-              ),
-        otherAccountsPictures: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.settings,
-              semanticLabel: S.of(context).icon_settings_semantic,
-            ),
-            tooltip: S.of(context).icon_settings_semantic,
-            onPressed: () {
-              if (currentRoute == Routes.settings) {
-                Navigator.pop(context);
-              } else {
-                Navigator.popAndPushNamed(context, Routes.settings);
-              }
-            },
-          ),
-        ],
-      );
-    }
-    return DrawerHeader(
-      child: Text('Drawer Header'),
-      decoration: BoxDecoration(
-        color: Colors.blue,
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
 
@@ -103,6 +57,55 @@ class DrawerMenuView extends StatelessWidget {
       if (route == currentRoute) return () => Navigator.pop(context);
       return () => Navigator.popAndPushNamed(context, route);
     }
+
+    Widget _getDrawerHeader() {
+      if (auth.status == AuthStatus.LOGGED_IN && auth.user != null) {
+        final String queryParam =
+        auth.user.providerData[0].providerId.startsWith("facebook") ? "?width=400" : "";
+        return UserAccountsDrawerHeader(
+          accountName: Text(auth.user.displayName),
+          accountEmail: Text(auth.user.email),
+          currentAccountPicture: GestureDetector(
+            onTap: _getNavigation(Routes.profile),
+            child: auth.user.photoUrl != null
+                ? CircleAvatar(
+              backgroundColor: Colors.blue,
+              backgroundImage: CachedNetworkImageProvider(auth.user.photoUrl + queryParam),
+            )
+                : CircleAvatar(
+              backgroundColor: Colors.blue,
+              child: Text(
+                _getInitials(auth.user.displayName),
+                style: TextStyle(fontSize: 40.0),
+              ),
+            ),
+          ),
+          otherAccountsPictures: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.settings,
+                semanticLabel: S.of(context).icon_settings_semantic,
+              ),
+              tooltip: S.of(context).icon_settings_semantic,
+              onPressed: () {
+                if (currentRoute == Routes.settings) {
+                  Navigator.pop(context);
+                } else {
+                  Navigator.popAndPushNamed(context, Routes.settings);
+                }
+              },
+            ),
+          ],
+        );
+      }
+      return DrawerHeader(
+        child: Text('#-# Welcome to SPS #-#'),
+        decoration: BoxDecoration(
+          color: Colors.blue,
+        ),
+      );
+    }
+
     final isUserLoggedIn = auth.status == AuthStatus.LOGGED_IN;
     return Drawer(
       // Add a ListView to the drawer. This ensures the user can scroll
@@ -112,7 +115,7 @@ class DrawerMenuView extends StatelessWidget {
         // Important: Remove any padding from the ListView.
         padding: EdgeInsets.zero,
         children: <Widget>[
-          _getDrawerHeader(context),
+          _getDrawerHeader(),
           ListTile(
             leading: Icon(
               Icons.home,

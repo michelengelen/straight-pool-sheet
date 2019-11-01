@@ -44,7 +44,7 @@ class _ViewModel {
 
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(
-      logoutUser: () {
+      logoutUser: (bool success) {
         store.dispatch(logoutUserAction());
       },
       authState: store.state.auth,
