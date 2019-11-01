@@ -69,16 +69,16 @@ class DrawerMenuView extends StatelessWidget {
             onTap: _getNavigation(Routes.profile),
             child: auth.user.photoUrl != null
                 ? CircleAvatar(
-              backgroundColor: Colors.blue,
-              backgroundImage: CachedNetworkImageProvider(auth.user.photoUrl + queryParam),
-            )
+                    backgroundColor: Colors.blue,
+                    backgroundImage: CachedNetworkImageProvider(auth.user.photoUrl + queryParam),
+                  )
                 : CircleAvatar(
-              backgroundColor: Colors.blue,
-              child: Text(
-                _getInitials(auth.user.displayName),
-                style: TextStyle(fontSize: 40.0),
-              ),
-            ),
+                    backgroundColor: Colors.blue,
+                    child: Text(
+                      _getInitials(auth.user.displayName),
+                      style: TextStyle(fontSize: 40.0),
+                    ),
+                  ),
           ),
           otherAccountsPictures: <Widget>[
             IconButton(

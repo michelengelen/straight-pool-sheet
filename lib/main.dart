@@ -10,7 +10,7 @@ import 'package:sps/constants/routes.dart';
 import 'package:sps/container/settings.dart';
 import 'package:sps/pages/home.dart';
 import 'package:sps/models/models.dart';
-import 'package:sps/pages/profile.dart';
+import 'package:sps/container/profile.dart';
 import 'package:sps/reducers/app_state_reducer.dart';
 import 'package:sps/generated/i18n.dart';
 

@@ -7,8 +7,44 @@ import 'package:sps/services/auth.dart';
 
 final Auth auth = new Auth();
 
+/// APP ACTIONS
 class AppIsLoaded {}
 
+class AppIsLoading {}
+
+void _toggleAppLoading(Store store, bool shouldLoad) {
+  final bool isLoading = store.state.isLoading;
+  if (!isLoading && shouldLoad) {
+    store.dispatch(AppIsLoading());
+  } else if (isLoading && !shouldLoad) {
+    store.dispatch(AppIsLoaded());
+  }
+}
+
+class AppErrorAction {
+  final String errorMessage;
+
+  AppErrorAction(this.errorMessage);
+
+  @override
+  String toString() {
+    return 'AppErrorAction{errorMessage: $errorMessage}';
+  }
+}
+class UserLoadedAction {
+  final FirebaseUser user;
+
+  UserLoadedAction(this.user);
+
+  @override
+  String toString() {
+    return 'UserLoadedAction{user: $user}';
+  }
+}
+
+class UserNotLoadedAction {}
+
+/// SETTINGS ACTIONS
 ThunkAction changeLocaleAction(String languageCode) {
   return (Store store) async {
     new Future(() async {
@@ -42,41 +78,7 @@ ThunkAction toggleThemeAction(bool previous) {
   };
 }
 
-class AppIsLoading {}
-
-class AppErrorAction {
-  final String errorMessage;
-
-  AppErrorAction(this.errorMessage);
-
-  @override
-  String toString() {
-    return 'AppErrorAction{errorMessage: $errorMessage}';
-  }
-}
-
-class UserLoadedAction {
-  final FirebaseUser user;
-
-  UserLoadedAction(this.user);
-
-  @override
-  String toString() {
-    return 'UserLoadedAction{user: $user}';
-  }
-}
-
-class UserNotLoadedAction {}
-
-void _toggleAppLoading(Store store, bool shouldLoad) {
-  final bool isLoading = store.state.isLoading;
-  if (!isLoading && shouldLoad) {
-    store.dispatch(AppIsLoading());
-  } else if (isLoading && !shouldLoad) {
-    store.dispatch(AppIsLoaded());
-  }
-}
-
+/// AUTH ACTIONS
 ThunkAction socialLogin(String type) {
   return (Store store) async {
     _toggleAppLoading(store, true);
