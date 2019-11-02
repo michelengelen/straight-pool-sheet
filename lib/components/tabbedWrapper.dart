@@ -1,54 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
+import 'package:sps/components/notifier.dart';
 
 import 'package:sps/constants/keys.dart';
 import 'package:sps/container/drawer.dart';
 import 'package:sps/models/app_state.dart';
 
+@immutable
 class TabbedWrapper extends StatelessWidget {
-  final String title;
-  final List<Map> tabs;
-
-  TabbedWrapper({
+  const TabbedWrapper({
     @required this.title,
     @required this.tabs,
   }) : super(key: Keys.wrapper);
 
+  final String title;
+  final List<Map<dynamic, dynamic>> tabs;
+
   @override
   Widget build(BuildContext context) {
-    return new StoreConnector(
+    return StoreConnector<AppState, bool>(
       converter: (Store<AppState> store) => store.state.isLoading,
-      builder: (context, isLoading) {
-        return new DefaultTabController(
+      builder: (BuildContext context, bool isLoading) {
+        return DefaultTabController(
           length: tabs.length,
-          child: new Scaffold(
-            drawer: new DrawerMenu(),
-            appBar: new AppBar(
+          child: Scaffold(
+            drawer: const DrawerMenu(),
+            appBar: AppBar(
               bottomOpacity: 1,
               bottom: TabBar(
                 tabs: isLoading ?
-                  [
-                    Tab(child: new CircularProgressIndicator()),
-                  ] : tabs.map<Widget>((tab) => Tab(icon: tab['icon'])).toList(),
+                  <Tab>[
+                    const Tab(child: CircularProgressIndicator()),
+                  ] : tabs.map<Tab>((Map<dynamic, dynamic> tab) => Tab(icon: tab['icon'])).toList(),
               ),
-              title: new Text(title),
+              title: Text(title),
             ),
-            body: TabBarView(
-              children: isLoading ?
-                [
-                  new Stack(
-                    children: [
-                      new ModalBarrier(
+            body: Notifier(
+              child: TabBarView(
+                children: isLoading ?
+                <Widget>[
+                  Stack(
+                    children: <Widget>[
+                      ModalBarrier(
                           dismissible: false,
                           color: Colors.black
                       ),
-                      new Center(
-                        child: new CircularProgressIndicator(),
+                      Center(
+                        child: const CircularProgressIndicator(),
                       ),
                     ],
                   )
-                ] : tabs.map<Widget>((tab) => tab['view']).toList(),
+                ] : tabs.map<Widget>((Map<dynamic, dynamic> tab) => tab['view']).toList(),
+              ),
             ),
           ),
         );

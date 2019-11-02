@@ -1,5 +1,5 @@
 class Routes {
-  static final home = "/";
-  static final profile = "/profile";
-  static final settings = "/settings";
+  static const String home = '/';
+  static const String profile = '/profile';
+  static const String settings = '/settings';
 }

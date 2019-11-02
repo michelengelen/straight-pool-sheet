@@ -6,28 +6,28 @@ import 'package:sps/models/notification_state.dart';
 
 @immutable
 class AppState {
-  final bool isLoading;
-  final NotificationState notification;
-  final AuthState auth;
-  final SettingsState settings;
-
-  AppState({
+  const AppState({
     this.isLoading = false,
     this.notification,
     this.auth,
     this.settings,
   });
 
-  factory AppState.loading() => AppState(isLoading: true);
+  factory AppState.loading() => const AppState(isLoading: true);
 
   factory AppState.initial(SharedPreferences settings) {
-    return new AppState(
+    return AppState(
       isLoading: true,
       notification: NotificationState.initial(),
       auth: AuthState.initial(),
       settings: SettingsState.initial(settings),
     );
   }
+
+  final bool isLoading;
+  final NotificationState notification;
+  final AuthState auth;
+  final SettingsState settings;
 
   AppState copyWith({
     bool isLoading,

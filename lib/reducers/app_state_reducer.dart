@@ -7,7 +7,7 @@ import 'package:sps/reducers/notification_reducer.dart';
 // import 'package:sps/reducers/visibility_reducer.dart';
 
 // We create the State reducer by combining many smaller reducers into one!
-AppState appReducer(AppState state, action) {
+AppState appReducer(AppState state, dynamic action) {
   return AppState(
     notification: notificationReducer(state.notification, action),
     isLoading: loadingReducer(state.isLoading, action),

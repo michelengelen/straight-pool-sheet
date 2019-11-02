@@ -3,30 +3,30 @@ import 'package:sps/constants/constants.dart';
 
 @immutable
 class NotificationState {
-  final String message;
-  final NotificationType type;
-  final int duration;
-
-  NotificationState({
+  const NotificationState({
     this.message,
     this.type,
     this.duration,
   });
 
   factory NotificationState.initial() {
-    return new NotificationState(
+    return const NotificationState(
       message: '',
       type: NotificationType.INFO,
       duration: 5,
     );
   }
 
+  final String message;
+  final NotificationType type;
+  final int duration;
+
   NotificationState copyWith({
     String message,
     NotificationType type,
     int duration,
   }) {
-    return new NotificationState(
+    return NotificationState(
       message: message ?? this.message,
       type: type ?? this.type,
       duration: duration ?? this.duration,
@@ -39,11 +39,11 @@ class NotificationState {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is NotificationState &&
-              runtimeType == other.runtimeType &&
-              message == other.message &&
-              type == other.type &&
-              duration == other.duration;
+      other is NotificationState &&
+          runtimeType == other.runtimeType &&
+          message == other.message &&
+          type == other.type &&
+          duration == other.duration;
 
   @override
   String toString() {

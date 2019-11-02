@@ -9,14 +9,15 @@ import 'package:sps/container/login.dart';
 import 'package:sps/generated/i18n.dart';
 import 'package:sps/models/app_state.dart';
 
+@immutable
 class HomeScreen extends StatefulWidget {
-  final void Function() onInit;
+  const HomeScreen({@required this.onInit}) : super(key: Keys.homeScreen);
 
-  HomeScreen({@required this.onInit}) : super(key: Keys.homeScreen);
+  final void Function() onInit;
 
   @override
   HomeScreenState createState() {
-    return new HomeScreenState();
+    return HomeScreenState();
   }
 }
 
@@ -31,15 +32,14 @@ class HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return new StoreConnector(
-      converter: (Store<AppState> store) => store.state,
-      builder: (context, state) {
-        final FirebaseUser user = state.auth.user;
-        return new Wrapper(
+    return StoreConnector<AppState, FirebaseUser>(
+      converter: (Store<AppState> store) => store.state.auth.user,
+      builder: (BuildContext context, FirebaseUser user) {
+        return Wrapper(
           title: S.of(context).screen_home_title,
           child: user != null
-              ? new WelcomeComponent(user: user)
-              : new LoginSignupScreen(),
+              ? WelcomeComponent(user: user)
+              : const LoginSignupScreen(),
         );
       },
     );

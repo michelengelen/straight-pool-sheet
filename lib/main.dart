@@ -8,41 +8,43 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sps/actions/actions.dart';
 import 'package:sps/constants/routes.dart';
 import 'package:sps/container/settings.dart';
+import 'package:sps/models/settings_state.dart';
 import 'package:sps/pages/home.dart';
 import 'package:sps/models/models.dart';
 import 'package:sps/container/profile.dart';
 import 'package:sps/reducers/app_state_reducer.dart';
 import 'package:sps/generated/i18n.dart';
 
-void main() async {
-  SharedPreferences _sprefs = await SharedPreferences.getInstance();
+Future<void> main() async {
+  final SharedPreferences _sprefs = await SharedPreferences.getInstance();
 
-  final store = Store<AppState>(
+  final Store<AppState> store = Store<AppState>(
     appReducer,
     initialState: AppState.initial(_sprefs),
-    middleware: [thunkMiddleware],
+    middleware: <Middleware<void>>[thunkMiddleware],
   );
 
   runApp(SPS(store: store));
 }
 
+@immutable
 class SPS extends StatelessWidget {
-  final Store<AppState> store;
-
-  SPS({
+  const SPS({
     @required this.store,
   });
 
+  final Store<AppState> store;
+
   @override
   Widget build(BuildContext context) {
-    return new StoreProvider<AppState>(
+    return StoreProvider<AppState>(
       store: store,
-      child: new StoreConnector(
+      child: StoreConnector<AppState, SettingsState>(
         converter: (Store<AppState> store) => store.state.settings,
-        builder: (context, settings) {
+        builder: (BuildContext context, SettingsState settings) {
           return MaterialApp(
-            locale: new Locale(settings.locale, ""),
-            localizationsDelegates: [
+            locale: Locale(settings.locale, ''),
+            localizationsDelegates: <LocalizationsDelegate<dynamic>>[
               S.delegate,
               GlobalCupertinoLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
@@ -50,11 +52,11 @@ class SPS extends StatelessWidget {
             ],
             supportedLocales: S.delegate.supportedLocales,
             localeResolutionCallback:
-                S.delegate.resolution(fallback: new Locale("en", "")),
+                S.delegate.resolution(fallback: const Locale('en', '')),
             title: 'Straight Pool Sheet',
             theme: settings.darkMode ? ThemeData.dark() : ThemeData.light(),
-            routes: {
-              Routes.home: (context) {
+            routes: <String, Widget Function(BuildContext)>{
+              Routes.home: (BuildContext context) {
                 return HomeScreen(
                   onInit: () {
                     final Locale systemLocale = Localizations.localeOf(context);
@@ -63,11 +65,11 @@ class SPS extends StatelessWidget {
                   },
                 );
               },
-              Routes.profile: (context) {
-                return ProfileScreen();
+              Routes.profile: (BuildContext context) {
+                return const ProfileScreen();
               },
-              Routes.settings: (context) {
-                return SettingsScreen();
+              Routes.settings: (BuildContext context) {
+                return const SettingsScreen();
               },
             },
           );

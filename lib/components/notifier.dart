@@ -7,34 +7,39 @@ import 'package:sps/constants/keys.dart';
 import 'package:sps/models/app_state.dart';
 import 'package:sps/models/models.dart';
 
+@immutable
 class Notifier extends StatelessWidget {
-  final Widget child;
-
-  Notifier({
+  const Notifier({
     @required this.child,
-  }) : super(key: Keys.wrapper);
+  }) : super(key: Keys.notifier);
+
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
-    return new StoreConnector<AppState, _ViewModel>(
+    Future<void> _showSnack(Widget snack) {
+      return Future<void>(() async {
+        Scaffold.of(context).showSnackBar(snack);
+      });
+    }
+
+    return StoreConnector<AppState, _ViewModel>(
       converter: _ViewModel.fromStore,
       builder: (BuildContext context, _ViewModel vm) => child,
-      onWillChange: (vm) {
-        if (vm.notification.message.length > 0) {
+      onWillChange: (_ViewModel vm) {
+        if (vm.notification.message.isNotEmpty) {
           print(vm.notification.toString());
-          Scaffold.of(context).showSnackBar(
-            SnackBar(
-              duration: Duration(seconds: vm.notification.duration),
-              content: Text(vm.notification.message),
-              action: SnackBarAction(
-                label: 'X',
-                onPressed: () {
-                  Scaffold.of(context).hideCurrentSnackBar();
-                },
-              ),
+          final SnackBar snack = SnackBar(
+            duration: Duration(seconds: vm.notification.duration),
+            content: Text(vm.notification.message),
+            action: SnackBarAction(
+              label: 'X',
+              onPressed: () {
+                Scaffold.of(context).hideCurrentSnackBar();
+              },
             ),
           );
-          vm.notificationHandled();
+          _showSnack(snack).then<void>(vm.notificationHandled);
         }
       },
       distinct: true,
@@ -43,13 +48,13 @@ class Notifier extends StatelessWidget {
 }
 
 class _ViewModel {
-  final NotificationState notification;
-  final Function notificationHandled;
-
   _ViewModel({
     @required this.notification,
     @required this.notificationHandled,
   });
+
+  final NotificationState notification;
+  final Function notificationHandled;
 
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(

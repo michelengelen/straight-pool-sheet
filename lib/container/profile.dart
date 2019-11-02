@@ -7,14 +7,15 @@ import 'package:sps/actions/actions.dart';
 import 'package:sps/pages/profile.dart';
 import 'package:sps/models/models.dart';
 
+@immutable
 class ProfileScreen extends StatelessWidget {
-  ProfileScreen({Key key}) : super(key: key);
+  const ProfileScreen({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
       converter: _ViewModel.fromStore,
-      builder: (context, vm) {
+      builder: (BuildContext context, _ViewModel vm) {
         return Profile(
           user: vm.user,
           changePassword: vm.changePassword,
@@ -26,18 +27,18 @@ class ProfileScreen extends StatelessWidget {
 }
 
 class _ViewModel {
-  final FirebaseUser user;
-  final Function changePassword;
-
   _ViewModel({
     @required this.user,
     @required this.changePassword,
   });
 
+  final FirebaseUser user;
+  final Function changePassword;
+
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(
       user: store.state.auth.user,
-      changePassword: (newPassword) {
+      changePassword: (String newPassword) {
         store.dispatch(changePasswordAction(newPassword));
       },
     );

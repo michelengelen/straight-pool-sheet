@@ -6,14 +6,15 @@ import 'package:sps/actions/actions.dart';
 import 'package:sps/components/login.dart';
 import 'package:sps/models/models.dart';
 
+@immutable
 class LoginSignupScreen extends StatelessWidget {
-  LoginSignupScreen({Key key}) : super(key: key);
+  const LoginSignupScreen({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
       converter: _ViewModel.fromStore,
-      builder: (context, vm) {
+      builder: (BuildContext context, _ViewModel vm) {
         return LoginSignup(
           onLogin: vm.onLogin,
           onRegister: vm.onRegister,
@@ -25,15 +26,15 @@ class LoginSignupScreen extends StatelessWidget {
 }
 
 class _ViewModel {
-  final Function onLogin;
-  final Function onRegister;
-  final Function onSocialLogin;
-
   _ViewModel({
     @required this.onLogin,
     @required this.onRegister,
     @required this.onSocialLogin,
   });
+
+  final Function onLogin;
+  final Function onRegister;
+  final Function onSocialLogin;
 
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(

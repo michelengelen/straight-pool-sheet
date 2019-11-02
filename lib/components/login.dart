@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sps/models/auth_state.dart';
 import 'package:sps/models/models.dart';
@@ -5,10 +6,11 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:sps/services/auth.dart';
 
-final Auth auth = new Auth();
+final Auth auth = Auth();
 
+@immutable
 class LoginSignup extends StatefulWidget {
-  LoginSignup({
+  const LoginSignup({
     this.onLogin,
     this.onRegister,
     this.onSocialLogin,
@@ -19,11 +21,11 @@ class LoginSignup extends StatefulWidget {
   final Function onSocialLogin;
 
   @override
-  State<StatefulWidget> createState() => new _LoginSignupState();
+  State<StatefulWidget> createState() => _LoginSignupState();
 }
 
 class _LoginSignupState extends State<LoginSignup> {
-  final _formKey = new GlobalKey<FormState>();
+  final GlobalKey _formKey = GlobalKey<FormState>();
 
   String _email;
   String _password;
@@ -34,7 +36,7 @@ class _LoginSignupState extends State<LoginSignup> {
 
   // Check if form is valid before perform login or signup
   bool validateAndSave() {
-    final form = _formKey.currentState;
+    final FormState form = _formKey.currentState;
     if (form.validate()) {
       form.save();
       return true;
@@ -43,13 +45,14 @@ class _LoginSignupState extends State<LoginSignup> {
   }
 
   // Perform login or signup
-  void validateAndSubmit() async {
+  Future<void> validateAndSubmit() async {
+    final FormState form = _formKey.currentState;
     setState(() {
-      _errorMessage = "";
+      _errorMessage = '';
       _isLoading = true;
     });
     if (validateAndSave()) {
-      String userId = "";
+      String userId = '';
       try {
         if (_isLoginForm) {
           userId = (await auth.signIn(_email, _password)).uid;
@@ -65,7 +68,7 @@ class _LoginSignupState extends State<LoginSignup> {
         setState(() {
           _isLoading = false;
           _errorMessage = e.message;
-          _formKey.currentState.reset();
+          form.reset();
         });
       }
     } else {
@@ -77,23 +80,24 @@ class _LoginSignupState extends State<LoginSignup> {
 
   @override
   void initState() {
-    _errorMessage = "";
+    _errorMessage = '';
     _isLoading = false;
     _isLoginForm = true;
     super.initState();
   }
 
   void storeCurrentUser(String userId) {
-    if (userId != null && userId.length > 0) {
-      auth.getCurrentUser().then((user) {
+    if (userId != null && userId.isNotEmpty) {
+      auth.getCurrentUser().then((FirebaseUser user) {
         widget.onLogin(user);
       });
     }
   }
 
   void resetForm() {
-    _formKey.currentState.reset();
-    _errorMessage = "";
+    final FormState form = _formKey.currentState;
+    form.reset();
+    _errorMessage = '';
   }
 
   void toggleFormMode() {
@@ -105,12 +109,12 @@ class _LoginSignupState extends State<LoginSignup> {
 
   @override
   Widget build(BuildContext context) {
-    return new StoreConnector<AppState, AuthState>(
+    return StoreConnector<AppState, AuthState>(
       converter: (Store<AppState> store) {
         return store.state.auth;
       },
-      builder: (context, auth) {
-        return new Container(
+      builder: (BuildContext context, AuthState auth) {
+        return Container(
             child: Stack(
               children: <Widget>[
                 _showForm(),
@@ -124,7 +128,7 @@ class _LoginSignupState extends State<LoginSignup> {
   Widget _showCircularProgress() {
     if (_isLoading) {
       return Center(
-          child: CircularProgressIndicator(),
+          child: const CircularProgressIndicator(),
       );
     }
     return Container(
@@ -135,35 +139,37 @@ class _LoginSignupState extends State<LoginSignup> {
 
   Widget showSeperator() {
     return Container(
-      padding: EdgeInsets.all(16),
-      child: Row(children: <Widget>[
-        Expanded(
-          child: Divider(
-            thickness: 3,
-            indent: 24,
-            endIndent: 12,
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        children: const <Widget>[
+          Expanded(
+            child: Divider(
+              thickness: 3,
+              indent: 24,
+              endIndent: 12,
+            ),
           ),
-        ),
-        Text("OR"),
-        Expanded(
-          child: Divider(
-            thickness: 3,
-            indent: 12,
-            endIndent: 24,
+          Text('OR'),
+          Expanded(
+            child: Divider(
+              thickness: 3,
+              indent: 12,
+              endIndent: 24,
+            ),
           ),
-        ),
-      ])
+        ],
+      ),
     );
   }
 
   Widget showGoogleLoginButton() {
     return RaisedButton(
-      onPressed: () { widget.onSocialLogin("G"); },
+      onPressed: () { widget.onSocialLogin('G'); },
       color: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      textColor: Color.fromRGBO(122, 122, 122, 1),
+      textColor: const Color.fromRGBO(122, 122, 122, 1),
       child: Text(
-        "Connect with Google",
+        'Connect with Google',
         style: TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 20,
@@ -175,12 +181,12 @@ class _LoginSignupState extends State<LoginSignup> {
   Widget showFacebookLoginButton() {
     return RaisedButton(
         materialTapTargetSize: MaterialTapTargetSize.padded,
-        onPressed: () { widget.onSocialLogin("FB"); },
-        color: Color.fromRGBO(27, 76, 213, 1),
+        onPressed: () { widget.onSocialLogin('FB'); },
+        color: const Color.fromRGBO(27, 76, 213, 1),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         textColor: Colors.white,
         child: Text(
-          "Connect with Facebook",
+          'Connect with Facebook',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 20,
@@ -189,15 +195,16 @@ class _LoginSignupState extends State<LoginSignup> {
   }
 
   Widget _showForm() {
-    if (_isLoading) return Container(
-      width: 0.0,
-      height: 0.0,
-    );
-    return new Container(
-        padding: EdgeInsets.all(16.0),
-        child: new Form(
+    if (_isLoading)
+      return Container(
+        width: 0.0,
+        height: 0.0,
+      );
+    return Container(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
           key: _formKey,
-          child: new ListView(
+          child: ListView(
             children: <Widget>[
               showEmailInput(),
               showPasswordInput(),
@@ -213,17 +220,18 @@ class _LoginSignupState extends State<LoginSignup> {
   }
 
   Widget showErrorMessage() {
-    if (_errorMessage.length > 0 && _errorMessage != null) {
-      return new Text(
+    if (_errorMessage.isNotEmpty && _errorMessage != null) {
+      return Text(
         _errorMessage,
         style: TextStyle(
             fontSize: 13.0,
             color: Colors.red,
             height: 1.0,
-            fontWeight: FontWeight.w300),
+            fontWeight: FontWeight.w300,
+        ),
       );
     } else {
-      return new Container(
+      return Container(
         height: 0.0,
       );
     }
@@ -232,18 +240,18 @@ class _LoginSignupState extends State<LoginSignup> {
   Widget showEmailInput() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 100.0, 0.0, 0.0),
-      child: new TextFormField(
+      child: TextFormField(
         maxLines: 1,
         keyboardType: TextInputType.emailAddress,
         autofocus: false,
-        decoration: new InputDecoration(
+        decoration: InputDecoration(
             hintText: 'Email',
-            icon: new Icon(
+            icon: Icon(
               Icons.mail,
               color: Colors.grey,
             )),
-        validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
-        onSaved: (value) => _email = value.trim(),
+        validator: (String value) => value.isEmpty ? 'Email can\'t be empty' : null,
+        onSaved: (String value) => _email = value.trim(),
       ),
     );
   }
@@ -251,42 +259,42 @@ class _LoginSignupState extends State<LoginSignup> {
   Widget showPasswordInput() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
-      child: new TextFormField(
+      child: TextFormField(
         maxLines: 1,
         obscureText: true,
         autofocus: false,
-        decoration: new InputDecoration(
+        decoration: InputDecoration(
             hintText: 'Password',
-            icon: new Icon(
+            icon: Icon(
               Icons.lock,
               color: Colors.grey,
             )),
-        validator: (value) => value.isEmpty ? 'Password can\'t be empty' : null,
-        onSaved: (value) => _password = value.trim(),
+        validator: (String value) => value.isEmpty ? 'Password can\'t be empty' : null,
+        onSaved: (String value) => _password = value.trim(),
       ),
     );
   }
 
   Widget showSecondaryButton() {
-    return new FlatButton(
-        child: new Text(
+    return FlatButton(
+        child: Text(
             _isLoginForm ? 'Create an account' : 'Have an account? Sign in',
-            style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)),
+            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)),
         onPressed: toggleFormMode);
   }
 
   Widget showPrimaryButton() {
-    return new Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
+    return Padding(
+        padding: const EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
         child: SizedBox(
           height: 40.0,
-          child: new RaisedButton(
+          child: RaisedButton(
             elevation: 5.0,
-            shape: new RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(30.0)),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0)),
             color: Colors.blue,
-            child: new Text(_isLoginForm ? 'Login' : 'Create account',
-                style: new TextStyle(fontSize: 20.0, color: Colors.white)),
+            child: Text(_isLoginForm ? 'Login' : 'Create account',
+                style: TextStyle(fontSize: 20.0, color: Colors.white)),
             onPressed: validateAndSubmit,
           ),
         ));

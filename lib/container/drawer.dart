@@ -6,12 +6,14 @@ import 'package:sps/actions/actions.dart';
 import 'package:sps/components/drawer.dart';
 import 'package:sps/models/models.dart';
 
+@immutable
 class DrawerMenu extends StatelessWidget {
-  DrawerMenu({Key key}) : super(key: key);
-  String getCurrentRouteName(context) {
+  const DrawerMenu({Key key}) : super(key: key);
+
+  String getCurrentRouteName(BuildContext context) {
     String currentRouteName;
 
-    Navigator.popUntil(context, (route) {
+    Navigator.popUntil(context, (Route<dynamic> route) {
       currentRouteName = route.settings.name;
       return true;
     });
@@ -23,7 +25,7 @@ class DrawerMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
       converter: _ViewModel.fromStore,
-      builder: (context, vm) {
+      builder: (BuildContext context, _ViewModel vm) {
         return DrawerMenuView(
           onLogout: vm.logoutUser,
           auth: vm.authState,
@@ -34,13 +36,13 @@ class DrawerMenu extends StatelessWidget {
 }
 
 class _ViewModel {
-  final Function logoutUser;
-  final AuthState authState;
-
   _ViewModel({
     @required this.logoutUser,
     @required this.authState,
   });
+
+  final Function logoutUser;
+  final AuthState authState;
 
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(

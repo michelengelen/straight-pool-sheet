@@ -10,4 +10,4 @@ enum NotificationType {
   INFO,
 }
 
-final List<String> supportedLocales = ['en', 'de'];
+final List<String> supportedLocales = <String>['en', 'de'];

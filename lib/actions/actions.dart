@@ -3,17 +3,18 @@ import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sps/constants/constants.dart';
+import 'package:sps/models/app_state.dart';
 
 import 'package:sps/services/auth.dart';
 
-final Auth auth = new Auth();
+final Auth auth = Auth();
 
 /// APP ACTIONS
 class AppIsLoaded {}
 
 class AppIsLoading {}
 
-void _toggleAppLoading(Store store, bool shouldLoad) {
+void _toggleAppLoading(Store<AppState> store, bool shouldLoad) {
   final bool isLoading = store.state.isLoading;
   if (!isLoading && shouldLoad) {
     store.dispatch(AppIsLoading());
@@ -23,9 +24,9 @@ void _toggleAppLoading(Store store, bool shouldLoad) {
 }
 
 class AppErrorAction {
-  final String errorMessage;
-
   AppErrorAction(this.errorMessage);
+
+  final String errorMessage;
 
   @override
   String toString() {
@@ -33,9 +34,9 @@ class AppErrorAction {
   }
 }
 class UserLoadedAction {
-  final FirebaseUser user;
-
   UserLoadedAction(this.user);
+
+  final FirebaseUser user;
 
   @override
   String toString() {
@@ -46,15 +47,15 @@ class UserLoadedAction {
 class UserNotLoadedAction {}
 
 class NotificationAction {
-  final String message;
-  final NotificationType type;
-  final int duration;
-
   NotificationAction({
     this.message,
     this.type,
     this.duration,
   });
+
+  final String message;
+  final NotificationType type;
+  final int duration;
 
   @override
   String toString() {
@@ -65,10 +66,10 @@ class NotificationAction {
 class NotificationHandledAction {}
 
 /// SETTINGS ACTIONS
-ThunkAction changeLocaleAction(String languageCode) {
-  return (Store store) async {
-    new Future(() async {
-      SharedPreferences _sprefs = await SharedPreferences.getInstance();
+ThunkAction<AppState> changeLocaleAction(String languageCode) {
+  return (Store<AppState> store) async {
+    Future<void>(() async {
+      final SharedPreferences _sprefs = await SharedPreferences.getInstance();
       _sprefs.setString('lnguageCode', languageCode);
       store.dispatch(ChangeLanguageAction(languageCode));
     });
@@ -76,9 +77,9 @@ ThunkAction changeLocaleAction(String languageCode) {
 }
 
 class ChangeLanguageAction {
-  final String locale;
-
   ChangeLanguageAction(this.locale);
+
+  final String locale;
 
   @override
   String toString() {
@@ -88,10 +89,10 @@ class ChangeLanguageAction {
 
 class ToggleThemeAction {}
 
-ThunkAction toggleThemeAction(bool previous) {
-  return (Store store) async {
-    new Future(() async {
-      SharedPreferences _sprefs = await SharedPreferences.getInstance();
+ThunkAction<AppState> toggleThemeAction(bool previous) {
+  return (Store<AppState> store) async {
+    Future<void>(() async {
+      final SharedPreferences _sprefs = await SharedPreferences.getInstance();
       _sprefs.setBool('darkMode', !previous);
       store.dispatch(ToggleThemeAction());
     });
@@ -99,45 +100,47 @@ ThunkAction toggleThemeAction(bool previous) {
 }
 
 /// AUTH ACTIONS
-ThunkAction socialLogin(String type) {
-  return (Store store) async {
+ThunkAction<AppState> socialLogin(String type) {
+  return (Store<AppState> store) {
     _toggleAppLoading(store, true);
-    new Future(() async {
+    Future<void>(() async {
       AuthResponse authResponse;
       switch (type) {
-        case "FB":
+        case 'FB':
           authResponse = await auth.handleFacebookLogin();
           break;
-        case "G":
+        case 'G':
           authResponse = await auth.handleGoogleLogin();
           break;
         default:
-          authResponse = new AuthResponse(
+          authResponse = const AuthResponse(
             user: null,
             error: true,
             cancelled: false,
-            message: "Something went terribly wrong!",
+            message: 'Something went terribly wrong!',
           );
           break;
       }
       if (authResponse != null && (!authResponse.error || !authResponse.cancelled)) {
         store.dispatch(UserLoadedAction(authResponse.user));
-      } else store.dispatch(AppErrorAction(authResponse.message));
+      } else {
+        store.dispatch(AppErrorAction(authResponse.message));
+      }
       _toggleAppLoading(store, false);
     });
   };
 }
 
-ThunkAction loadUserAction() {
-  return (Store store) async {
+ThunkAction<AppState> loadUserAction() {
+  return (Store<AppState> store) async {
     _toggleAppLoading(store, true);
-    new Future(() async {
+    Future<void>(() async {
       auth.getCurrentUser()
-        .then((user) {
+        .then((FirebaseUser user) {
           store.dispatch(UserLoadedAction(user));
           _toggleAppLoading(store, false);
         })
-        .catchError((error) {
+        .catchError((Exception error) {
           store.dispatch(UserNotLoadedAction());
           _toggleAppLoading(store, false);
         });
@@ -145,10 +148,10 @@ ThunkAction loadUserAction() {
   };
 }
 
-ThunkAction logoutUserAction() {
-  return (Store store) async {
+ThunkAction<AppState> logoutUserAction() {
+  return (Store<AppState> store) async {
     store.dispatch(AppIsLoading());
-    new Future(() async {
+    Future<void>(() async {
       await auth.logOut();
       store.dispatch(UserNotLoadedAction());
       store.dispatch(AppIsLoaded());
@@ -156,10 +159,10 @@ ThunkAction logoutUserAction() {
   };
 }
 
-ThunkAction registerUserAction(String email, String password) {
-  return (Store store) async {
+ThunkAction<AppState> registerUserAction(String email, String password) {
+  return (Store<AppState> store) async {
     store.dispatch(AppIsLoading());
-    new Future(() async {
+    Future<void>(() async {
       FirebaseUser user;
       try {
         user = await auth.register(email, password);
@@ -174,11 +177,11 @@ ThunkAction registerUserAction(String email, String password) {
 }
 
 /// PROFILE ACTIONS
-ThunkAction changePasswordAction(newPassword) {
-  return (Store store) async {
+ThunkAction<AppState> changePasswordAction(String newPassword) {
+  return (Store<AppState> store) async {
     store.dispatch(AppIsLoading());
-    new Future(() async {
-      FirebaseUser user = store.state.auth.user;
+    Future<void>(() async {
+      final FirebaseUser user = store.state.auth.user;
       try {
         user.updatePassword(newPassword);
         store.dispatch(UserLoadedAction(user));

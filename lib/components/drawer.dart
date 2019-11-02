@@ -5,22 +5,23 @@ import 'package:sps/constants/routes.dart';
 import 'package:sps/generated/i18n.dart';
 import 'package:sps/models/auth_state.dart';
 
+@immutable
 class DrawerMenuView extends StatelessWidget {
-  final Function onLogout;
-  final AuthState auth;
-
-  DrawerMenuView({
+  const DrawerMenuView({
     this.onLogout,
     this.auth,
   });
 
-  _getInitials(String name) {
-    final List parts = name.split(' ');
+  final Function onLogout;
+  final AuthState auth;
+
+  String _getInitials(String name) {
+    final List<String> parts = name.split(' ');
     String value = 'A';
     if (parts.length >= 2) {
       value =
           parts[0].substring(0, 1) + parts[parts.length - 1].substring(0, 1);
-    } else if (parts.length == 0) {
+    } else if (parts.isEmpty) {
       value = parts[0].substring(0, 1);
     }
     return value;
@@ -32,7 +33,7 @@ class DrawerMenuView extends StatelessWidget {
     String _getCurrentRouteName() {
       String currentRouteName;
 
-      Navigator.popUntil(context, (route) {
+      Navigator.popUntil(context, (Route<dynamic> route) {
         currentRouteName = route.settings.name;
         return true;
       });
@@ -40,17 +41,18 @@ class DrawerMenuView extends StatelessWidget {
       return currentRouteName;
     }
 
-    String currentRoute = _getCurrentRouteName();
+    final String currentRoute = _getCurrentRouteName();
 
     Function() _getNavigation(String route) {
-      if (route == currentRoute) return () => Navigator.pop(context);
+      if (route == currentRoute)
+        return () => Navigator.pop(context);
       return () => Navigator.popAndPushNamed(context, route);
     }
 
     Widget _getDrawerHeader() {
       if (auth.status == AuthStatus.LOGGED_IN && auth.user != null) {
         final String queryParam =
-        auth.user.providerData[0].providerId.startsWith("facebook") ? "?width=400" : "";
+        auth.user.providerData[0].providerId.startsWith('facebook') ? '?width=400' : '';
         return UserAccountsDrawerHeader(
           accountName: Text(auth.user.displayName),
           accountEmail: Text(auth.user.email),
@@ -88,14 +90,14 @@ class DrawerMenuView extends StatelessWidget {
         );
       }
       return DrawerHeader(
-        child: Text('#-# Welcome to SPS #-#'),
+        child: const Text('#-# Welcome to SPS #-#'),
         decoration: BoxDecoration(
           color: Colors.blue,
         ),
       );
     }
 
-    final isUserLoggedIn = auth.status == AuthStatus.LOGGED_IN;
+    final bool isUserLoggedIn = auth.status == AuthStatus.LOGGED_IN;
     return Drawer(
       // Add a ListView to the drawer. This ensures the user can scroll
       // through the options in the drawer if there isn't enough vertical
@@ -132,15 +134,15 @@ class DrawerMenuView extends StatelessWidget {
               size: 24.0,
               semanticLabel: S.of(context).icon_logout_semantic,
             ),
-            title: new Text(S.of(context).logout),
+            title: Text(S.of(context).logout),
             onTap: () {
               if (currentRoute == Routes.home) {
                 // use Navigators maybePop method, because it returns a Future
                 // If we would use .pop() here the rendering of the Profile Page
                 // would run into an error, because the state gets updated beforehand
-                Navigator.maybePop(context).then(onLogout);
+                Navigator.maybePop(context).then<void>(onLogout);
               } else {
-                Navigator.popAndPushNamed(context, Routes.home).then(onLogout);
+                Navigator.popAndPushNamed(context, Routes.home).then<void>(onLogout);
               }
             },
           ),

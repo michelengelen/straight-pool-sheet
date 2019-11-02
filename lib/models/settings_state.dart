@@ -3,26 +3,26 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 @immutable
 class SettingsState {
-  final bool darkMode;
-  final String locale;
-
-  SettingsState({
+  const SettingsState({
     this.darkMode,
     this.locale,
   });
 
   factory SettingsState.initial(SharedPreferences settings) {
-    return new SettingsState(
+    return SettingsState(
       darkMode: settings.getBool('darkMode') ?? false,
       locale: settings.getString('languageCode') ?? 'de',
     );
   }
 
+  final bool darkMode;
+  final String locale;
+
   SettingsState copyWith({
     bool darkMode,
     String locale
   }) {
-    return new SettingsState(
+    return SettingsState(
       darkMode: darkMode ?? this.darkMode,
       locale: locale ?? this.locale,
     );

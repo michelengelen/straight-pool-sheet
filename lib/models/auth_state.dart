@@ -4,26 +4,26 @@ import 'package:sps/constants/constants.dart';
 
 @immutable
 class AuthState {
-  final FirebaseUser user;
-  final AuthStatus status;
-
-  AuthState({
+  const AuthState({
     this.user,
     this.status = AuthStatus.NOT_DETERMINED,
   });
 
   factory AuthState.initial() {
-    return new AuthState(
+    return const AuthState(
       user: null,
       status: AuthStatus.NOT_LOGGED_IN,
     );
   }
 
+  final FirebaseUser user;
+  final AuthStatus status;
+
   AuthState copyWith({
     FirebaseUser user,
     AuthStatus status,
   }) {
-    return new AuthState(
+    return AuthState(
       user: user,
       status: status ?? this.status,
     );
