@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sps/constants/constants.dart';
 
 import 'package:sps/services/auth.dart';
 
@@ -43,6 +44,25 @@ class UserLoadedAction {
 }
 
 class UserNotLoadedAction {}
+
+class NotificationAction {
+  final String message;
+  final NotificationType type;
+  final int duration;
+
+  NotificationAction({
+    this.message,
+    this.type,
+    this.duration,
+  });
+
+  @override
+  String toString() {
+    return 'ShowSnackbarAction{message: $message, type: $type, duration: $duration}';
+  }
+}
+
+class NotificationHandledAction {}
 
 /// SETTINGS ACTIONS
 ThunkAction changeLocaleAction(String languageCode) {
@@ -143,6 +163,24 @@ ThunkAction registerUserAction(String email, String password) {
       FirebaseUser user;
       try {
         user = await auth.register(email, password);
+        store.dispatch(UserLoadedAction(user));
+        store.dispatch(AppIsLoaded());
+      } catch (e) {
+        store.dispatch(UserNotLoadedAction());
+        store.dispatch(AppIsLoaded());
+      }
+    });
+  };
+}
+
+/// PROFILE ACTIONS
+ThunkAction changePasswordAction(newPassword) {
+  return (Store store) async {
+    store.dispatch(AppIsLoading());
+    new Future(() async {
+      FirebaseUser user = store.state.auth.user;
+      try {
+        user.updatePassword(newPassword);
         store.dispatch(UserLoadedAction(user));
         store.dispatch(AppIsLoaded());
       } catch (e) {

@@ -4,4 +4,10 @@ enum AuthStatus {
   LOGGED_IN,
 }
 
+enum NotificationType {
+  ERROR,
+  WARNING,
+  INFO,
+}
+
 final List<String> supportedLocales = ['en', 'de'];

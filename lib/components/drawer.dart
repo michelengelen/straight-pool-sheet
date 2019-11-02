@@ -14,17 +14,6 @@ class DrawerMenuView extends StatelessWidget {
     this.auth,
   });
 
-  String _getCurrentRouteName(context) {
-    String currentRouteName;
-
-    Navigator.popUntil(context, (route) {
-      currentRouteName = route.settings.name;
-      return true;
-    });
-
-    return currentRouteName;
-  }
-
   _getInitials(String name) {
     final List parts = name.split(' ');
     String value = 'A';

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sps/components/notifier.dart';
 import 'package:sps/components/tabbedWrapper.dart';
 import 'package:sps/constants/keys.dart';
 import 'package:sps/generated/i18n.dart';
@@ -35,61 +36,65 @@ class Settings extends StatelessWidget {
     final List<Map<String, Widget>> tabs = [
       {
         "icon": Icon(Icons.settings),
-        "view": Container(
-          padding: EdgeInsets.symmetric(vertical: 24),
-          child: ListView(
-            children: ListTile.divideTiles(
-              context: context,
-              tiles: [
-                ListTile(
-                  title: Text(
-                    "App-Settings",
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
+        "view": Notifier(
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: 24),
+            child: ListView(
+              children: ListTile.divideTiles(
+                context: context,
+                tiles: [
+                  ListTile(
+                    title: Text(
+                      "App-Settings",
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ),
-                SwitchListTile(
-                  title: Text(S.of(context).setting_darkMode_title),
-                  subtitle: Text(S.of(context).setting_darkMode_subtitle),
-                  value: darkMode,
-                  onChanged: (bool value) {
-                    toggleTheme();
-                  },
-                  secondary: Icon(
-                    Icons.brightness_3,
-                  ),
-                ),
-                ListTile(
-                  title: Text(S.of(context).setting_language_title),
-                  subtitle: Text(S.of(context).setting_language_subtitle(
-                        _getLanguageString(context, currentSettings.locale),
-                      )),
-                  leading: Icon(Icons.flag),
-                  trailing: PopupMenuButton<String>(
-                    onSelected: (String locale) {
-                      switchLocale(locale);
+                  SwitchListTile(
+                    title: Text(S.of(context).setting_darkMode_title),
+                    subtitle: Text(S.of(context).setting_darkMode_subtitle),
+                    value: darkMode,
+                    onChanged: (bool value) {
+                      toggleTheme();
                     },
-                    itemBuilder: (BuildContext context) => supportedLanguages
-                        .map((Locale item) => PopupMenuItem(
-                              value: item.languageCode,
-                              child: new Text(_getLanguageString(
-                                  context, item.languageCode)),
-                            ))
-                        .toList(),
+                    secondary: Icon(
+                      Icons.brightness_3,
+                    ),
                   ),
-                ),
-              ],
-            ).toList(),
-          ),
+                  ListTile(
+                    title: Text(S.of(context).setting_language_title),
+                    subtitle: Text(S.of(context).setting_language_subtitle(
+                      _getLanguageString(context, currentSettings.locale),
+                    )),
+                    leading: Icon(Icons.flag),
+                    trailing: PopupMenuButton<String>(
+                      onSelected: (String locale) {
+                        switchLocale(locale);
+                      },
+                      itemBuilder: (BuildContext context) => supportedLanguages
+                          .map((Locale item) => PopupMenuItem(
+                        value: item.languageCode,
+                        child: new Text(_getLanguageString(
+                            context, item.languageCode)),
+                      ))
+                          .toList(),
+                    ),
+                  ),
+                ],
+              ).toList(),
+            ),
+          )
         )
       },
       {
         "icon": Icon(Icons.videogame_asset),
-        "view": Center(
-          child: Text('GameSettings'),
-        )
+        "view": Notifier(
+          child: Center(
+            child: Text('GameSettings'),
+          ),
+        ),
       }
     ];
     return new TabbedWrapper(

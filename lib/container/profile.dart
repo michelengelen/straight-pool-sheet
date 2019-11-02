@@ -38,7 +38,7 @@ class _ViewModel {
     return _ViewModel(
       user: store.state.auth.user,
       changePassword: (newPassword) {
-        store.dispatch(ChangePasswordAction(newPassword));
+        store.dispatch(changePasswordAction(newPassword));
       },
     );
   }
