@@ -21,6 +21,7 @@ class Wrapper extends StatelessWidget {
     return StoreConnector<AppState, bool>(
       converter: (Store<AppState> store) => store.state.isLoading,
       builder: (BuildContext context, bool isLoading) {
+        print(isLoading);
         return Scaffold(
           drawer: const DrawerMenu(),
           appBar: AppBar(

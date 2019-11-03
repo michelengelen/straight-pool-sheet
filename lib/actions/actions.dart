@@ -33,6 +33,7 @@ class AppErrorAction {
     return 'AppErrorAction{errorMessage: $errorMessage}';
   }
 }
+
 class UserLoadedAction {
   UserLoadedAction(this.user);
 
@@ -121,7 +122,8 @@ ThunkAction<AppState> socialLogin(String type) {
           );
           break;
       }
-      if (authResponse != null && (!authResponse.error || !authResponse.cancelled)) {
+      if (authResponse != null &&
+          (!authResponse.error || !authResponse.cancelled)) {
         store.dispatch(UserLoadedAction(authResponse.user));
       } else {
         store.dispatch(AppErrorAction(authResponse.message));
@@ -135,15 +137,13 @@ ThunkAction<AppState> loadUserAction() {
   return (Store<AppState> store) async {
     _toggleAppLoading(store, true);
     Future<void>(() async {
-      auth.getCurrentUser()
-        .then((FirebaseUser user) {
-          store.dispatch(UserLoadedAction(user));
-          _toggleAppLoading(store, false);
-        })
-        .catchError((Exception error) {
-          store.dispatch(UserNotLoadedAction());
-          _toggleAppLoading(store, false);
-        });
+      auth.getCurrentUser().then((FirebaseUser user) {
+        store.dispatch(UserLoadedAction(user));
+        _toggleAppLoading(store, false);
+      }).catchError((Object error) {
+        store.dispatch(UserNotLoadedAction());
+        _toggleAppLoading(store, false);
+      });
     });
   };
 }

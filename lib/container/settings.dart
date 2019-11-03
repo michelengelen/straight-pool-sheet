@@ -4,7 +4,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:sps/actions/actions.dart';
 import 'package:sps/models/settings_state.dart';
-import 'package:sps/pages/settings.dart';
+import 'package:sps/screens/settings.dart';
 import 'package:sps/models/models.dart';
 
 @immutable

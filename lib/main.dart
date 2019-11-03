@@ -9,7 +9,7 @@ import 'package:sps/actions/actions.dart';
 import 'package:sps/constants/routes.dart';
 import 'package:sps/container/settings.dart';
 import 'package:sps/models/settings_state.dart';
-import 'package:sps/pages/home.dart';
+import 'package:sps/screens/home.dart';
 import 'package:sps/models/models.dart';
 import 'package:sps/container/profile.dart';
 import 'package:sps/reducers/app_state_reducer.dart';
@@ -21,7 +21,7 @@ Future<void> main() async {
   final Store<AppState> store = Store<AppState>(
     appReducer,
     initialState: AppState.initial(_sprefs),
-    middleware: <Middleware<void>>[thunkMiddleware],
+    middleware: <Middleware<AppState>>[thunkMiddleware],
   );
 
   runApp(SPS(store: store));
@@ -59,8 +59,11 @@ class SPS extends StatelessWidget {
               Routes.home: (BuildContext context) {
                 return HomeScreen(
                   onInit: () {
+                    print('init');
                     final Locale systemLocale = Localizations.localeOf(context);
+                    print('init2');
                     StoreProvider.of<AppState>(context).dispatch(changeLocaleAction(systemLocale.languageCode));
+                    print('init3');
                     StoreProvider.of<AppState>(context).dispatch(loadUserAction());
                   },
                 );
