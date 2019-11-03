@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:sps/models/auth_state.dart';
-import 'package:sps/models/models.dart';
+import 'package:sps/redux/states/auth_state.dart';
+import 'package:sps/redux/states/models.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:sps/services/auth.dart';

@@ -7,7 +7,7 @@ import 'package:sps/components/wrapper.dart';
 import 'package:sps/constants/keys.dart';
 import 'package:sps/container/login.dart';
 import 'package:sps/generated/i18n.dart';
-import 'package:sps/models/app_state.dart';
+import 'package:sps/redux/states/app_state.dart';
 
 @immutable
 class HomeScreen extends StatefulWidget {

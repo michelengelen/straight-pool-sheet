@@ -1,8 +1,8 @@
 import 'package:redux/redux.dart';
 
-import 'package:sps/actions/actions.dart';
+import 'package:sps/redux/actions/actions.dart';
 import 'package:sps/constants/constants.dart';
-import 'package:sps/models/models.dart';
+import 'package:sps/redux/states/models.dart';
 
 final Reducer<NotificationState> notificationReducer = combineReducers<NotificationState>(<Reducer<NotificationState>>[
   TypedReducer<NotificationState, NotificationAction>(_setNotification),

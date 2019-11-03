@@ -1,5 +1,5 @@
 import 'package:redux/redux.dart';
-import 'package:sps/actions/actions.dart';
+import 'package:sps/redux/actions/actions.dart';
 
 final Reducer<bool> loadingReducer = combineReducers<bool>(<Reducer<bool>>[
   TypedReducer<bool, AppIsLoaded>(_setLoaded),

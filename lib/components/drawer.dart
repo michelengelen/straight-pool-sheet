@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sps/constants/constants.dart';
 import 'package:sps/constants/routes.dart';
 import 'package:sps/generated/i18n.dart';
-import 'package:sps/models/auth_state.dart';
+import 'package:sps/redux/states/auth_state.dart';
 
 @immutable
 class DrawerMenuView extends StatelessWidget {

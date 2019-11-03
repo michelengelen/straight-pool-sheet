@@ -1,7 +1,7 @@
 import 'package:redux/redux.dart';
 
-import 'package:sps/actions/actions.dart';
-import 'package:sps/models/models.dart';
+import 'package:sps/redux/actions/actions.dart';
+import 'package:sps/redux/states/models.dart';
 import 'package:sps/services/auth.dart';
 import 'package:sps/constants/constants.dart';
 

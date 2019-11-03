@@ -5,7 +5,7 @@ import 'package:sps/components/notifier.dart';
 
 import 'package:sps/constants/keys.dart';
 import 'package:sps/container/drawer.dart';
-import 'package:sps/models/app_state.dart';
+import 'package:sps/redux/states/app_state.dart';
 
 class Wrapper extends StatelessWidget {
   const Wrapper({

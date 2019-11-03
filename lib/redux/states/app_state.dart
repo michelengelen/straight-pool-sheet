@@ -1,8 +1,8 @@
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sps/models/auth_state.dart';
-import 'package:sps/models/settings_state.dart';
-import 'package:sps/models/notification_state.dart';
+import 'package:sps/redux/states/auth_state.dart';
+import 'package:sps/redux/states/settings_state.dart';
+import 'package:sps/redux/states/notification_state.dart';
 
 @immutable
 class AppState {

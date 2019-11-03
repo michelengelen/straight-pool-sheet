@@ -3,7 +3,7 @@ import 'package:sps/components/notifier.dart';
 import 'package:sps/components/tabbedWrapper.dart';
 import 'package:sps/constants/keys.dart';
 import 'package:sps/generated/i18n.dart';
-import 'package:sps/models/settings_state.dart';
+import 'package:sps/redux/states/settings_state.dart';
 
 final List<Locale> supportedLanguages = S.delegate.supportedLocales;
 

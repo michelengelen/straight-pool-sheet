@@ -1,6 +1,6 @@
 import 'package:redux/redux.dart';
-import 'package:sps/actions/actions.dart';
-import 'package:sps/models/settings_state.dart';
+import 'package:sps/redux/actions/actions.dart';
+import 'package:sps/redux/states/settings_state.dart';
 
 final Reducer<SettingsState> settingsReducer = combineReducers<SettingsState>(<Reducer<SettingsState>>[
   TypedReducer<SettingsState, ToggleThemeAction>(_toggleTheme),

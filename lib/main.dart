@@ -5,14 +5,14 @@ import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:sps/actions/actions.dart';
+import 'package:sps/redux/actions/actions.dart';
 import 'package:sps/constants/routes.dart';
 import 'package:sps/container/settings.dart';
-import 'package:sps/models/settings_state.dart';
+import 'package:sps/redux/states/settings_state.dart';
 import 'package:sps/screens/home.dart';
-import 'package:sps/models/models.dart';
+import 'package:sps/redux/states/models.dart';
 import 'package:sps/container/profile.dart';
-import 'package:sps/reducers/app_state_reducer.dart';
+import 'package:sps/redux/reducers/app_state_reducer.dart';
 import 'package:sps/generated/i18n.dart';
 
 Future<void> main() async {

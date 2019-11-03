@@ -2,10 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import 'package:sps/actions/actions.dart';
-import 'package:sps/models/settings_state.dart';
+import 'package:sps/redux/actions/actions.dart';
+import 'package:sps/redux/states/settings_state.dart';
 import 'package:sps/screens/settings.dart';
-import 'package:sps/models/models.dart';
+import 'package:sps/redux/states/models.dart';
 
 @immutable
 class SettingsScreen extends StatelessWidget {
