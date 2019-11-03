@@ -63,7 +63,6 @@ class Auth implements BaseAuth {
 
   @override
   Future<FirebaseUser> getCurrentUser() async {
-    print('auth');
     final FirebaseUser user = await _firebaseAuth.currentUser();
     if (user == null)
       throw 'Could not load User!';

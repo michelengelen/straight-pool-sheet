@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 class Keys {
   // Wrapper
   static const Key wrapper = Key('__wrapper__');
-  static const Key notifier = Key('__notifier__');
+  static const Key tabbedWrapper = Key('__tabbedWrapper__');
 
   // Home Screens
   static const Key homeScreen = Key('__homeScreen__');

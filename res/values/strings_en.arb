@@ -8,6 +8,7 @@
   "icon_settings_semantic": "go to Settings Screen",
   "setting_language_title": "Language",
   "setting_language_subtitle": "Currently selected language: $languageCode",
+  "setting_language_switched": "Language changed",
   "setting_darkMode_title": "Dark mode",
   "setting_darkMode_subtitle": "Enable dark mode",
   "logout": "Logout",

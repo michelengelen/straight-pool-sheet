@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sps/components/notifier.dart';
 import 'package:sps/components/tabbedWrapper.dart';
 import 'package:sps/constants/keys.dart';
 import 'package:sps/generated/i18n.dart';
@@ -28,17 +27,17 @@ class Settings extends StatelessWidget {
   }) : super(key: Keys.settingsScreen);
 
   final void Function() toggleTheme;
-  final void Function(String locale) switchLocale;
+  final void Function(BuildContext context, String locale) switchLocale;
   final SettingsState currentSettings;
 
+  // TODO(michel): definitely make this better somehow!!!
   @override
   Widget build(BuildContext context) {
     final bool darkMode = currentSettings.darkMode;
-    final List<Map<String, Widget>> tabs = <Map<String, Widget>>[
-      <String, Widget>{
+    final List<Map<String, dynamic>> tabs = <Map<String, dynamic>>[
+      <String, dynamic>{
         'icon': const Icon(Icons.settings),
-        'view': Notifier(
-            child: Container(
+        'view': (BuildContext context) => Container(
           padding: const EdgeInsets.symmetric(vertical: 24),
           child: ListView(
             children: ListTile.divideTiles(
@@ -70,7 +69,7 @@ class Settings extends StatelessWidget {
                   leading: const Icon(Icons.flag),
                   trailing: PopupMenuButton<String>(
                     onSelected: (String locale) {
-                      switchLocale(locale);
+                      switchLocale(context, locale);
                     },
                     itemBuilder: (BuildContext context) => supportedLanguages
                         .map((Locale item) => PopupMenuItem<String>(
@@ -84,14 +83,12 @@ class Settings extends StatelessWidget {
               ],
             ).toList(),
           ),
-        ))
+        )
       },
-      <String, Widget>{
+      <String, dynamic>{
         'icon': const Icon(Icons.videogame_asset),
-        'view': Notifier(
-          child: Center(
-            child: const Text('GameSettings'),
-          ),
+        'view': (BuildContext context) => Center(
+          child: const Text('GameSettings'),
         ),
       }
     ];

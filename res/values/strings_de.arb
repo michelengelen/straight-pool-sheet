@@ -8,6 +8,7 @@
   "icon_settings_semantic": "Zur Profilseite wechseln",
   "setting_language_title": "Sprache",
   "setting_language_subtitle": "Aktuell ausgewählte Sprache: $languageCode",
+  "setting_language_switched": "Sprache geändert",
   "setting_darkMode_title": "Dark mode",
   "setting_darkMode_subtitle": "Dark mode aktivieren",
   "logout": "Abmelden",

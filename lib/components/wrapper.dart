@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import 'package:sps/components/notifier.dart';
 
 import 'package:sps/constants/keys.dart';
 import 'package:sps/container/drawer.dart';
@@ -21,7 +20,6 @@ class Wrapper extends StatelessWidget {
     return StoreConnector<AppState, bool>(
       converter: (Store<AppState> store) => store.state.isLoading,
       builder: (BuildContext context, bool isLoading) {
-        print(isLoading);
         return Scaffold(
           drawer: const DrawerMenu(),
           appBar: AppBar(
@@ -41,7 +39,7 @@ class Wrapper extends StatelessWidget {
                   ),
                 ],
               ) :
-              Notifier(child: child),
+              child,
           ),
         );
       },

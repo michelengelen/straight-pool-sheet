@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 Completer<void> snackBarCompleter(
   BuildContext context,
-  String message,
+  Object message,
   { bool shouldPop = false }
 ) {
   final Completer<void> completer = Completer<void>();
@@ -17,11 +17,7 @@ Completer<void> snackBarCompleter(
       content: Text(message),
     ));
   }).catchError((Object error) {
-    showDialog<Widget>(
-        context: context,
-        builder: (BuildContext context) {
-          return Text(error);
-        });
+    print('#### Error: $error');
   });
 
   return completer;

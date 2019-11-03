@@ -1,13 +1,25 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sps/constants/constants.dart';
 import 'package:sps/redux/states/app_state.dart';
-
 import 'package:sps/services/auth.dart';
 
 final Auth auth = Auth();
+
+/// action Base Class
+class CompleterAction {
+  CompleterAction({
+    this.completer,
+    this.errorCompleter,
+  });
+
+  final Completer<Function> completer;
+  final Completer<Function> errorCompleter;
+}
 
 /// APP ACTIONS
 class AppIsLoaded {}
@@ -67,18 +79,35 @@ class NotificationAction {
 class NotificationHandledAction {}
 
 /// SETTINGS ACTIONS
-ThunkAction<AppState> changeLocaleAction(String languageCode) {
-  return (Store<AppState> store) async {
-    Future<void>(() async {
-      final SharedPreferences _sprefs = await SharedPreferences.getInstance();
-      _sprefs.setString('lnguageCode', languageCode);
-      store.dispatch(ChangeLanguageAction(languageCode));
-    });
-  };
-}
+//ThunkAction<AppState> changeLocaleAction(String languageCode) {
+//  return (Store<AppState> store) async {
+//    Future<void>(() async {
+//      final SharedPreferences _sprefs = await SharedPreferences.getInstance();
+//      _sprefs.setString('lnguageCode', languageCode);
+//      store.dispatch(ChangeLanguageAction(languageCode));
+//    });
+//  };
+//}
 
 class ChangeLanguageAction {
-  ChangeLanguageAction(this.locale);
+  ChangeLanguageAction({
+    this.languageCode,
+    this.completer,
+    this.errorCompleter,
+  });
+
+  final String languageCode;
+  final Completer<void> completer;
+  final Completer<void> errorCompleter;
+
+  @override
+  String toString() {
+    return 'ChangeLanguageAction{languageCode: $languageCode}';
+  }
+}
+
+class ChangeLanguageActionSuccess {
+  ChangeLanguageActionSuccess(this.locale);
 
   final String locale;
 

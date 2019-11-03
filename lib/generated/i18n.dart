@@ -34,6 +34,7 @@ class S implements WidgetsLocalizations {
   String get screen_settings_title => "Settings";
   String get setting_darkMode_subtitle => "Enable dark mode";
   String get setting_darkMode_title => "Dark mode";
+  String get setting_language_switched => "Language changed";
   String get setting_language_title => "Language";
   String setting_language_subtitle(String languageCode) => "Currently selected language: $languageCode";
 }
@@ -44,6 +45,8 @@ class $de extends S {
   @override
   TextDirection get textDirection => TextDirection.ltr;
 
+  @override
+  String get setting_language_switched => "Sprache geändert";
   @override
   String get icon_home_semantic => "Zur Startseite wechseln";
   @override
