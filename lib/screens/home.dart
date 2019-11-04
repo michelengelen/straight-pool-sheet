@@ -37,7 +37,9 @@ class HomeScreenState extends State<HomeScreen> {
       builder: (BuildContext context, FirebaseUser user) {
         return Wrapper(
           title: S.of(context).screen_home_title,
-          child: const LoginSignupScreen(),
+          child: user != null
+            ? WelcomeComponent(user: user)
+            : const LoginSignupScreen(),
         );
       },
     );
