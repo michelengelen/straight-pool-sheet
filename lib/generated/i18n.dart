@@ -38,6 +38,9 @@ class S implements WidgetsLocalizations {
   String get setting_darkMode_title => "Dark mode";
   String get setting_language_switched => "Language switched to english";
   String get setting_language_title => "Language";
+  String get snackbar_retry => "Retry";
+  String get snackbar_user_loaded_failure => "Could not load user";
+  String get snackbar_user_loaded_success => "User loaded successfully";
   String setting_language_subtitle(String languageCode) => "Currently selected language: $languageCode";
 }
 
@@ -64,11 +67,15 @@ class $de extends S {
   @override
   String get setting_darkMode_switched_on => "Dark mode aktiviert";
   @override
+  String get snackbar_user_loaded_success => "Nutzer erfolgreich geladen";
+  @override
   String get screen_profile_title => "Profil";
   @override
   String get icon_profile_semantic => "Zur Profilseite wechseln";
   @override
   String get locales_de => "Deutsch";
+  @override
+  String get snackbar_retry => "Wiederholen";
   @override
   String get screen_home_title => "Startseite";
   @override
@@ -79,6 +86,8 @@ class $de extends S {
   String get logout => "Abmelden";
   @override
   String get setting_darkMode_subtitle => "Dark mode aktivieren";
+  @override
+  String get snackbar_user_loaded_failure => "Nutzer konnte nicht geladen werden";
   @override
   String get setting_darkMode_title => "Dark mode";
   @override

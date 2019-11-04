@@ -8,14 +8,14 @@ import 'package:sps/constants/constants.dart';
 final Auth auth = Auth();
 
 final Reducer<AuthState> authReducer = combineReducers<AuthState>(<Reducer<AuthState>>[
-  TypedReducer<AuthState, UserLoadedAction>(_setUser),
-  TypedReducer<AuthState, UserNotLoadedAction>(_unSetUser),
+  TypedReducer<AuthState, LoadUserActionSuccess>(_setUser),
+  TypedReducer<AuthState, LoadUserActionFailure>(_unSetUser),
 ]);
 
-AuthState _setUser(AuthState state, UserLoadedAction action) {
+AuthState _setUser(AuthState state, LoadUserActionSuccess action) {
   return state.copyWith(user: action.user, status: AuthStatus.LOGGED_IN);
 }
 
-AuthState _unSetUser(AuthState state, UserNotLoadedAction action) {
+AuthState _unSetUser(AuthState state, LoadUserActionFailure action) {
   return state.copyWith(user: null, status: AuthStatus.NOT_LOGGED_IN);
 }

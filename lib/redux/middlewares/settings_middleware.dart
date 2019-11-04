@@ -27,10 +27,6 @@ Middleware<AppState> _changeLanguage() {
     .then<void>((dynamic _) {
       if (action.completer != null)
         action.completer.complete();
-    })
-    .catchError((Object error) {
-      if (action.errorCompleter != null)
-        action.errorCompleter.complete();
     });
   };
 }
@@ -50,10 +46,6 @@ Middleware<AppState> _toggleTheme() {
     .then<void>((dynamic _) {
       if (action.completer != null)
         action.completer.complete();
-    })
-    .catchError((Object error) {
-      if (action.errorCompleter != null)
-        action.errorCompleter.complete();
     });
   };
 }

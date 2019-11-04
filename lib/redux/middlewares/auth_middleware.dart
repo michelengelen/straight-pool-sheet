@@ -1,59 +1,78 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:redux/redux.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sps/redux/actions/actions.dart';
 import 'package:sps/redux/states/app_state.dart';
+import 'package:sps/services/auth.dart';
 
-List<Middleware<AppState>> createStoreSettingsMiddleware() {
-  final Middleware<AppState> changeLanguage = _changeLanguage();
-  final Middleware<AppState> toggleTheme = _toggleTheme();
+List<Middleware<AppState>> createStoreAuthMiddleware() {
+  final Middleware<AppState> loadUser = _loadUser();
+  final Middleware<AppState> signInUserSocial = _signInUserSocial();
 
   return <Middleware<AppState>>[
-    TypedMiddleware<AppState, ChangeLanguageAction>(changeLanguage),
-    TypedMiddleware<AppState, ToggleThemeAction>(toggleTheme),
+    TypedMiddleware<AppState, LoadUserAction>(loadUser),
+    TypedMiddleware<AppState, SignInUserSocial>(signInUserSocial),
   ];
 }
 
-Middleware<AppState> _changeLanguage() {
+Middleware<AppState> _loadUser() {
   return (Store<AppState> store, dynamic dynamicAction, NextDispatcher next) {
-    final ChangeLanguageAction action = dynamicAction;
+    final LoadUserAction action = dynamicAction;
 
     next(action);
 
+    store.dispatch(AppIsLoading());
     Future<void>(() async {
-      final SharedPreferences _sprefs = await SharedPreferences.getInstance();
-      _sprefs.setString('languageCode', action.languageCode);
-      store.dispatch(ChangeLanguageActionSuccess(action.languageCode));
-    })
-    .then<void>((dynamic _) {
+      auth.getCurrentUser().then((FirebaseUser user) {
+        store.dispatch(LoadUserActionSuccess(user));
+        store.dispatch(AppIsLoaded());
+      }).catchError((Object error) {
+        store.dispatch(LoadUserActionFailure());
+        store.dispatch(AppIsLoaded());
+      });
+    }).then<void>((dynamic _) {
       if (action.completer != null)
         action.completer.complete();
-    })
-    .catchError((Object error) {
-      if (action.errorCompleter != null)
-        action.errorCompleter.complete();
     });
   };
 }
 
-Middleware<AppState> _toggleTheme() {
+Middleware<AppState> _signInUserSocial() {
   return (Store<AppState> store, dynamic dynamicAction, NextDispatcher next) {
-    final ToggleThemeAction action = dynamicAction;
-    final bool previous = store.state.settings.darkMode;
+    final SignInUserSocial action = dynamicAction;
 
     next(action);
 
-    Future<void>(() async {
-      final SharedPreferences _sprefs = await SharedPreferences.getInstance();
-      _sprefs.setBool('darkMode', !previous);
-      store.dispatch(ToggleThemeActionSuccess());
-    })
-    .then<void>((dynamic _) {
-      if (action.completer != null)
+    store.dispatch(AppIsLoading());
+    Future<AuthResponse>(() async {
+      AuthResponse authResponse;
+      switch (action.type) {
+        case 'FB':
+          authResponse = await auth.handleFacebookLogin();
+          break;
+        case 'G':
+          authResponse = await auth.handleGoogleLogin();
+          break;
+        default:
+          authResponse = const AuthResponse(
+            user: null,
+            error: true,
+            cancelled: false,
+            message: 'Something went terribly wrong!',
+          );
+          break;
+      }
+      return authResponse;
+    }).then<void>((AuthResponse authResponse) {
+      print('##########################################');
+      print(authResponse);
+      print('##########################################');
+      store.dispatch(AppIsLoaded());
+      if (authResponse != null && (!authResponse.error || !authResponse.cancelled)) {
+        store.dispatch(LoadUserActionSuccess(authResponse.user));
         action.completer.complete();
-    })
-    .catchError((Object error) {
-      if (action.errorCompleter != null)
-        action.errorCompleter.complete();
+      } else {
+        store.dispatch(LoadUserActionFailure());
+      }
     });
   };
 }

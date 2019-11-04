@@ -13,11 +13,9 @@ final Auth auth = Auth();
 class CompleterAction {
   CompleterAction({
     this.completer,
-    this.errorCompleter,
   });
 
   final Completer<void> completer;
-  final Completer<void> errorCompleter;
 }
 
 /// APP ACTIONS
@@ -45,26 +43,12 @@ class AppErrorAction {
   }
 }
 
-class UserLoadedAction {
-  UserLoadedAction(this.user);
-
-  final FirebaseUser user;
-
-  @override
-  String toString() {
-    return 'UserLoadedAction{user: $user}';
-  }
-}
-
-class UserNotLoadedAction {}
-
 /// SETTINGS ACTIONS
 class ChangeLanguageAction extends CompleterAction {
   ChangeLanguageAction({
     this.languageCode,
     Completer<void> completer,
-    Completer<void> errorCompleter,
-  }) : super(completer: completer, errorCompleter: errorCompleter);
+  }) : super(completer: completer);
 
   final String languageCode;
 
@@ -88,23 +72,45 @@ class ChangeLanguageActionSuccess {
 class ToggleThemeAction extends CompleterAction {
   ToggleThemeAction({
     Completer<void> completer,
-    Completer<void> errorCompleter,
-  }) : super(completer: completer, errorCompleter: errorCompleter);
+  }) : super(completer: completer);
 }
 
 class ToggleThemeActionSuccess {}
 
-ThunkAction<AppState> toggleThemeAction(bool previous) {
-  return (Store<AppState> store) async {
-    Future<void>(() async {
-      final SharedPreferences _sprefs = await SharedPreferences.getInstance();
-      _sprefs.setBool('darkMode', !previous);
-      store.dispatch(ToggleThemeAction());
-    });
-  };
+/// AUTH ACTIONS
+class LoadUserAction extends CompleterAction {
+  LoadUserAction({
+    Completer<void> completer,
+  }) : super(completer: completer);
 }
 
-/// AUTH ACTIONS
+class LoadUserActionSuccess {
+  LoadUserActionSuccess(this.user);
+
+  final FirebaseUser user;
+
+  @override
+  String toString() {
+    return 'UserLoadedAction{user: $user}';
+  }
+}
+
+class LoadUserActionFailure {}
+
+class SignInUserSocial extends CompleterAction {
+  SignInUserSocial({
+    this.type,
+    Completer<void> completer,
+  }) : super(completer: completer);
+
+  final String type;
+
+  @override
+  String toString() {
+    return 'SignInUserSocial{type: $type}';
+  }
+}
+
 ThunkAction<AppState> socialLogin(String type) {
   return (Store<AppState> store) {
     _toggleAppLoading(store, true);
@@ -128,7 +134,7 @@ ThunkAction<AppState> socialLogin(String type) {
       }
       if (authResponse != null &&
           (!authResponse.error || !authResponse.cancelled)) {
-        store.dispatch(UserLoadedAction(authResponse.user));
+        store.dispatch(LoadUserActionSuccess(authResponse.user));
       } else {
         store.dispatch(AppErrorAction(authResponse.message));
       }
@@ -142,10 +148,10 @@ ThunkAction<AppState> loadUserAction() {
     _toggleAppLoading(store, true);
     Future<void>(() async {
       auth.getCurrentUser().then((FirebaseUser user) {
-        store.dispatch(UserLoadedAction(user));
+        store.dispatch(LoadUserActionSuccess(user));
         _toggleAppLoading(store, false);
       }).catchError((Object error) {
-        store.dispatch(UserNotLoadedAction());
+        store.dispatch(LoadUserActionFailure());
         _toggleAppLoading(store, false);
       });
     });
@@ -157,7 +163,7 @@ ThunkAction<AppState> logoutUserAction() {
     store.dispatch(AppIsLoading());
     Future<void>(() async {
       await auth.logOut();
-      store.dispatch(UserNotLoadedAction());
+      store.dispatch(LoadUserActionFailure());
       store.dispatch(AppIsLoaded());
     });
   };
@@ -170,10 +176,10 @@ ThunkAction<AppState> registerUserAction(String email, String password) {
       FirebaseUser user;
       try {
         user = await auth.register(email, password);
-        store.dispatch(UserLoadedAction(user));
+        store.dispatch(LoadUserActionSuccess(user));
         store.dispatch(AppIsLoaded());
       } catch (e) {
-        store.dispatch(UserNotLoadedAction());
+        store.dispatch(LoadUserActionFailure());
         store.dispatch(AppIsLoaded());
       }
     });
@@ -188,10 +194,10 @@ ThunkAction<AppState> changePasswordAction(String newPassword) {
       final FirebaseUser user = store.state.auth.user;
       try {
         user.updatePassword(newPassword);
-        store.dispatch(UserLoadedAction(user));
+        store.dispatch(LoadUserActionSuccess(user));
         store.dispatch(AppIsLoaded());
       } catch (e) {
-        store.dispatch(UserNotLoadedAction());
+        store.dispatch(LoadUserActionFailure());
         store.dispatch(AppIsLoaded());
       }
     });

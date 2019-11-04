@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sps/redux/actions/actions.dart';
 import 'package:sps/constants/routes.dart';
 import 'package:sps/container/settings.dart';
+import 'package:sps/redux/middlewares/auth_middleware.dart';
 import 'package:sps/redux/middlewares/settings_middleware.dart';
 import 'package:sps/redux/states/settings_state.dart';
 import 'package:sps/screens/home.dart';
@@ -25,6 +26,7 @@ Future<void> main() async {
     middleware: <Middleware<AppState>>[
       thunkMiddleware,
       ...createStoreSettingsMiddleware(),
+      ...createStoreAuthMiddleware(),
     ]
   );
 
@@ -65,7 +67,7 @@ class SPS extends StatelessWidget {
                   onInit: () {
                     final Locale systemLocale = Localizations.localeOf(context);
                     StoreProvider.of<AppState>(context).dispatch(ChangeLanguageAction(languageCode: systemLocale.languageCode));
-                    StoreProvider.of<AppState>(context).dispatch(loadUserAction());
+                    StoreProvider.of<AppState>(context).dispatch(LoadUserAction());
                   },
                 );
               },
