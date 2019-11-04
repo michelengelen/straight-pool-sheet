@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sps/components/tabbedWrapper.dart';
 import 'package:sps/constants/keys.dart';
 import 'package:sps/generated/i18n.dart';
-import 'package:sps/redux/states/settings_state.dart';
+import 'package:sps/redux/settings/settings_state.dart';
 
 final List<Locale> supportedLanguages = S.delegate.supportedLocales;
 

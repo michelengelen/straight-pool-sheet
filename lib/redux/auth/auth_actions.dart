@@ -3,78 +3,11 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
-import 'package:sps/redux/states/app_state.dart';
+import 'package:sps/components/login.dart';
+import 'package:sps/redux/_helper/completer.dart';
+import 'package:sps/redux/root_state.dart';
+import 'package:sps/redux/view/view_actions.dart';
 import 'package:sps/services/auth.dart';
-
-final Auth auth = Auth();
-
-/// action Base Class
-class CompleterAction {
-  CompleterAction({
-    this.completer,
-  });
-
-  final Completer<void> completer;
-}
-
-/// APP ACTIONS
-class AppIsLoaded {}
-
-class AppIsLoading {}
-
-void _toggleAppLoading(Store<AppState> store, bool shouldLoad) {
-  final bool isLoading = store.state.isLoading;
-  if (!isLoading && shouldLoad) {
-    store.dispatch(AppIsLoading());
-  } else if (isLoading && !shouldLoad) {
-    store.dispatch(AppIsLoaded());
-  }
-}
-
-class AppErrorAction {
-  AppErrorAction(this.errorMessage);
-
-  final String errorMessage;
-
-  @override
-  String toString() {
-    return 'AppErrorAction{errorMessage: $errorMessage}';
-  }
-}
-
-/// SETTINGS ACTIONS
-class ChangeLanguageAction extends CompleterAction {
-  ChangeLanguageAction({
-    this.languageCode,
-    Completer<void> completer,
-  }) : super(completer: completer);
-
-  final String languageCode;
-
-  @override
-  String toString() {
-    return 'ChangeLanguageAction{languageCode: $languageCode}';
-  }
-}
-
-class ChangeLanguageActionSuccess {
-  ChangeLanguageActionSuccess(this.locale);
-
-  final String locale;
-
-  @override
-  String toString() {
-    return 'ChangeLanguageAction{locale: $locale}';
-  }
-}
-
-class ToggleThemeAction extends CompleterAction {
-  ToggleThemeAction({
-    Completer<void> completer,
-  }) : super(completer: completer);
-}
-
-class ToggleThemeActionSuccess {}
 
 /// AUTH ACTIONS
 class LoadUserAction extends CompleterAction {
@@ -110,9 +43,9 @@ class SignInUserSocial extends CompleterAction {
   }
 }
 
-ThunkAction<AppState> socialLogin(String type) {
-  return (Store<AppState> store) {
-    _toggleAppLoading(store, true);
+ThunkAction<RootState> socialLogin(String type) {
+  return (Store<RootState> store) {
+    store.dispatch(AppIsLoading());
     Future<void>(() async {
       AuthResponse authResponse;
       switch (type) {
@@ -132,33 +65,31 @@ ThunkAction<AppState> socialLogin(String type) {
           break;
       }
       if (authResponse != null &&
-          (!authResponse.error || !authResponse.cancelled)) {
+        (!authResponse.error || !authResponse.cancelled)) {
         store.dispatch(LoadUserActionSuccess(authResponse.user));
-      } else {
-        store.dispatch(AppErrorAction(authResponse.message));
       }
-      _toggleAppLoading(store, false);
+      store.dispatch(AppIsLoaded());
     });
   };
 }
 
-ThunkAction<AppState> loadUserAction() {
-  return (Store<AppState> store) async {
-    _toggleAppLoading(store, true);
+ThunkAction<RootState> loadUserAction() {
+  return (Store<RootState> store) async {
+    store.dispatch(AppIsLoading());
     Future<void>(() async {
       auth.getCurrentUser().then((FirebaseUser user) {
         store.dispatch(LoadUserActionSuccess(user));
-        _toggleAppLoading(store, false);
+        store.dispatch(AppIsLoaded());
       }).catchError((Object error) {
         store.dispatch(LoadUserActionFailure());
-        _toggleAppLoading(store, false);
+        store.dispatch(AppIsLoaded());
       });
     });
   };
 }
 
-ThunkAction<AppState> logoutUserAction() {
-  return (Store<AppState> store) async {
+ThunkAction<RootState> logoutUserAction() {
+  return (Store<RootState> store) async {
     store.dispatch(AppIsLoading());
     Future<void>(() async {
       await auth.logOut();
@@ -168,8 +99,8 @@ ThunkAction<AppState> logoutUserAction() {
   };
 }
 
-ThunkAction<AppState> registerUserAction(String email, String password) {
-  return (Store<AppState> store) async {
+ThunkAction<RootState> registerUserAction(String email, String password) {
+  return (Store<RootState> store) async {
     store.dispatch(AppIsLoading());
     Future<void>(() async {
       FirebaseUser user;
@@ -186,8 +117,8 @@ ThunkAction<AppState> registerUserAction(String email, String password) {
 }
 
 /// PROFILE ACTIONS
-ThunkAction<AppState> changePasswordAction(String newPassword) {
-  return (Store<AppState> store) async {
+ThunkAction<RootState> changePasswordAction(String newPassword) {
+  return (Store<RootState> store) async {
     store.dispatch(AppIsLoading());
     Future<void>(() async {
       final FirebaseUser user = store.state.auth.user;

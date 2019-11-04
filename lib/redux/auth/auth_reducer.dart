@@ -1,13 +1,13 @@
 import 'package:redux/redux.dart';
-
-import 'package:sps/redux/actions/actions.dart';
-import 'package:sps/redux/states/models.dart';
-import 'package:sps/services/auth.dart';
 import 'package:sps/constants/constants.dart';
+import 'package:sps/redux/auth/auth_actions.dart';
+import 'package:sps/redux/auth/auth_state.dart';
+import 'package:sps/services/auth.dart';
 
 final Auth auth = Auth();
 
-final Reducer<AuthState> authReducer = combineReducers<AuthState>(<Reducer<AuthState>>[
+final Reducer<AuthState> authReducer =
+    combineReducers<AuthState>(<Reducer<AuthState>>[
   TypedReducer<AuthState, LoadUserActionSuccess>(_setUser),
   TypedReducer<AuthState, LoadUserActionFailure>(_unSetUser),
 ]);

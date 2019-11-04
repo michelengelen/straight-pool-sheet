@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sps/constants/constants.dart';
 import 'package:sps/constants/routes.dart';
 import 'package:sps/generated/i18n.dart';
-import 'package:sps/redux/states/auth_state.dart';
+import 'package:sps/redux/auth/auth_state.dart';
 
 @immutable
 class DrawerMenuView extends StatelessWidget {
@@ -140,7 +140,7 @@ class DrawerMenuView extends StatelessWidget {
                 // use Navigators maybePop method, because it returns a Future
                 // If we would use .pop() here the rendering of the Profile Page
                 // would run into an error, because the state gets updated beforehand
-                Navigator.maybePop(context).then<void>(onLogout);
+                Navigator.maybePop(context).then<void>((bool _) => onLogout());
               } else {
                 Navigator.popAndPushNamed(context, Routes.home).then<void>(onLogout);
               }

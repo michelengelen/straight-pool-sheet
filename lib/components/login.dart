@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:sps/redux/states/auth_state.dart';
-import 'package:sps/redux/states/models.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
+import 'package:sps/redux/auth/auth_state.dart';
+import 'package:sps/redux/root_state.dart';
 import 'package:sps/services/auth.dart';
 
 final Auth auth = Auth();
@@ -109,20 +109,17 @@ class _LoginSignupState extends State<LoginSignup> {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, AuthState>(
-      converter: (Store<AppState> store) {
-        return store.state.auth;
-      },
-      builder: (BuildContext context, AuthState auth) {
-        return Container(
-          child: Stack(
-            children: <Widget>[
-              _showForm(),
-              _showCircularProgress(),
+    return StoreConnector<RootState, AuthState>(
+        converter: (Store<RootState> store) => store.state.auth,
+        builder: (BuildContext context, AuthState auth) {
+          return Container(
+              child: Stack(
+                children: <Widget>[
+                  _showForm(),
+                  _showCircularProgress(),
             ],
-          )
-        );
-      });
+          ));
+    });
   }
 
   Widget _showCircularProgress() {
@@ -164,7 +161,9 @@ class _LoginSignupState extends State<LoginSignup> {
 
   Widget showGoogleLoginButton() {
     return RaisedButton(
-      onPressed: () { widget.onSocialLogin(context, 'G'); },
+      onPressed: () {
+        widget.onSocialLogin(context, 'G');
+      },
       color: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       textColor: const Color.fromRGBO(122, 122, 122, 1),
@@ -180,18 +179,20 @@ class _LoginSignupState extends State<LoginSignup> {
 
   Widget showFacebookLoginButton() {
     return RaisedButton(
-      materialTapTargetSize: MaterialTapTargetSize.padded,
-      onPressed: () { widget.onSocialLogin(context, 'FB'); },
-      color: const Color.fromRGBO(27, 76, 213, 1),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      textColor: Colors.white,
-      child: Text(
-        'Connect with Facebook',
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 20,
-        ),
-      ));
+        materialTapTargetSize: MaterialTapTargetSize.padded,
+        onPressed: () {
+          widget.onSocialLogin(context, 'FB');
+        },
+        color: const Color.fromRGBO(27, 76, 213, 1),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        textColor: Colors.white,
+        child: Text(
+          'Connect with Facebook',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+        ));
   }
 
   Widget _showForm() {
@@ -201,22 +202,22 @@ class _LoginSignupState extends State<LoginSignup> {
         height: 0.0,
       );
     return Container(
-      padding: const EdgeInsets.all(16.0),
-      child: Form(
-        key: _formKey,
-        child: ListView(
-          children: <Widget>[
-            showEmailInput(),
-            showPasswordInput(),
-            showPrimaryButton(),
-            showSecondaryButton(),
-            showSeperator(),
-            showFacebookLoginButton(),
-            showGoogleLoginButton(),
-            showErrorMessage(),
-          ],
-        ),
-      ));
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            children: <Widget>[
+              showEmailInput(),
+              showPasswordInput(),
+              showPrimaryButton(),
+              showSecondaryButton(),
+              showSeperator(),
+              showFacebookLoginButton(),
+              showGoogleLoginButton(),
+              showErrorMessage(),
+            ],
+          ),
+        ));
   }
 
   Widget showErrorMessage() {
@@ -245,12 +246,13 @@ class _LoginSignupState extends State<LoginSignup> {
         keyboardType: TextInputType.emailAddress,
         autofocus: false,
         decoration: InputDecoration(
-          hintText: 'Email',
-          icon: Icon(
-            Icons.mail,
-            color: Colors.grey,
-          )),
-        validator: (String value) => value.isEmpty ? 'Email can\'t be empty' : null,
+            hintText: 'Email',
+            icon: Icon(
+              Icons.mail,
+              color: Colors.grey,
+            )),
+        validator: (String value) =>
+            value.isEmpty ? 'Email can\'t be empty' : null,
         onSaved: (String value) => _email = value.trim(),
       ),
     );
@@ -264,12 +266,13 @@ class _LoginSignupState extends State<LoginSignup> {
         obscureText: true,
         autofocus: false,
         decoration: InputDecoration(
-          hintText: 'Password',
-          icon: Icon(
-            Icons.lock,
-            color: Colors.grey,
-          )),
-        validator: (String value) => value.isEmpty ? 'Password can\'t be empty' : null,
+            hintText: 'Password',
+            icon: Icon(
+              Icons.lock,
+              color: Colors.grey,
+            )),
+        validator: (String value) =>
+            value.isEmpty ? 'Password can\'t be empty' : null,
         onSaved: (String value) => _password = value.trim(),
       ),
     );
@@ -277,26 +280,26 @@ class _LoginSignupState extends State<LoginSignup> {
 
   Widget showSecondaryButton() {
     return FlatButton(
-      child: Text(
-        _isLoginForm ? 'Create an account' : 'Have an account? Sign in',
-        style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)),
-      onPressed: toggleFormMode);
+        child: Text(
+            _isLoginForm ? 'Create an account' : 'Have an account? Sign in',
+            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)),
+        onPressed: toggleFormMode);
   }
 
   Widget showPrimaryButton() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
-      child: SizedBox(
-        height: 40.0,
-        child: RaisedButton(
-          elevation: 5.0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30.0)),
-          color: Colors.blue,
-          child: Text(_isLoginForm ? 'Login' : 'Create account',
-            style: TextStyle(fontSize: 20.0, color: Colors.white)),
-          onPressed: validateAndSubmit,
-        ),
-      ));
+        padding: const EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
+        child: SizedBox(
+          height: 40.0,
+          child: RaisedButton(
+            elevation: 5.0,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0)),
+            color: Colors.blue,
+            child: Text(_isLoginForm ? 'Login' : 'Create account',
+                style: TextStyle(fontSize: 20.0, color: Colors.white)),
+            onPressed: validateAndSubmit,
+          ),
+        ));
   }
 }

@@ -2,9 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import 'package:sps/redux/actions/actions.dart';
 import 'package:sps/components/drawer.dart';
-import 'package:sps/redux/states/models.dart';
+import 'package:sps/redux/auth/auth_actions.dart';
+import 'package:sps/redux/auth/auth_state.dart';
+import 'package:sps/redux/root_state.dart';
 
 @immutable
 class DrawerMenu extends StatelessWidget {
@@ -23,7 +24,7 @@ class DrawerMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, _ViewModel>(
+    return StoreConnector<RootState, _ViewModel>(
       converter: _ViewModel.fromStore,
       builder: (BuildContext context, _ViewModel vm) {
         return DrawerMenuView(
@@ -44,9 +45,9 @@ class _ViewModel {
   final Function logoutUser;
   final AuthState authState;
 
-  static _ViewModel fromStore(Store<AppState> store) {
+  static _ViewModel fromStore(Store<RootState> store) {
     return _ViewModel(
-      logoutUser: (bool success) {
+      logoutUser: () {
         store.dispatch(logoutUserAction());
       },
       authState: store.state.auth,

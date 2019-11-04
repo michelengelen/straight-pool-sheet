@@ -2,11 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-
 import 'package:sps/components/wrapper.dart';
 import 'package:sps/constants/keys.dart';
 import 'package:sps/generated/i18n.dart';
-import 'package:sps/redux/states/app_state.dart';
+import 'package:sps/redux/root_state.dart';
 
 @immutable
 class Profile extends StatelessWidget {
@@ -20,17 +19,17 @@ class Profile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, Store<AppState>>(
-      converter: (Store<AppState> store) => store,
-      builder: (BuildContext context, Store<AppState> store) {
+    return StoreConnector<RootState, Store<RootState>>(
+      converter: (Store<RootState> store) => store,
+      builder: (BuildContext context, Store<RootState> store) {
         final FirebaseUser user = store.state.auth.user;
         return Wrapper(
           title: S.of(context).screen_profile_title,
           child: Center(
-            child: Column(
-              children: <Widget>[
-                Text(user.displayName + "'s Profile Page"),
-              ],
+              child: Column(
+            children: <Widget>[
+              Text(user.displayName + "'s Profile Page"),
+            ],
           )),
         );
       },

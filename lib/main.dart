@@ -4,31 +4,29 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'package:sps/redux/actions/actions.dart';
 import 'package:sps/constants/routes.dart';
-import 'package:sps/container/settings.dart';
-import 'package:sps/redux/middlewares/auth_middleware.dart';
-import 'package:sps/redux/middlewares/settings_middleware.dart';
-import 'package:sps/redux/states/settings_state.dart';
-import 'package:sps/screens/home.dart';
-import 'package:sps/redux/states/models.dart';
 import 'package:sps/container/profile.dart';
-import 'package:sps/redux/reducers/app_state_reducer.dart';
+import 'package:sps/container/settings.dart';
 import 'package:sps/generated/i18n.dart';
+import 'package:sps/redux/auth/auth_actions.dart';
+import 'package:sps/redux/auth/auth_middleware.dart';
+import 'package:sps/redux/root_reducer.dart';
+import 'package:sps/redux/root_state.dart';
+import 'package:sps/redux/settings/settings_actions.dart';
+import 'package:sps/redux/settings/settings_middleware.dart';
+import 'package:sps/redux/settings/settings_state.dart';
+import 'package:sps/screens/home.dart';
 
 Future<void> main() async {
   final SharedPreferences _sprefs = await SharedPreferences.getInstance();
 
-  final Store<AppState> store = Store<AppState>(
-    appReducer,
-    initialState: AppState.initial(_sprefs),
-    middleware: <Middleware<AppState>>[
-      thunkMiddleware,
-      ...createStoreSettingsMiddleware(),
-      ...createStoreAuthMiddleware(),
-    ]
-  );
+  final Store<RootState> store = Store<RootState>(appReducer,
+      initialState: RootState.initial(_sprefs),
+      middleware: <Middleware<RootState>>[
+        thunkMiddleware,
+        ...createStoreSettingsMiddleware(),
+        ...createStoreAuthMiddleware(),
+      ]);
 
   runApp(SPS(store: store));
 }
@@ -39,14 +37,14 @@ class SPS extends StatelessWidget {
     @required this.store,
   });
 
-  final Store<AppState> store;
+  final Store<RootState> store;
 
   @override
   Widget build(BuildContext context) {
-    return StoreProvider<AppState>(
+    return StoreProvider<RootState>(
       store: store,
-      child: StoreConnector<AppState, SettingsState>(
-        converter: (Store<AppState> store) => store.state.settings,
+      child: StoreConnector<RootState, SettingsState>(
+        converter: (Store<RootState> store) => store.state.settings,
         builder: (BuildContext context, SettingsState settings) {
           return MaterialApp(
             locale: Locale(settings.locale, ''),
@@ -66,8 +64,11 @@ class SPS extends StatelessWidget {
                 return HomeScreen(
                   onInit: () {
                     final Locale systemLocale = Localizations.localeOf(context);
-                    StoreProvider.of<AppState>(context).dispatch(ChangeLanguageAction(languageCode: systemLocale.languageCode));
-                    StoreProvider.of<AppState>(context).dispatch(LoadUserAction());
+                    StoreProvider.of<RootState>(context).dispatch(
+                        ChangeLanguageAction(
+                            languageCode: systemLocale.languageCode));
+                    StoreProvider.of<RootState>(context)
+                        .dispatch(LoadUserAction());
                   },
                 );
               },

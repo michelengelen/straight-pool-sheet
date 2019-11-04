@@ -7,7 +7,7 @@ import 'package:sps/components/wrapper.dart';
 import 'package:sps/constants/keys.dart';
 import 'package:sps/container/login.dart';
 import 'package:sps/generated/i18n.dart';
-import 'package:sps/redux/states/app_state.dart';
+import 'package:sps/redux/root_state.dart';
 
 @immutable
 class HomeScreen extends StatefulWidget {
@@ -32,14 +32,14 @@ class HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, FirebaseUser>(
-      converter: (Store<AppState> store) => store.state.auth.user,
+    return StoreConnector<RootState, FirebaseUser>(
+      converter: (Store<RootState> store) => store.state.auth.user,
       builder: (BuildContext context, FirebaseUser user) {
         return Wrapper(
           title: S.of(context).screen_home_title,
           child: user != null
-            ? WelcomeComponent(user: user)
-            : const LoginSignupScreen(),
+              ? WelcomeComponent(user: user)
+              : const LoginSignupScreen(),
         );
       },
     );

@@ -1,21 +1,23 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:redux/redux.dart';
-import 'package:sps/redux/actions/actions.dart';
-import 'package:sps/redux/states/app_state.dart';
+import 'package:sps/components/login.dart';
+import 'package:sps/redux/auth/auth_actions.dart';
+import 'package:sps/redux/root_state.dart';
+import 'package:sps/redux/view/view_actions.dart';
 import 'package:sps/services/auth.dart';
 
-List<Middleware<AppState>> createStoreAuthMiddleware() {
-  final Middleware<AppState> loadUser = _loadUser();
-  final Middleware<AppState> signInUserSocial = _signInUserSocial();
+List<Middleware<RootState>> createStoreAuthMiddleware() {
+  final Middleware<RootState> loadUser = _loadUser();
+  final Middleware<RootState> signInUserSocial = _signInUserSocial();
 
-  return <Middleware<AppState>>[
-    TypedMiddleware<AppState, LoadUserAction>(loadUser),
-    TypedMiddleware<AppState, SignInUserSocial>(signInUserSocial),
+  return <Middleware<RootState>>[
+    TypedMiddleware<RootState, LoadUserAction>(loadUser),
+    TypedMiddleware<RootState, SignInUserSocial>(signInUserSocial),
   ];
 }
 
-Middleware<AppState> _loadUser() {
-  return (Store<AppState> store, dynamic dynamicAction, NextDispatcher next) {
+Middleware<RootState> _loadUser() {
+  return (Store<RootState> store, dynamic dynamicAction, NextDispatcher next) {
     final LoadUserAction action = dynamicAction;
 
     next(action);
@@ -36,8 +38,8 @@ Middleware<AppState> _loadUser() {
   };
 }
 
-Middleware<AppState> _signInUserSocial() {
-  return (Store<AppState> store, dynamic dynamicAction, NextDispatcher next) {
+Middleware<RootState> _signInUserSocial() {
+  return (Store<RootState> store, dynamic dynamicAction, NextDispatcher next) {
     final SignInUserSocial action = dynamicAction;
 
     next(action);

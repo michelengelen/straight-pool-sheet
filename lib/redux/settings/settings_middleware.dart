@@ -1,20 +1,20 @@
 import 'package:redux/redux.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sps/redux/actions/actions.dart';
-import 'package:sps/redux/states/app_state.dart';
+import 'package:sps/redux/root_state.dart';
+import 'package:sps/redux/settings/settings_actions.dart';
 
-List<Middleware<AppState>> createStoreSettingsMiddleware() {
-  final Middleware<AppState> changeLanguage = _changeLanguage();
-  final Middleware<AppState> toggleTheme = _toggleTheme();
+List<Middleware<RootState>> createStoreSettingsMiddleware() {
+  final Middleware<RootState> changeLanguage = _changeLanguage();
+  final Middleware<RootState> toggleTheme = _toggleTheme();
 
-  return <Middleware<AppState>>[
-    TypedMiddleware<AppState, ChangeLanguageAction>(changeLanguage),
-    TypedMiddleware<AppState, ToggleThemeAction>(toggleTheme),
+  return <Middleware<RootState>>[
+    TypedMiddleware<RootState, ChangeLanguageAction>(changeLanguage),
+    TypedMiddleware<RootState, ToggleThemeAction>(toggleTheme),
   ];
 }
 
-Middleware<AppState> _changeLanguage() {
-  return (Store<AppState> store, dynamic dynamicAction, NextDispatcher next) {
+Middleware<RootState> _changeLanguage() {
+  return (Store<RootState> store, dynamic dynamicAction, NextDispatcher next) {
     final ChangeLanguageAction action = dynamicAction;
 
     next(action);
@@ -31,8 +31,8 @@ Middleware<AppState> _changeLanguage() {
   };
 }
 
-Middleware<AppState> _toggleTheme() {
-  return (Store<AppState> store, dynamic dynamicAction, NextDispatcher next) {
+Middleware<RootState> _toggleTheme() {
+  return (Store<RootState> store, dynamic dynamicAction, NextDispatcher next) {
     final ToggleThemeAction action = dynamicAction;
     final bool previous = store.state.settings.darkMode;
 

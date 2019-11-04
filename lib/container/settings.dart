@@ -5,9 +5,9 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:sps/generated/i18n.dart';
-import 'package:sps/redux/actions/actions.dart';
-import 'package:sps/redux/states/models.dart';
-import 'package:sps/redux/states/settings_state.dart';
+import 'package:sps/redux/root_state.dart';
+import 'package:sps/redux/settings/settings_actions.dart';
+import 'package:sps/redux/settings/settings_state.dart';
 import 'package:sps/screens/settings.dart';
 import 'package:sps/utils/snackbar.dart';
 
@@ -17,7 +17,7 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, _ViewModel>(
+    return StoreConnector<RootState, _ViewModel>(
       converter: _ViewModel.fromStore,
       builder: (BuildContext context, _ViewModel vm) {
         return Settings(
@@ -41,13 +41,13 @@ class _ViewModel {
   final Function toggleTheme;
   final Function switchLocale;
 
-  static _ViewModel fromStore(Store<AppState> store) {
+  static _ViewModel fromStore(Store<RootState> store) {
     final SettingsState settings = store.state.settings;
     final bool darkMode = store.state.settings.darkMode;
 
     Future<void> _switchLocale(
         BuildContext context, String languageCode, String message) {
-      if (store.state.isLoading) {
+      if (store.state.view.isLoading) {
         return Future<void>(null);
       }
       final Completer<void> completer = snackBarCompleter(
@@ -63,7 +63,7 @@ class _ViewModel {
     }
 
     Future<void> _toggleTheme(BuildContext context) {
-      if (store.state.isLoading) {
+      if (store.state.view.isLoading) {
         return Future<void>(null);
       }
       final Completer<void> completer = snackBarCompleter(
