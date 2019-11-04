@@ -31,15 +31,15 @@ Completer<void> snackBarCompleter(
       Navigator.of(context).pop();
     }
 
-    if (dismissable) {
-      action = SnackBarAction(
-        label: 'X',
-        onPressed: Scaffold.of(context).hideCurrentSnackBar,
-      );
-    } else if (success.action is Function) {
+    if (success.action is Function) {
       action = SnackBarAction(
         label: success.actionLabel ?? 'X',
         onPressed: success.action,
+      );
+    } else if (dismissable) {
+      action = SnackBarAction(
+        label: 'X',
+        onPressed: Scaffold.of(context).hideCurrentSnackBar,
       );
     }
 
@@ -48,23 +48,30 @@ Completer<void> snackBarCompleter(
       content: Text(success.message),
       action: action,
     ));
-  }).catchError((Object error) {
-    print('###### Error: $error');
-    if (dismissable) {
-      action = SnackBarAction(
-        label: 'X',
-        onPressed: Scaffold.of(context).hideCurrentSnackBar,
-      );
-    } else if (failure.action is Function) {
+  }).catchError((dynamic error) {
+    if (failure.action is Function) {
       action = SnackBarAction(
         label: failure.actionLabel ?? 'X',
+        textColor: Colors.white70,
         onPressed: failure.action,
+      );
+    } else if (dismissable) {
+      action = SnackBarAction(
+        label: 'X',
+        textColor: Colors.white70,
+        onPressed: Scaffold.of(context).hideCurrentSnackBar,
       );
     }
 
     Scaffold.of(context).hideCurrentSnackBar();
     Scaffold.of(context).showSnackBar(SnackBar(
-      content: Text(failure.message),
+      content: Text(
+        failure.message ?? error.message,
+        style: TextStyle(
+          color: Colors.white70,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
       action: action,
       backgroundColor: Colors.red,
     ));

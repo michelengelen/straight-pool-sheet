@@ -74,8 +74,6 @@ class _ViewModel {
         ),
         SnackBarContent(
           message: S.of(context).snackbar_user_loaded_failure,
-          action: () => store.dispatch(LoadUserAction()),
-          actionLabel: S.of(context).snackbar_retry,
         ),
       );
       store.dispatch(

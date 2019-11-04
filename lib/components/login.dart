@@ -109,9 +109,6 @@ class _LoginSignupState extends State<LoginSignup> {
 
   @override
   Widget build(BuildContext context) {
-    print('+++++++++++++++++++++++++++++++++');
-    print(context);
-    print('+++++++++++++++++++++++++++++++++');
     return StoreConnector<AppState, AuthState>(
       converter: (Store<AppState> store) {
         return store.state.auth;

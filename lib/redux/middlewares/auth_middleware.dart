@@ -61,18 +61,18 @@ Middleware<AppState> _signInUserSocial() {
           );
           break;
       }
+      if (authResponse.error || authResponse.cancelled)
+        return Future<AuthResponse>.error(authResponse);
+
       return authResponse;
     }).then<void>((AuthResponse authResponse) {
-      print('##########################################');
-      print(authResponse);
-      print('##########################################');
+      store.dispatch(LoadUserActionSuccess(authResponse.user));
       store.dispatch(AppIsLoaded());
-      if (authResponse != null && (!authResponse.error || !authResponse.cancelled)) {
-        store.dispatch(LoadUserActionSuccess(authResponse.user));
-        action.completer.complete();
-      } else {
-        store.dispatch(LoadUserActionFailure());
-      }
+      action.completer.complete();
+    }).catchError((Object authResponse) {
+      action.completer.completeError(authResponse);
+      store.dispatch(LoadUserActionFailure());
+      store.dispatch(AppIsLoaded());
     });
   };
 }

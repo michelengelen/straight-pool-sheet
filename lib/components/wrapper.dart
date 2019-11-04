@@ -25,22 +25,26 @@ class Wrapper extends StatelessWidget {
           appBar: AppBar(
             title: Text(title),
           ),
-          body: AnimatedSwitcher(
-              duration: Duration(milliseconds: 600),
-              child: isLoading ?
-              Stack(
-                children: <Widget>[
-                  ModalBarrier(
-                    dismissible: false,
-                    color: Colors.black
-                  ),
-                  Center(
-                    child: const CircularProgressIndicator(),
-                  ),
-                ],
-              ) :
-              child,
-          ),
+          body: Stack(
+              children: <Widget>[
+                child,
+                AnimatedSwitcher(
+                  duration: Duration(milliseconds: 600),
+                  child: isLoading ?
+                  Stack(
+                    children: <Widget>[
+                      ModalBarrier(
+                        dismissible: false,
+                        color: Colors.black
+                      ),
+                      Center(
+                        child: const CircularProgressIndicator(),
+                      ),
+                    ],
+                  ) : null,
+                ),
+              ],
+          )
         );
       },
     );
