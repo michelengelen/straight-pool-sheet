@@ -38,7 +38,7 @@ class Settings extends StatelessWidget {
     @required this.currentSettings,
   }) : super(key: Keys.settingsScreen);
 
-  final void Function() toggleTheme;
+  final void Function(BuildContext context) toggleTheme;
   final void Function(BuildContext context, String locale, String message) switchLocale;
   final SettingsState currentSettings;
 
@@ -69,7 +69,7 @@ class Settings extends StatelessWidget {
                       subtitle: Text(S.of(context).setting_darkMode_subtitle),
                       value: darkMode,
                       onChanged: (bool value) {
-                        toggleTheme();
+                        toggleTheme(context);
                       },
                       secondary: const Icon(Icons.brightness_3),
                     ),

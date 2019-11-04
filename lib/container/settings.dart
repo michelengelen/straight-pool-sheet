@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
+import 'package:sps/generated/i18n.dart';
 import 'package:sps/redux/actions/actions.dart';
 import 'package:sps/redux/states/models.dart';
 import 'package:sps/redux/states/settings_state.dart';
@@ -42,7 +43,7 @@ class _ViewModel {
 
   static _ViewModel fromStore(Store<AppState> store) {
     final SettingsState settings = store.state.settings;
-    final bool darkMode = settings.darkMode;
+    final bool darkMode = store.state.settings.darkMode;
 
     Future<void> _switchLocale(
         BuildContext context, String languageCode, String message) {
@@ -55,10 +56,22 @@ class _ViewModel {
       return completer.future;
     }
 
+    Future<void> _toggleTheme(BuildContext context) {
+      if (store.state.isLoading) {
+        return Future<void>(null);
+      }
+      final Completer<void> completer = snackBarCompleter(
+        context,
+        darkMode ?
+          S.of(context).setting_darkMode_switched_off :
+          S.of(context).setting_darkMode_switched_on,
+      );
+      store.dispatch(ToggleThemeAction(completer: completer));
+      return completer.future;
+    }
+
     return _ViewModel(
-      toggleTheme: () {
-        store.dispatch(toggleThemeAction(darkMode));
-      },
+      toggleTheme: _toggleTheme,
       switchLocale: _switchLocale,
       settings: settings,
     );

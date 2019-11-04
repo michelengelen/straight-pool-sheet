@@ -11,6 +11,8 @@
   "setting_language_switched": "Language switched to english",
   "setting_darkMode_title": "Dark mode",
   "setting_darkMode_subtitle": "Enable dark mode",
+  "setting_darkMode_switched_on": "Dark mode enabled",
+  "setting_darkMode_switched_off": "Dark mode disabled",
   "logout": "Logout",
   "icon_logout_semantic": "Log out the current user",
   "locales_en": "English",

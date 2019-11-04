@@ -33,6 +33,8 @@ class S implements WidgetsLocalizations {
   String get screen_profile_title => "Profile";
   String get screen_settings_title => "Settings";
   String get setting_darkMode_subtitle => "Enable dark mode";
+  String get setting_darkMode_switched_off => "Dark mode disabled";
+  String get setting_darkMode_switched_on => "Dark mode enabled";
   String get setting_darkMode_title => "Dark mode";
   String get setting_language_switched => "Language switched to english";
   String get setting_language_title => "Language";
@@ -46,6 +48,8 @@ class $de extends S {
   TextDirection get textDirection => TextDirection.ltr;
 
   @override
+  String get setting_darkMode_switched_off => "Dark mode deaktiviert";
+  @override
   String get setting_language_switched => "Aktuelle Sprache zu deutsch geändert";
   @override
   String get icon_home_semantic => "Zur Startseite wechseln";
@@ -57,6 +61,8 @@ class $de extends S {
   String get locales_en => "Englisch";
   @override
   String get screen_settings_title => "Einstellungen";
+  @override
+  String get setting_darkMode_switched_on => "Dark mode aktiviert";
   @override
   String get screen_profile_title => "Profil";
   @override

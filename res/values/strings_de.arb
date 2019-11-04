@@ -11,6 +11,8 @@
   "setting_language_switched": "Aktuelle Sprache zu deutsch geändert",
   "setting_darkMode_title": "Dark mode",
   "setting_darkMode_subtitle": "Dark mode aktivieren",
+  "setting_darkMode_switched_on": "Dark mode aktiviert",
+  "setting_darkMode_switched_off": "Dark mode deaktiviert",
   "logout": "Abmelden",
   "icon_logout_semantic": "Den aktuellen Nutzer abmelden",
   "locales_en": "Englisch",

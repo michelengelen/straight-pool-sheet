@@ -17,8 +17,8 @@ class CompleterAction {
     this.errorCompleter,
   });
 
-  final Completer<Function> completer;
-  final Completer<Function> errorCompleter;
+  final Completer<void> completer;
+  final Completer<void> errorCompleter;
 }
 
 /// APP ACTIONS
@@ -79,26 +79,14 @@ class NotificationAction {
 class NotificationHandledAction {}
 
 /// SETTINGS ACTIONS
-//ThunkAction<AppState> changeLocaleAction(String languageCode) {
-//  return (Store<AppState> store) async {
-//    Future<void>(() async {
-//      final SharedPreferences _sprefs = await SharedPreferences.getInstance();
-//      _sprefs.setString('lnguageCode', languageCode);
-//      store.dispatch(ChangeLanguageAction(languageCode));
-//    });
-//  };
-//}
-
-class ChangeLanguageAction {
+class ChangeLanguageAction extends CompleterAction {
   ChangeLanguageAction({
     this.languageCode,
-    this.completer,
-    this.errorCompleter,
-  });
+    Completer<void> completer,
+    Completer<void> errorCompleter,
+  }) : super(completer: completer, errorCompleter: errorCompleter);
 
   final String languageCode;
-  final Completer<void> completer;
-  final Completer<void> errorCompleter;
 
   @override
   String toString() {
@@ -117,7 +105,14 @@ class ChangeLanguageActionSuccess {
   }
 }
 
-class ToggleThemeAction {}
+class ToggleThemeAction extends CompleterAction {
+  ToggleThemeAction({
+    Completer<void> completer,
+    Completer<void> errorCompleter,
+  }) : super(completer: completer, errorCompleter: errorCompleter);
+}
+
+class ToggleThemeActionSuccess {}
 
 ThunkAction<AppState> toggleThemeAction(bool previous) {
   return (Store<AppState> store) async {
