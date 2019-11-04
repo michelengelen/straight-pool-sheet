@@ -18,6 +18,18 @@ String _getLanguageString(BuildContext context, String languageCode) {
   }
 }
 
+String _getSwitchedLanguageMessage(String languageCode) {
+  switch (languageCode) {
+    case 'de':
+      return const $de().setting_language_switched;
+      break;
+    case 'en':
+    default:
+      return const $en().setting_language_switched;
+      break;
+  }
+}
+
 @immutable
 class Settings extends StatelessWidget {
   const Settings({
@@ -27,7 +39,7 @@ class Settings extends StatelessWidget {
   }) : super(key: Keys.settingsScreen);
 
   final void Function() toggleTheme;
-  final void Function(BuildContext context, String locale) switchLocale;
+  final void Function(BuildContext context, String locale, String message) switchLocale;
   final SettingsState currentSettings;
 
   // TODO(michel): definitely make this better somehow!!!
@@ -38,58 +50,60 @@ class Settings extends StatelessWidget {
       <String, dynamic>{
         'icon': const Icon(Icons.settings),
         'view': (BuildContext context) => Container(
-          padding: const EdgeInsets.symmetric(vertical: 24),
-          child: ListView(
-            children: ListTile.divideTiles(
-              context: context,
-              tiles: <Widget>[
-                ListTile(
-                  title: Text(
-                    'App-Settings',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
+              padding: const EdgeInsets.symmetric(vertical: 24),
+              child: ListView(
+                children: ListTile.divideTiles(
+                  context: context,
+                  tiles: <Widget>[
+                    ListTile(
+                      title: Text(
+                        'App-Settings',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                SwitchListTile(
-                  title: Text(S.of(context).setting_darkMode_title),
-                  subtitle: Text(S.of(context).setting_darkMode_subtitle),
-                  value: darkMode,
-                  onChanged: (bool value) {
-                    toggleTheme();
-                  },
-                  secondary: const Icon(Icons.brightness_3),
-                ),
-                ListTile(
-                  title: Text(S.of(context).setting_language_title),
-                  subtitle: Text(S.of(context).setting_language_subtitle(
-                        _getLanguageString(context, currentSettings.locale),
-                      )),
-                  leading: const Icon(Icons.flag),
-                  trailing: PopupMenuButton<String>(
-                    onSelected: (String locale) {
-                      switchLocale(context, locale);
-                    },
-                    itemBuilder: (BuildContext context) => supportedLanguages
-                        .map((Locale item) => PopupMenuItem<String>(
-                              value: item.languageCode,
-                              child: Text(_getLanguageString(
-                                  context, item.languageCode)),
-                            ))
-                        .toList(),
-                  ),
-                ),
-              ],
-            ).toList(),
-          ),
-        )
+                    SwitchListTile(
+                      title: Text(S.of(context).setting_darkMode_title),
+                      subtitle: Text(S.of(context).setting_darkMode_subtitle),
+                      value: darkMode,
+                      onChanged: (bool value) {
+                        toggleTheme();
+                      },
+                      secondary: const Icon(Icons.brightness_3),
+                    ),
+                    ListTile(
+                      title: Text(S.of(context).setting_language_title),
+                      subtitle: Text(S.of(context).setting_language_subtitle(
+                            _getLanguageString(context, currentSettings.locale),
+                          )),
+                      leading: const Icon(Icons.flag),
+                      trailing: PopupMenuButton<String>(
+                        onSelected: (String languageCode) {
+                          final String message = _getSwitchedLanguageMessage(languageCode);
+                          switchLocale(context, languageCode, message);
+                        },
+                        itemBuilder: (BuildContext context) =>
+                            supportedLanguages
+                                .map((Locale item) => PopupMenuItem<String>(
+                                      value: item.languageCode,
+                                      child: Text(_getLanguageString(
+                                          context, item.languageCode)),
+                                    ))
+                                .toList(),
+                      ),
+                    ),
+                  ],
+                ).toList(),
+              ),
+            )
       },
       <String, dynamic>{
         'icon': const Icon(Icons.videogame_asset),
         'view': (BuildContext context) => Center(
-          child: const Text('GameSettings'),
-        ),
+              child: const Text('GameSettings'),
+            ),
       }
     ];
     return TabbedWrapper(

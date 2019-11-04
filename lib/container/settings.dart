@@ -4,11 +4,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import 'package:sps/generated/i18n.dart';
 import 'package:sps/redux/actions/actions.dart';
+import 'package:sps/redux/states/models.dart';
 import 'package:sps/redux/states/settings_state.dart';
 import 'package:sps/screens/settings.dart';
-import 'package:sps/redux/states/models.dart';
 import 'package:sps/utils/snackbar.dart';
 
 @immutable
@@ -45,13 +44,14 @@ class _ViewModel {
     final SettingsState settings = store.state.settings;
     final bool darkMode = settings.darkMode;
 
-    Future<void> _handleLanguage(BuildContext context, String locale) {
+    Future<void> _switchLocale(
+        BuildContext context, String languageCode, String message) {
       if (store.state.isLoading) {
         return Future<void>(null);
       }
-      final Completer<void> completer = snackBarCompleter(
-        context, S.of(context).setting_language_title);
-      store.dispatch(ChangeLanguageAction(languageCode: locale, completer: completer));
+      final Completer<void> completer = snackBarCompleter(context, message);
+      store.dispatch(ChangeLanguageAction(
+          languageCode: languageCode, completer: completer));
       return completer.future;
     }
 
@@ -59,7 +59,7 @@ class _ViewModel {
       toggleTheme: () {
         store.dispatch(toggleThemeAction(darkMode));
       },
-      switchLocale: _handleLanguage,
+      switchLocale: _switchLocale,
       settings: settings,
     );
   }
