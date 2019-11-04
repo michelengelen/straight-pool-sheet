@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
-import 'package:sps/redux/actions/actions.dart';
 import 'package:sps/components/wrapper.dart';
-import 'package:sps/constants/constants.dart';
 import 'package:sps/constants/keys.dart';
 import 'package:sps/generated/i18n.dart';
 import 'package:sps/redux/states/app_state.dart';
@@ -32,14 +30,6 @@ class Profile extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 Text(user.displayName + "'s Profile Page"),
-                RaisedButton(
-                  child: const Text('SHOW SNACKBAR'),
-                  onPressed: () {
-                    store.dispatch(NotificationAction(
-                      message: 'TEST SNACKBAR',
-                      type: NotificationType.INFO,
-                      duration: 200));
-                  }),
               ],
           )),
         );

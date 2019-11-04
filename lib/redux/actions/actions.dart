@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sps/constants/constants.dart';
 import 'package:sps/redux/states/app_state.dart';
 import 'package:sps/services/auth.dart';
 
@@ -58,25 +57,6 @@ class UserLoadedAction {
 }
 
 class UserNotLoadedAction {}
-
-class NotificationAction {
-  NotificationAction({
-    this.message,
-    this.type,
-    this.duration,
-  });
-
-  final String message;
-  final NotificationType type;
-  final int duration;
-
-  @override
-  String toString() {
-    return 'ShowSnackbarAction{message: $message, type: $type, duration: $duration}';
-  }
-}
-
-class NotificationHandledAction {}
 
 /// SETTINGS ACTIONS
 class ChangeLanguageAction extends CompleterAction {
