@@ -8,12 +8,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:606764946846:android:5c10d5e4bf18adfa84728f",
+        "mobilesdk_app_id": "1:606764946846:android:d1262e891718622484728f",
         "android_client_info": {
-          "package_name": "sneaky.peak.straightPoolSheet"
+          "package_name": "net.pro_billard.straight_pool_sheet"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "606764946846-1j4coaq62tdqpvnnu19gqg3lsn8g7r9b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "net.pro_billard.straight_pool_sheet",
+            "certificate_hash": "fd7a783c60ccfa8e503519f55fb7d5740ad13cb8"
+          }
+        },
         {
           "client_id": "606764946846-06fo8tkqpvqdcm7f5ajvauue7shviuoj.apps.googleusercontent.com",
           "client_type": 3
@@ -32,10 +40,10 @@
               "client_type": 3
             },
             {
-              "client_id": "606764946846-s0shmc1h3i9auoct82gopamsnsd7hmbb.apps.googleusercontent.com",
+              "client_id": "606764946846-u2404iqah9aahccf19ipd0nrlfiukdnf.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "sneaky.peak.straightPoolSheet"
+                "bundle_id": "net.pro_billard.straight_pool_sheet"
               }
             }
           ]

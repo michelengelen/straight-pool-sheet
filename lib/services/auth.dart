@@ -1,117 +1,154 @@
 import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
-abstract class BaseAuth {
-  Future<String> signIn(String email, String password);
+@immutable
+class AuthResponse {
+  const AuthResponse({
+    @required this.user,
+    @required this.error,
+    @required this.cancelled,
+    @required this.message,
+  });
 
-  Future<String> signUp(String email, String password);
+  final FirebaseUser user;
+  final bool error;
+  final bool cancelled;
+  final String message;
+
+  @override
+  String toString() {
+    return 'AuthResponse{FirebaseUser user: $user, error: $error, cancelled: $cancelled, message: $message}';
+  }
+}
+
+abstract class BaseAuth {
+  Future<FirebaseUser> signIn(String email, String password);
+
+  Future<FirebaseUser> register(String email, String password);
 
   Future<FirebaseUser> getCurrentUser();
 
   Future<void> sendEmailVerification();
 
-  Future<void> signOut();
+  Future<void> logOut();
 
   Future<bool> isEmailVerified();
 
-  Future<String> handleSocialSignIn(String type);
+  Future<AuthResponse> handleGoogleLogin();
+
+  Future<AuthResponse> handleFacebookLogin();
 }
 
 class Auth implements BaseAuth {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-  Future<String> signIn(String email, String password) async {
-    AuthResult result = await _firebaseAuth.signInWithEmailAndPassword(
+  @override
+  Future<FirebaseUser> signIn(String email, String password) async {
+    final AuthResult result = await _firebaseAuth.signInWithEmailAndPassword(
         email: email, password: password);
-    FirebaseUser user = result.user;
-    return user.uid;
-  }
-
-  Future<String> signUp(String email, String password) async {
-    AuthResult result = await _firebaseAuth.createUserWithEmailAndPassword(
-        email: email, password: password);
-    FirebaseUser user = result.user;
-    return user.uid;
-  }
-
-  Future<FirebaseUser> getCurrentUser() async {
-    FirebaseUser user = await _firebaseAuth.currentUser();
+    final FirebaseUser user = result.user;
     return user;
   }
 
-  Future<void> signOut() async {
+  @override
+  Future<FirebaseUser> register(String email, String password) async {
+    final AuthResult result = await _firebaseAuth.createUserWithEmailAndPassword(
+        email: email, password: password);
+    final FirebaseUser user = result.user;
+    return user;
+  }
+
+  @override
+  Future<FirebaseUser> getCurrentUser() async {
+    final FirebaseUser user = await _firebaseAuth.currentUser();
+    if (user == null)
+      throw 'Could not load User!';
+    return user;
+  }
+
+  @override
+  Future<void> logOut() async {
     return _firebaseAuth.signOut();
   }
 
+  @override
   Future<void> sendEmailVerification() async {
-    FirebaseUser user = await _firebaseAuth.currentUser();
+    final FirebaseUser user = await _firebaseAuth.currentUser();
     user.sendEmailVerification();
   }
 
+  @override
   Future<bool> isEmailVerified() async {
-    FirebaseUser user = await _firebaseAuth.currentUser();
+    final FirebaseUser user = await _firebaseAuth.currentUser();
     return user.isEmailVerified;
   }
 
-  Future<String> handleSocialSignIn(String type) async {
-    switch (type) {
-      case "FB":
-        FacebookLoginResult facebookLoginResult = await _handleFBSignIn();
-        if (facebookLoginResult.status == FacebookLoginStatus.loggedIn) {
-          final accessToken = facebookLoginResult.accessToken.token;
-          final facebookAuthCred = FacebookAuthProvider.getCredential(
-              accessToken: accessToken,
-          );
-          final user = (await _firebaseAuth.signInWithCredential(facebookAuthCred)).user;
-          print("User " + user.displayName + " logged in using Facebook");
-          return user.uid;
-        } else
-          return null;
+  @override
+  Future<AuthResponse> handleFacebookLogin() async {
+    final FacebookLogin facebookLogin = FacebookLogin();
+    final FacebookLoginResult response = await facebookLogin.logIn(<String>['email']);
+    switch (response.status) {
+      case FacebookLoginStatus.loggedIn:
+        final String accessToken = response.accessToken.token;
+        final AuthCredential facebookAuthCred = FacebookAuthProvider.getCredential(
+          accessToken: accessToken,
+        );
+        final FirebaseUser user = (await _firebaseAuth.signInWithCredential(facebookAuthCred)).user;
+        final AuthResponse authResponse = AuthResponse(
+            user: user,
+            error: false,
+            cancelled: false,
+            message: null,
+        );
+        return authResponse;
         break;
-      case "G":
-        try {
-          GoogleSignInAccount googleSignInAccount = await _handleGoogleSignIn();
-          final googleAuth = await googleSignInAccount.authentication;
-          final googleAuthCred = GoogleAuthProvider.getCredential(
-              idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
-          final user = (await _firebaseAuth.signInWithCredential(googleAuthCred)).user;
-          print("User " + user.displayName + " logged in using Google");
-          return user.uid;
-        } catch (error) {
-          return null;
-        }
-    }
-    return null;
-  }
-
-  Future<FacebookLoginResult> _handleFBSignIn() async {
-    FacebookLogin facebookLogin = FacebookLogin();
-    FacebookLoginResult facebookLoginResult =
-    await facebookLogin.logIn(['email']);
-    switch (facebookLoginResult.status) {
       case FacebookLoginStatus.cancelledByUser:
-        print("Cancelled");
+        const AuthResponse authResponse = AuthResponse(
+          user: null,
+          error: false,
+          cancelled: true,
+          message: 'Cancelled by User',
+        );
+        return authResponse;
         break;
       case FacebookLoginStatus.error:
-        print("error");
+        const AuthResponse authResponse = AuthResponse(
+          user: null,
+          error: true,
+          cancelled: false,
+          message: 'Something went wrong. Try again!',
+        );
+        return authResponse;
         break;
-      case FacebookLoginStatus.loggedIn:
-        print("Logged In");
-        break;
+      default:
+        return null;
     }
-    return facebookLoginResult;
   }
 
-  Future<GoogleSignInAccount> _handleGoogleSignIn() async {
-    GoogleSignIn googleSignIn = GoogleSignIn(
-        scopes: [
+  @override
+  Future<AuthResponse> handleGoogleLogin() async {
+    final GoogleSignIn googleSignIn = GoogleSignIn(
+        scopes: <String>[
           'email',
           'https://www.googleapis.com/auth/contacts.readonly',
         ]
     );
-    GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
-    return googleSignInAccount;
+    final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+    final GoogleSignInAuthentication googleAuth = await googleSignInAccount.authentication;
+    final AuthCredential googleAuthCred = GoogleAuthProvider.getCredential(
+        idToken: googleAuth.idToken,
+        accessToken: googleAuth.accessToken,
+    );
+    final AuthResult response = await _firebaseAuth.signInWithCredential(googleAuthCred);
+    final AuthResponse authResponse = AuthResponse(
+      user: response.user,
+      error: false,
+      cancelled: false,
+      message: null,
+    );
+    return authResponse;
   }
 }
