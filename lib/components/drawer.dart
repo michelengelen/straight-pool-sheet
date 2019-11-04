@@ -117,7 +117,7 @@ class DrawerMenuView extends StatelessWidget {
             selected: currentRoute == Routes.home,
             onTap: _getNavigation(Routes.home),
           ),
-          ListTile(
+          if (isUserLoggedIn) ListTile(
             leading: Icon(
               Icons.person_pin,
               size: 24.0,
