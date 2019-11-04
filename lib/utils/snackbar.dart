@@ -13,6 +13,7 @@ Completer<void> snackBarCompleter(
     if (shouldPop) {
       Navigator.of(context).pop();
     }
+    Scaffold.of(context).hideCurrentSnackBar();
     Scaffold.of(context).showSnackBar(SnackBar(
       content: Text(message),
     ));
