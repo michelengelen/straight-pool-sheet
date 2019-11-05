@@ -39,6 +39,17 @@ class S implements WidgetsLocalizations {
   String get icon_settings_semantic => "go to Settings Screen";
   String get locales_de => "German";
   String get locales_en => "English";
+  String get login_button_create => "Sign up";
+  String get login_button_create_account => "Create an account";
+  String get login_button_facebook => "Login with facebook";
+  String get login_button_google => "Login with google";
+  String get login_button_has_account => "Already have an acount?";
+  String get login_button_login => "Login";
+  String get login_input_email => "Email";
+  String get login_input_email_error => "Please enter a valid email address";
+  String get login_input_password => "Password";
+  String get login_input_password_error => "Please enter a password";
+  String get login_separator => "OR";
   String get logout => "Logout";
   String get screen_home_title => "Home";
   String get screen_profile_title => "Profile";
@@ -69,7 +80,11 @@ class $de extends S {
   @override
   String get icon_home_semantic => "Zur Startseite wechseln";
   @override
+  String get login_button_login => "Anmelden";
+  @override
   String get icon_logout_semantic => "Den aktuellen Nutzer abmelden";
+  @override
+  String get login_button_google => "Mit google anmelden";
   @override
   String get locales_en => "Englisch";
   @override
@@ -79,9 +94,13 @@ class $de extends S {
   @override
   String get screen_profile_title => "Profil";
   @override
+  String get login_button_create_account => "Account erstellen";
+  @override
   String get snackbar_user_signout_failure => "Nutzer konnte nicht abgemeldet werden.";
   @override
   String get ERROR_WRONG_PASSWORD => "Das Passwort ist ungültig.";
+  @override
+  String get login_input_password_error => "Bitte ein Passwort eingeben";
   @override
   String get snackbar_retry => "Wiederholen";
   @override
@@ -89,9 +108,15 @@ class $de extends S {
   @override
   String get icon_settings_semantic => "Zur Profilseite wechseln";
   @override
+  String get login_input_password => "Passwort";
+  @override
+  String get login_separator => "ODER";
+  @override
   String get setting_language_title => "Sprache";
   @override
   String get logout => "Abmelden";
+  @override
+  String get login_input_email => "E-Mail";
   @override
   String get ERROR_CANCELLED_BY_USER => "Abbruch des Anmeldevorgangs durch den Nutzer.";
   @override
@@ -105,6 +130,8 @@ class $de extends S {
   @override
   String get setting_language_switched => "Aktuelle Sprache zu deutsch geändert";
   @override
+  String get login_input_email_error => "Bitte eine gültige E-Mail Adresse eintragen";
+  @override
   String get ERROR_OPERATION_NOT_ALLOWED => "Diese Anmeldemethode wird nicht unterstützt. Nutzen Sie bitte eine der anderen Methoden.";
   @override
   String get app_title => "14/1 Helper";
@@ -115,6 +142,8 @@ class $de extends S {
   @override
   String get ERROR_USER_NOT_FOUND => "Account nicht gefunden.";
   @override
+  String get login_button_has_account => "Du hast schon einen Account?";
+  @override
   String get setting_darkMode_switched_on => "Dark mode aktiviert";
   @override
   String get ERROR_UNDEFINED => "Operation fehlgeschlagen. Bitte versuchen Sie es erneut.";
@@ -123,9 +152,13 @@ class $de extends S {
   @override
   String get locales_de => "Deutsch";
   @override
+  String get login_button_facebook => "Mit facebook anmelden";
+  @override
   String get ERROR_CRITICAL => "Ein kritischer Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.";
   @override
   String get ERROR_TOO_MANY_REQUESTS => "Es wurde zu oft versucht sich mit diesem Account anzumelden. Versuche es später noch einmal.";
+  @override
+  String get login_button_create => "Registrieren";
   @override
   String get snackbar_user_signout_success => "Nutzer abgemeldet.";
   @override
