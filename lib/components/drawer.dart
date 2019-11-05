@@ -12,15 +12,17 @@ class DrawerMenuView extends StatelessWidget {
     this.auth,
   });
 
-  final Function onLogout;
+  final Function(BuildContext context) onLogout;
   final AuthState auth;
 
   String _getInitials(String name) {
-    final List<String> parts = name.split(' ');
     String value = 'A';
+    if (name == null)
+      return value;
+
+    final List<String> parts = name.split(' ');
     if (parts.length >= 2) {
-      value =
-          parts[0].substring(0, 1) + parts[parts.length - 1].substring(0, 1);
+      value = parts[0].substring(0, 1) + parts[parts.length - 1].substring(0, 1);
     } else if (parts.isEmpty) {
       value = parts[0].substring(0, 1);
     }
@@ -54,7 +56,7 @@ class DrawerMenuView extends StatelessWidget {
         final String queryParam =
         auth.user.providerData[0].providerId.startsWith('facebook') ? '?width=400' : '';
         return UserAccountsDrawerHeader(
-          accountName: Text(auth.user.displayName),
+          accountName: Text(auth.user.displayName ?? 'No name is set for the user'),
           accountEmail: Text(auth.user.email),
           currentAccountPicture: GestureDetector(
             onTap: _getNavigation(Routes.profile),
@@ -153,7 +155,7 @@ class DrawerMenuView extends StatelessWidget {
                 // use Navigators maybePop method, because it returns a Future
                 // If we would use .pop() here the rendering of the Profile Page
                 // would run into an error, because the state gets updated beforehand
-                Navigator.maybePop(context).then<void>((bool _) => onLogout());
+                Navigator.maybePop(context).then<void>((bool _) => onLogout(context));
               } else {
                 Navigator.popAndPushNamed(context, Routes.home).then<void>(onLogout);
               }

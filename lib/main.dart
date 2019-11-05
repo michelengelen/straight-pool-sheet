@@ -5,6 +5,7 @@ import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sps/constants/routes.dart';
+import 'package:sps/container/login.dart';
 import 'package:sps/container/profile.dart';
 import 'package:sps/container/settings.dart';
 import 'package:sps/generated/i18n.dart';
@@ -71,6 +72,9 @@ class SPS extends StatelessWidget {
                       .dispatch(LoadUserAction());
                   },
                 );
+              },
+              Routes.login: (BuildContext context) {
+                return const LoginSignupScreen();
               },
               Routes.profile: (BuildContext context) {
                 return const ProfileScreen();

@@ -15,25 +15,14 @@ import 'package:sps/utils/snackbar_helper.dart';
 class DrawerMenu extends StatelessWidget {
   const DrawerMenu({Key key}) : super(key: key);
 
-  String getCurrentRouteName(BuildContext context) {
-    String currentRouteName;
-
-    Navigator.popUntil(context, (Route<dynamic> route) {
-      currentRouteName = route.settings.name;
-      return true;
-    });
-
-    return currentRouteName;
-  }
-
   @override
   Widget build(BuildContext context) {
     return StoreConnector<RootState, _ViewModel>(
       converter: _ViewModel.fromStore,
       builder: (BuildContext context, _ViewModel vm) {
         return DrawerMenuView(
-          onLogout: vm.logoutUser,
-          auth: vm.authState,
+          onLogout: vm.signOut,
+          auth: vm.auth,
         );
       },
     );
@@ -42,15 +31,15 @@ class DrawerMenu extends StatelessWidget {
 
 class _ViewModel {
   _ViewModel({
-    @required this.logoutUser,
-    @required this.authState,
+    @required this.signOut,
+    @required this.auth,
   });
 
-  final Function logoutUser;
-  final AuthState authState;
+  final Function signOut;
+  final AuthState auth;
 
   static _ViewModel fromStore(Store<RootState> store) {
-    Future<void> _signOut(BuildContext context, String type) {
+    Future<void> _signOut(BuildContext context) {
       if (store.state.view.isLoading) {
         return Future<void>(null);
       }
@@ -75,8 +64,8 @@ class _ViewModel {
     }
 
     return _ViewModel(
-      logoutUser: _signOut,
-      authState: store.state.auth,
+      signOut: _signOut,
+      auth: store.state.auth,
     );
   }
 }
