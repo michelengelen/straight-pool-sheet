@@ -9,7 +9,7 @@ import 'package:sps/redux/root_state.dart';
 import 'package:sps/redux/settings/settings_actions.dart';
 import 'package:sps/redux/settings/settings_state.dart';
 import 'package:sps/screens/settings.dart';
-import 'package:sps/utils/snackbar.dart';
+import 'package:sps/utils/snackbar_helper.dart';
 
 @immutable
 class SettingsScreen extends StatelessWidget {

@@ -19,5 +19,16 @@
   "logout": "Logout",
   "icon_logout_semantic": "Log out the current user",
   "locales_en": "English",
-  "locales_de": "German"
+  "locales_de": "German",
+  "ERROR_TOO_MANY_REQUESTS": "There were too many requests. Please wait a bit and try again later.",
+  "ERROR_INVALID_EMAIL":  "The email address is invalid.",
+  "ERROR_WRONG_PASSWORD":  "The password is invalid.",
+  "ERROR_USER_NOT_FOUND": "User not found.",
+  "ERROR_INVALID_CREDENTIAL": "Invalid login credentials provided.",
+  "ERROR_USER_DISABLED": "User is disabled.",
+  "ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL": "There is already another account associated with this email address. Please use the service you used before to log in.",
+  "ERROR_OPERATION_NOT_ALLOWED": "This log in method is not supported. Please use another one.",
+  "ERROR_CANCELLED_BY_USER": "The user cancelled the authentication process.",
+  "ERROR_UNDEFINED": "Something went wrong. Please try again later.",
+  "ERROR_CRITICAL": "A critical error occured. Please try again later"
 }

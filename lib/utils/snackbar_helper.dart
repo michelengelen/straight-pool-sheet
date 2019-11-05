@@ -14,15 +14,13 @@ class SnackBarContent {
   final String actionLabel;
 }
 
-Completer<void> snackBarCompleter(
-  BuildContext context,
+Completer<void> snackBarCompleter(BuildContext context,
   SnackBarContent success,
   SnackBarContent failure,
   {
     bool shouldPop = false,
     bool dismissable = true,
-  }
-) {
+  }) {
   final Completer<void> completer = Completer<void>();
   dynamic action;
 
@@ -39,7 +37,9 @@ Completer<void> snackBarCompleter(
     } else if (dismissable) {
       action = SnackBarAction(
         label: 'X',
-        onPressed: Scaffold.of(context).hideCurrentSnackBar,
+        onPressed: Scaffold
+          .of(context)
+          .hideCurrentSnackBar,
       );
     }
 
@@ -59,14 +59,18 @@ Completer<void> snackBarCompleter(
       action = SnackBarAction(
         label: 'X',
         textColor: Colors.white70,
-        onPressed: Scaffold.of(context).hideCurrentSnackBar,
+        onPressed: Scaffold
+          .of(context)
+          .hideCurrentSnackBar,
       );
     }
+
+    final String errorMessage = '${failure.message}${error.message.isNotEmpty ? ' - ${error.message}' : ''}';
 
     Scaffold.of(context).hideCurrentSnackBar();
     Scaffold.of(context).showSnackBar(SnackBar(
       content: Text(
-        failure.message ?? error.message,
+        errorMessage,
         style: TextStyle(
           color: Colors.white70,
           fontWeight: FontWeight.bold,

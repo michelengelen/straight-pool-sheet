@@ -8,7 +8,7 @@ import 'package:sps/components/login.dart';
 import 'package:sps/generated/i18n.dart';
 import 'package:sps/redux/auth/auth_actions.dart';
 import 'package:sps/redux/root_state.dart';
-import 'package:sps/utils/snackbar.dart';
+import 'package:sps/utils/snackbar_helper.dart';
 
 @immutable
 class LoginSignupScreen extends StatelessWidget {
@@ -77,7 +77,7 @@ class _ViewModel {
         ),
       );
       store.dispatch(
-        SignInUserSocial(type: type, completer: completer),
+        SignInUserSocial(context: context, type: type, completer: completer),
       );
 
       return completer.future;

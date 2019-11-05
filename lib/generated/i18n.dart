@@ -21,6 +21,17 @@ class S implements WidgetsLocalizations {
   @override
   TextDirection get textDirection => TextDirection.ltr;
 
+  String get ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL => "There is already another account associated with this email address. Please use the service you used before to log in.";
+  String get ERROR_CANCELLED_BY_USER => "The user cancelled the authentication process.";
+  String get ERROR_CRITICAL => "A critical error occured. Please try again later";
+  String get ERROR_INVALID_CREDENTIAL => "Invalid login credentials provided.";
+  String get ERROR_INVALID_EMAIL => "The email address is invalid.";
+  String get ERROR_OPERATION_NOT_ALLOWED => "This log in method is not supported. Please use another one.";
+  String get ERROR_TOO_MANY_REQUESTS => "There were too many requests. Please wait a bit and try again later.";
+  String get ERROR_UNDEFINED => "Something went wrong. Please try again later.";
+  String get ERROR_USER_DISABLED => "User is disabled.";
+  String get ERROR_USER_NOT_FOUND => "User not found.";
+  String get ERROR_WRONG_PASSWORD => "The password is invalid.";
   String get app_title => "Straight Pool Sheet";
   String get icon_home_semantic => "go to Home Screen";
   String get icon_logout_semantic => "Log out the current user";
@@ -53,27 +64,19 @@ class $de extends S {
   @override
   String get setting_darkMode_switched_off => "Dark mode deaktiviert";
   @override
-  String get setting_language_switched => "Aktuelle Sprache zu deutsch geändert";
-  @override
   String get icon_home_semantic => "Zur Startseite wechseln";
   @override
   String get icon_logout_semantic => "Den aktuellen Nutzer abmelden";
   @override
-  String get app_title => "14/1 Helper";
-  @override
   String get locales_en => "Englisch";
   @override
-  String get screen_settings_title => "Einstellungen";
-  @override
-  String get setting_darkMode_switched_on => "Dark mode aktiviert";
+  String get ERROR_USER_DISABLED => "Dieser Account wurde deaktiviert. Wenden Sie sich an den Support.";
   @override
   String get snackbar_user_loaded_success => "Nutzer erfolgreich geladen";
   @override
   String get screen_profile_title => "Profil";
   @override
-  String get icon_profile_semantic => "Zur Profilseite wechseln";
-  @override
-  String get locales_de => "Deutsch";
+  String get ERROR_WRONG_PASSWORD => "Das Passwort ist ungültig.";
   @override
   String get snackbar_retry => "Wiederholen";
   @override
@@ -85,9 +88,39 @@ class $de extends S {
   @override
   String get logout => "Abmelden";
   @override
+  String get ERROR_CANCELLED_BY_USER => "Abbruch des Anmeldevorgangs durch den Nutzer.";
+  @override
   String get setting_darkMode_subtitle => "Dark mode aktivieren";
   @override
   String get snackbar_user_loaded_failure => "Nutzer konnte nicht geladen werden";
+  @override
+  String get ERROR_INVALID_CREDENTIAL => "Ungültiger Login-Token. Bitte erneut anmelden.";
+  @override
+  String get ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL => "Es ist bereits ein Account mit dieser E-Mail Adresse verknüpft. Nutzen Sie bitte die korrekte Anmeldemethode.";
+  @override
+  String get setting_language_switched => "Aktuelle Sprache zu deutsch geändert";
+  @override
+  String get ERROR_OPERATION_NOT_ALLOWED => "Diese Anmeldemethode wird nicht unterstützt. Nutzen Sie bitte eine der anderen Methoden.";
+  @override
+  String get app_title => "14/1 Helper";
+  @override
+  String get ERROR_INVALID_EMAIL => "Die E-Mail Adresse ist ungültig.";
+  @override
+  String get screen_settings_title => "Einstellungen";
+  @override
+  String get ERROR_USER_NOT_FOUND => "Account nicht gefunden.";
+  @override
+  String get setting_darkMode_switched_on => "Dark mode aktiviert";
+  @override
+  String get ERROR_UNDEFINED => "Operation fehlgeschlagen. Bitte versuchen Sie es erneut.";
+  @override
+  String get icon_profile_semantic => "Zur Profilseite wechseln";
+  @override
+  String get locales_de => "Deutsch";
+  @override
+  String get ERROR_CRITICAL => "Ein kritischer Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.";
+  @override
+  String get ERROR_TOO_MANY_REQUESTS => "Es wurde zu oft versucht sich mit diesem Account anzumelden. Versuche es später noch einmal.";
   @override
   String get setting_darkMode_title => "Dark mode";
   @override

@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:redux/redux.dart';
 import 'package:sps/components/login.dart';
+import 'package:sps/generated/i18n.dart';
 import 'package:sps/redux/auth/auth_actions.dart';
 import 'package:sps/redux/root_state.dart';
 import 'package:sps/redux/view/view_actions.dart';
@@ -41,6 +43,7 @@ Middleware<RootState> _loadUser() {
 Middleware<RootState> _signInUserSocial() {
   return (Store<RootState> store, dynamic dynamicAction, NextDispatcher next) {
     final SignInUserSocial action = dynamicAction;
+    final BuildContext context = action.context;
 
     next(action);
 
@@ -49,17 +52,17 @@ Middleware<RootState> _signInUserSocial() {
       AuthResponse authResponse;
       switch (action.type) {
         case 'FB':
-          authResponse = await auth.handleFacebookLogin();
+          authResponse = await auth.handleFacebookLogin(context);
           break;
         case 'G':
-          authResponse = await auth.handleGoogleLogin();
+          authResponse = await auth.handleGoogleLogin(context);
           break;
         default:
-          authResponse = const AuthResponse(
+          authResponse = AuthResponse(
             user: null,
             error: true,
             cancelled: false,
-            message: 'Something went terribly wrong!',
+            message: S.of(context).ERROR_CRITICAL,
           );
           break;
       }

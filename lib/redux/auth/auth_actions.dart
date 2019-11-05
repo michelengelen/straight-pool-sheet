@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:sps/components/login.dart';
@@ -32,45 +33,17 @@ class LoadUserActionFailure {}
 class SignInUserSocial extends CompleterAction {
   SignInUserSocial({
     this.type,
+    this.context,
     Completer<void> completer,
   }) : super(completer: completer);
 
   final String type;
+  final BuildContext context;
 
   @override
   String toString() {
-    return 'SignInUserSocial{type: $type}';
+    return 'SignInUserSocial{type: $type, context: $context}';
   }
-}
-
-ThunkAction<RootState> socialLogin(String type) {
-  return (Store<RootState> store) {
-    store.dispatch(AppIsLoading());
-    Future<void>(() async {
-      AuthResponse authResponse;
-      switch (type) {
-        case 'FB':
-          authResponse = await auth.handleFacebookLogin();
-          break;
-        case 'G':
-          authResponse = await auth.handleGoogleLogin();
-          break;
-        default:
-          authResponse = const AuthResponse(
-            user: null,
-            error: true,
-            cancelled: false,
-            message: 'Something went terribly wrong!',
-          );
-          break;
-      }
-      if (authResponse != null &&
-        (!authResponse.error || !authResponse.cancelled)) {
-        store.dispatch(LoadUserActionSuccess(authResponse.user));
-      }
-      store.dispatch(AppIsLoaded());
-    });
-  };
 }
 
 ThunkAction<RootState> loadUserAction() {

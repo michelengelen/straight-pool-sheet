@@ -19,5 +19,16 @@
   "logout": "Abmelden",
   "icon_logout_semantic": "Den aktuellen Nutzer abmelden",
   "locales_en": "Englisch",
-  "locales_de": "Deutsch"
+  "locales_de": "Deutsch",
+  "ERROR_TOO_MANY_REQUESTS": "Es wurde zu oft versucht sich mit diesem Account anzumelden. Versuche es später noch einmal.",
+  "ERROR_INVALID_EMAIL":  "Die E-Mail Adresse ist ungültig.",
+  "ERROR_WRONG_PASSWORD":  "Das Passwort ist ungültig.",
+  "ERROR_USER_NOT_FOUND": "Account nicht gefunden.",
+  "ERROR_INVALID_CREDENTIAL": "Ungültiger Login-Token. Bitte erneut anmelden.",
+  "ERROR_USER_DISABLED": "Dieser Account wurde deaktiviert. Wenden Sie sich an den Support.",
+  "ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL": "Es ist bereits ein Account mit dieser E-Mail Adresse verknüpft. Nutzen Sie bitte die korrekte Anmeldemethode.",
+  "ERROR_OPERATION_NOT_ALLOWED": "Diese Anmeldemethode wird nicht unterstützt. Nutzen Sie bitte eine der anderen Methoden.",
+  "ERROR_CANCELLED_BY_USER": "Abbruch des Anmeldevorgangs durch den Nutzer.",
+  "ERROR_UNDEFINED": "Operation fehlgeschlagen. Bitte versuchen Sie es erneut.",
+  "ERROR_CRITICAL": "Ein kritischer Fehler ist aufgetreten. Bitte versuchen Sie es später erneut."
 }
