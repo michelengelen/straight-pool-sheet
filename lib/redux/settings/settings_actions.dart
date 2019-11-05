@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:sps/redux/_helper/completer.dart';
+import 'package:sps/utils/redux_helper.dart';
 
 class ChangeLanguageAction extends CompleterAction {
   ChangeLanguageAction({

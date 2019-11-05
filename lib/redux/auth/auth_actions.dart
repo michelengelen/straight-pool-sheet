@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:sps/redux/_helper/completer.dart';
+import 'package:sps/utils/redux_helper.dart';
 
 /// AUTH ACTIONS
 class LoadUserAction extends CompleterAction {
