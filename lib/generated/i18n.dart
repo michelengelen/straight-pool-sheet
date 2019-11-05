@@ -35,6 +35,7 @@ class S implements WidgetsLocalizations {
   String get app_title => "Straight Pool Sheet";
   String get icon_home_semantic => "go to Home Screen";
   String get icon_logout_semantic => "Log out the current user";
+  String get icon_new_game_semantic => "start a new game";
   String get icon_profile_semantic => "go to User Profile Screen";
   String get icon_settings_semantic => "go to Settings Screen";
   String get locales_de => "German";
@@ -52,6 +53,8 @@ class S implements WidgetsLocalizations {
   String get login_separator => "OR";
   String get logout => "Logout";
   String get screen_home_title => "Home";
+  String get screen_login_title => "Sign in / Sign up";
+  String get screen_new_game_title => "New Game";
   String get screen_profile_title => "Profile";
   String get screen_settings_title => "Settings";
   String get setting_darkMode_subtitle => "Enable dark mode";
@@ -80,21 +83,11 @@ class $de extends S {
   @override
   String get icon_home_semantic => "Zur Startseite wechseln";
   @override
-  String get login_button_login => "Anmelden";
-  @override
-  String get icon_logout_semantic => "Den aktuellen Nutzer abmelden";
-  @override
   String get login_button_google => "Mit google anmelden";
-  @override
-  String get locales_en => "Englisch";
-  @override
-  String get ERROR_USER_DISABLED => "Dieser Account wurde deaktiviert. Wenden Sie sich an den Support.";
   @override
   String get snackbar_user_loaded_success => "Nutzer erfolgreich geladen.";
   @override
   String get screen_profile_title => "Profil";
-  @override
-  String get login_button_create_account => "Account erstellen";
   @override
   String get snackbar_user_signout_failure => "Nutzer konnte nicht abgemeldet werden.";
   @override
@@ -106,19 +99,11 @@ class $de extends S {
   @override
   String get screen_home_title => "Startseite";
   @override
-  String get icon_settings_semantic => "Zur Profilseite wechseln";
-  @override
-  String get login_input_password => "Passwort";
-  @override
   String get login_separator => "ODER";
   @override
   String get setting_language_title => "Sprache";
   @override
   String get logout => "Abmelden";
-  @override
-  String get login_input_email => "E-Mail";
-  @override
-  String get ERROR_CANCELLED_BY_USER => "Abbruch des Anmeldevorgangs durch den Nutzer.";
   @override
   String get setting_darkMode_subtitle => "Dark mode aktivieren";
   @override
@@ -126,21 +111,9 @@ class $de extends S {
   @override
   String get ERROR_INVALID_CREDENTIAL => "Ungültiger Login-Token. Bitte erneut anmelden.";
   @override
-  String get ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL => "Es ist bereits ein Account mit dieser E-Mail Adresse verknüpft. Nutzen Sie bitte die korrekte Anmeldemethode.";
-  @override
-  String get setting_language_switched => "Aktuelle Sprache zu deutsch geändert";
-  @override
   String get login_input_email_error => "Bitte eine gültige E-Mail Adresse eintragen";
   @override
-  String get ERROR_OPERATION_NOT_ALLOWED => "Diese Anmeldemethode wird nicht unterstützt. Nutzen Sie bitte eine der anderen Methoden.";
-  @override
-  String get app_title => "14/1 Helper";
-  @override
   String get ERROR_INVALID_EMAIL => "Die E-Mail Adresse ist ungültig.";
-  @override
-  String get screen_settings_title => "Einstellungen";
-  @override
-  String get ERROR_USER_NOT_FOUND => "Account nicht gefunden.";
   @override
   String get login_button_has_account => "Du hast schon einen Account?";
   @override
@@ -152,17 +125,53 @@ class $de extends S {
   @override
   String get locales_de => "Deutsch";
   @override
-  String get login_button_facebook => "Mit facebook anmelden";
-  @override
   String get ERROR_CRITICAL => "Ein kritischer Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.";
   @override
   String get ERROR_TOO_MANY_REQUESTS => "Es wurde zu oft versucht sich mit diesem Account anzumelden. Versuche es später noch einmal.";
   @override
   String get login_button_create => "Registrieren";
   @override
-  String get snackbar_user_signout_success => "Nutzer abgemeldet.";
-  @override
   String get setting_darkMode_title => "Dark mode";
+  @override
+  String get login_button_login => "Anmelden";
+  @override
+  String get icon_logout_semantic => "Den aktuellen Nutzer abmelden";
+  @override
+  String get locales_en => "Englisch";
+  @override
+  String get ERROR_USER_DISABLED => "Dieser Account wurde deaktiviert. Wenden Sie sich an den Support.";
+  @override
+  String get login_button_create_account => "Account erstellen";
+  @override
+  String get icon_settings_semantic => "Zur Profilseite wechseln";
+  @override
+  String get login_input_password => "Passwort";
+  @override
+  String get screen_new_game_title => "Neues Spiel";
+  @override
+  String get login_input_email => "E-Mail";
+  @override
+  String get ERROR_CANCELLED_BY_USER => "Abbruch des Anmeldevorgangs durch den Nutzer.";
+  @override
+  String get ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL => "Es ist bereits ein Account mit dieser E-Mail Adresse verknüpft. Nutzen Sie bitte die korrekte Anmeldemethode.";
+  @override
+  String get screen_login_title => "Anmelden / Registrieren";
+  @override
+  String get setting_language_switched => "Aktuelle Sprache zu deutsch geändert";
+  @override
+  String get ERROR_OPERATION_NOT_ALLOWED => "Diese Anmeldemethode wird nicht unterstützt. Nutzen Sie bitte eine der anderen Methoden.";
+  @override
+  String get app_title => "14/1 Helper";
+  @override
+  String get icon_new_game_semantic => "Starte ein neues Spiel";
+  @override
+  String get screen_settings_title => "Einstellungen";
+  @override
+  String get ERROR_USER_NOT_FOUND => "Account nicht gefunden.";
+  @override
+  String get login_button_facebook => "Mit facebook anmelden";
+  @override
+  String get snackbar_user_signout_success => "Nutzer abgemeldet.";
   @override
   String ERROR_WRONG_PROVIDER(String provider) => "Es ist bereits ein Account mit dieser E-Mail Adresse verknüpft. Nutzen Sie bitte $provider als Anmeldemethode.";
   @override

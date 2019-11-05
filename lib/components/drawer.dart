@@ -95,7 +95,7 @@ class DrawerMenuView extends StatelessWidget {
               color: Theme.of(context).buttonColor,
               child: Text(S.of(context).login_button_login,
                 style: TextStyle(fontSize: 20.0, color: Colors.white)),
-              onPressed: _getNavigation(Routes.home),
+              onPressed: _getNavigation(Routes.login),
             ),
           ),
         ),
@@ -131,6 +131,16 @@ class DrawerMenuView extends StatelessWidget {
             title: Text(S.of(context).screen_home_title),
             selected: currentRoute == Routes.home,
             onTap: _getNavigation(Routes.home),
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.play_circle_filled,
+              size: 24.0,
+              semanticLabel: S.of(context).icon_new_game_semantic,
+            ),
+            title: Text(S.of(context).screen_new_game_title),
+            selected: currentRoute == Routes.new_game,
+            onTap: _getNavigation(Routes.new_game),
           ),
           if (isUserLoggedIn) ListTile(
             leading: Icon(

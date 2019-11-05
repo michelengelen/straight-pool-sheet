@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
+import 'package:sps/components/wrapper.dart';
 import 'package:sps/generated/i18n.dart';
 import 'package:sps/redux/auth/auth_state.dart';
 import 'package:sps/redux/root_state.dart';
@@ -32,7 +33,6 @@ class _LoginSignupState extends State<LoginSignup> {
   // Check if form is valid before perform login or signup
   bool validateAndSave() {
     final FormState form = _formKey.currentState;
-    print('#### $_formKey');
     if (form.validate()) {
       form.save();
       return true;
@@ -217,21 +217,24 @@ class _LoginSignupState extends State<LoginSignup> {
     return StoreConnector<RootState, AuthState>(
       converter: (Store<RootState> store) => store.state.auth,
       builder: (BuildContext context, AuthState auth) {
-        return Container(
-          padding: const EdgeInsets.all(32),
-          child: Form(
-            key: _formKey,
-            child: ListView(
-              children: <Widget>[
-                showEmailInput(),
-                showPasswordInput(),
-                showPrimaryButton(),
-                showSecondaryButton(),
-                showSeperator(),
-                showFacebookLoginButton(),
-                showGoogleLoginButton(),
-              ],
-            ),),
+        return Wrapper(
+          title: S.of(context).screen_login_title,
+          child: Container(
+            padding: const EdgeInsets.all(32),
+            child: Form(
+              key: _formKey,
+              child: ListView(
+                children: <Widget>[
+                  showEmailInput(),
+                  showPasswordInput(),
+                  showPrimaryButton(),
+                  showSecondaryButton(),
+                  showSeperator(),
+                  showFacebookLoginButton(),
+                  showGoogleLoginButton(),
+                ],
+              ),),
+          ),
         );
       });
   }

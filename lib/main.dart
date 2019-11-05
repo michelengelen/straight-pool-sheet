@@ -17,6 +17,7 @@ import 'package:sps/redux/settings/settings_actions.dart';
 import 'package:sps/redux/settings/settings_middleware.dart';
 import 'package:sps/redux/settings/settings_state.dart';
 import 'package:sps/screens/home.dart';
+import 'package:sps/screens/new_game.dart';
 
 Future<void> main() async {
   final SharedPreferences _sprefs = await SharedPreferences.getInstance();
@@ -81,6 +82,9 @@ class SPS extends StatelessWidget {
               },
               Routes.settings: (BuildContext context) {
                 return const SettingsScreen();
+              },
+              Routes.new_game: (BuildContext context) {
+                return const NewGameScreen();
               },
             },
           );
