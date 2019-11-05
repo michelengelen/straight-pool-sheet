@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import 'package:sps/redux/auth/auth_actions.dart';
 import 'package:sps/redux/root_state.dart';
 import 'package:sps/screens/profile.dart';
 
@@ -18,8 +17,6 @@ class ProfileScreen extends StatelessWidget {
       builder: (BuildContext context, _ViewModel vm) {
         return Profile(
           user: vm.user,
-          changePassword: vm.changePassword,
-          // changeName: vm.changeName,
         );
       },
     );
@@ -29,18 +26,13 @@ class ProfileScreen extends StatelessWidget {
 class _ViewModel {
   _ViewModel({
     @required this.user,
-    @required this.changePassword,
   });
 
   final FirebaseUser user;
-  final Function changePassword;
 
   static _ViewModel fromStore(Store<RootState> store) {
     return _ViewModel(
       user: store.state.auth.user,
-      changePassword: (String newPassword) {
-        store.dispatch(changePasswordAction(newPassword));
-      },
     );
   }
 }

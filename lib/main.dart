@@ -21,12 +21,12 @@ Future<void> main() async {
   final SharedPreferences _sprefs = await SharedPreferences.getInstance();
 
   final Store<RootState> store = Store<RootState>(appReducer,
-      initialState: RootState.initial(_sprefs),
-      middleware: <Middleware<RootState>>[
-        thunkMiddleware,
-        ...createStoreSettingsMiddleware(),
-        ...createStoreAuthMiddleware(),
-      ]);
+    initialState: RootState.initial(_sprefs),
+    middleware: <Middleware<RootState>>[
+      thunkMiddleware,
+      ...createStoreSettingsMiddleware(),
+      ...createStoreAuthMiddleware(),
+    ]);
 
   runApp(SPS(store: store));
 }
@@ -56,7 +56,7 @@ class SPS extends StatelessWidget {
             ],
             supportedLocales: S.delegate.supportedLocales,
             localeResolutionCallback:
-                S.delegate.resolution(fallback: const Locale('en', '')),
+            S.delegate.resolution(fallback: const Locale('en', '')),
             title: 'Straight Pool Sheet',
             theme: settings.darkMode ? ThemeData.dark() : ThemeData.light(),
             routes: <String, Widget Function(BuildContext)>{
@@ -65,10 +65,10 @@ class SPS extends StatelessWidget {
                   onInit: () {
                     final Locale systemLocale = Localizations.localeOf(context);
                     StoreProvider.of<RootState>(context).dispatch(
-                        ChangeLanguageAction(
-                            languageCode: systemLocale.languageCode));
+                      ChangeLanguageAction(
+                        languageCode: systemLocale.languageCode));
                     StoreProvider.of<RootState>(context)
-                        .dispatch(LoadUserAction());
+                      .dispatch(LoadUserAction());
                   },
                 );
               },

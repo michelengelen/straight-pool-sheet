@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sps/generated/i18n.dart';
 import 'package:sps/utils/auth_helper.dart';
 
 @immutable
@@ -28,15 +29,15 @@ class AuthResponse {
 }
 
 abstract class BaseAuth {
-  Future<FirebaseUser> signIn(String email, String password);
+  Future<AuthResponse> signIn(BuildContext context, String email, String password);
 
-  Future<FirebaseUser> register(String email, String password);
+  Future<AuthResponse> signUp(BuildContext context, String email, String password);
+
+  Future<void> signOut();
 
   Future<FirebaseUser> getCurrentUser();
 
   Future<void> sendEmailVerification();
-
-  Future<void> logOut();
 
   Future<bool> isEmailVerified();
 
@@ -48,20 +49,63 @@ abstract class BaseAuth {
 class Auth implements BaseAuth {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-  @override
-  Future<FirebaseUser> signIn(String email, String password) async {
-    final AuthResult result = await _firebaseAuth.signInWithEmailAndPassword(
-      email: email, password: password);
-    final FirebaseUser user = result.user;
-    return user;
+  AuthResponse generateAuthResponse(BuildContext context, dynamic result) {
+    AuthResponse authResponse;
+    if (result is AuthResult) {
+      authResponse = AuthResponse(
+        user: result.user, error: false, cancelled: false, message: null);
+    } else if (result is PlatformException) {
+      authResponse = AuthResponse(
+        user: null, error: true, cancelled: null, message: getAuthErrorMessage(context, result.code));
+    } else {
+      authResponse = AuthResponse(
+        user: null, error: true, cancelled: false, message: getAuthErrorMessage(context, 'ERROR_UNDEFINED'));
+    }
+    return authResponse;
+  }
+
+  Future<String> checkAuthProvider(String email) async {
+    String provider;
+    final List<String> providers = await _firebaseAuth.fetchSignInMethodsForEmail(email: email);
+    if (providers.isNotEmpty)
+      provider = providers[0];
+    return provider;
   }
 
   @override
-  Future<FirebaseUser> register(String email, String password) async {
-    final AuthResult result = await _firebaseAuth
-      .createUserWithEmailAndPassword(email: email, password: password);
-    final FirebaseUser user = result.user;
-    return user;
+  Future<AuthResponse> signIn(BuildContext context, String email, String password) async {
+    AuthResponse authResponse;
+    try {
+      final AuthResult response = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+      authResponse = generateAuthResponse(context, response);
+    } on PlatformException catch (error) {
+      final String provider = await checkAuthProvider(email);
+      if (error.code == 'ERROR_WRONG_PASSWORD' && provider.isNotEmpty) {
+        final String providerName = getProviderName(provider);
+        authResponse = AuthResponse(
+          user: null, error: true, cancelled: false, message: S.of(context).ERROR_WRONG_PROVIDER(providerName));
+      } else {
+        authResponse = generateAuthResponse(context, error);
+      }
+    }
+    return authResponse;
+  }
+
+  @override
+  Future<AuthResponse> signUp(BuildContext context, String email, String password) async {
+    AuthResponse authResponse;
+    try {
+      final AuthResult response = await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
+      authResponse = generateAuthResponse(context, response);
+    } on PlatformException catch (error) {
+      authResponse = generateAuthResponse(context, error);
+    }
+    return authResponse;
+  }
+
+  @override
+  Future<void> signOut() async {
+    return _firebaseAuth.signOut();
   }
 
   @override
@@ -70,11 +114,6 @@ class Auth implements BaseAuth {
     if (user == null)
       throw 'Could not load User!';
     return user;
-  }
-
-  @override
-  Future<void> logOut() async {
-    return _firebaseAuth.signOut();
   }
 
   @override
@@ -103,37 +142,17 @@ class Auth implements BaseAuth {
         );
         try {
           final AuthResult response = await _firebaseAuth.signInWithCredential(facebookAuthCred);
-          authResponse = AuthResponse(
-            user: response.user,
-            error: false,
-            cancelled: false,
-            message: null,
-          );
+          authResponse = generateAuthResponse(context, response);
         } on PlatformException catch (error) {
-          authResponse = AuthResponse(
-            user: null,
-            error: true,
-            cancelled: false,
-            message: getAuthErrorMessage(context, error.code) ?? error.message,
-          );
+          authResponse = generateAuthResponse(context, error);
         }
         break;
       case FacebookLoginStatus.cancelledByUser:
-        authResponse = AuthResponse(
-          user: null,
-          error: false,
-          cancelled: true,
-          message: getAuthErrorMessage(context, 'ERROR_CANCELLED_BY_USER'),
-        );
+        authResponse = generateAuthResponse(context, PlatformException(code: 'ERROR_CANCELLED_BY_USER'));
         break;
       case FacebookLoginStatus.error:
       default:
-        authResponse = AuthResponse(
-          user: null,
-          error: true,
-          cancelled: false,
-          message: getAuthErrorMessage(context, 'ERROR_UNDEFINED'),
-        );
+        authResponse = generateAuthResponse(context, PlatformException(code: 'ERROR_UNDEFINED'));
         break;
     }
     return authResponse;
@@ -149,6 +168,7 @@ class Auth implements BaseAuth {
     final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
     final GoogleSignInAuthentication googleAuth =
     await googleSignInAccount.authentication;
+
     final AuthCredential googleAuthCred = GoogleAuthProvider.getCredential(
       idToken: googleAuth.idToken,
       accessToken: googleAuth.accessToken,
@@ -157,19 +177,9 @@ class Auth implements BaseAuth {
     AuthResponse authResponse;
     try {
       final AuthResult response = await _firebaseAuth.signInWithCredential(googleAuthCred);
-      authResponse = AuthResponse(
-        user: response.user,
-        error: false,
-        cancelled: false,
-        message: null,
-      );
+      authResponse = generateAuthResponse(context, response);
     } on PlatformException catch (error) {
-      authResponse = AuthResponse(
-        user: null,
-        error: true,
-        cancelled: false,
-        message: getAuthErrorMessage(context, error.code) ?? error.message,
-      );
+      authResponse = generateAuthResponse(context, error);
     }
 
     return authResponse;

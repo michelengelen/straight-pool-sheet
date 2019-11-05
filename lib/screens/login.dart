@@ -1,24 +1,20 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:sps/redux/auth/auth_state.dart';
 import 'package:sps/redux/root_state.dart';
-import 'package:sps/services/auth.dart';
-
-final Auth auth = Auth();
 
 @immutable
 class LoginSignup extends StatefulWidget {
   const LoginSignup({
-    this.onLogin,
-    this.onRegister,
-    this.onSocialLogin,
+    this.onSignIn,
+    this.onSignUp,
+    this.onSignInSocial,
   });
 
-  final Function onLogin;
-  final Function onRegister;
-  final Function onSocialLogin;
+  final Function onSignIn;
+  final Function onSignUp;
+  final Function onSignInSocial;
 
   @override
   State<StatefulWidget> createState() => _LoginSignupState();
@@ -32,7 +28,6 @@ class _LoginSignupState extends State<LoginSignup> {
   String _errorMessage;
 
   bool _isLoginForm;
-  bool _isLoading;
 
   // Check if form is valid before perform login or signup
   bool validateAndSave() {
@@ -49,49 +44,29 @@ class _LoginSignupState extends State<LoginSignup> {
     final FormState form = _formKey.currentState;
     setState(() {
       _errorMessage = '';
-      _isLoading = true;
     });
     if (validateAndSave()) {
-      String userId = '';
       try {
         if (_isLoginForm) {
-          userId = (await auth.signIn(_email, _password)).uid;
+          await widget.onSignIn(context, _email, _password);
         } else {
-          userId = (await auth.register(_email, _password)).uid;
+          await widget.onSignUp(context, _email, _password);
         }
-        setState(() {
-          _isLoading = false;
-        });
-        storeCurrentUser(userId);
       } catch (e) {
         print('Error: $e');
         setState(() {
-          _isLoading = false;
           _errorMessage = e.message;
           form.reset();
         });
       }
-    } else {
-      setState(() {
-        _isLoading = false;
-      });
     }
   }
 
   @override
   void initState() {
     _errorMessage = '';
-    _isLoading = false;
     _isLoginForm = true;
     super.initState();
-  }
-
-  void storeCurrentUser(String userId) {
-    if (userId != null && userId.isNotEmpty) {
-      auth.getCurrentUser().then((FirebaseUser user) {
-        widget.onLogin(user);
-      });
-    }
   }
 
   void resetForm() {
@@ -116,22 +91,9 @@ class _LoginSignupState extends State<LoginSignup> {
               child: Stack(
                 children: <Widget>[
                   _showForm(),
-                  _showCircularProgress(),
             ],
           ));
     });
-  }
-
-  Widget _showCircularProgress() {
-    if (_isLoading) {
-      return Center(
-        child: const CircularProgressIndicator(),
-      );
-    }
-    return Container(
-      height: 0.0,
-      width: 0.0,
-    );
   }
 
   Widget showSeperator() {
@@ -162,7 +124,7 @@ class _LoginSignupState extends State<LoginSignup> {
   Widget showGoogleLoginButton() {
     return RaisedButton(
       onPressed: () {
-        widget.onSocialLogin(context, 'G');
+        widget.onSignInSocial(context, 'G');
       },
       color: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -181,7 +143,7 @@ class _LoginSignupState extends State<LoginSignup> {
     return RaisedButton(
         materialTapTargetSize: MaterialTapTargetSize.padded,
         onPressed: () {
-          widget.onSocialLogin(context, 'FB');
+          widget.onSignInSocial(context, 'FB');
         },
         color: const Color.fromRGBO(27, 76, 213, 1),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -196,11 +158,6 @@ class _LoginSignupState extends State<LoginSignup> {
   }
 
   Widget _showForm() {
-    if (_isLoading)
-      return Container(
-        width: 0.0,
-        height: 0.0,
-      );
     return Container(
         padding: const EdgeInsets.all(16.0),
         child: Form(

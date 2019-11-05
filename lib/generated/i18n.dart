@@ -52,6 +52,9 @@ class S implements WidgetsLocalizations {
   String get snackbar_retry => "Retry";
   String get snackbar_user_loaded_failure => "Could not load user";
   String get snackbar_user_loaded_success => "User loaded successfully";
+  String get snackbar_user_signout_failure => "Could not sign out user.";
+  String get snackbar_user_signout_success => "Signed out user.";
+  String ERROR_WRONG_PROVIDER(String provider) => "There is already an account associated with this email address. Please use login via $provider instead.";
   String setting_language_subtitle(String languageCode) => "Currently selected language: $languageCode";
 }
 
@@ -72,9 +75,11 @@ class $de extends S {
   @override
   String get ERROR_USER_DISABLED => "Dieser Account wurde deaktiviert. Wenden Sie sich an den Support.";
   @override
-  String get snackbar_user_loaded_success => "Nutzer erfolgreich geladen";
+  String get snackbar_user_loaded_success => "Nutzer erfolgreich geladen.";
   @override
   String get screen_profile_title => "Profil";
+  @override
+  String get snackbar_user_signout_failure => "Nutzer konnte nicht abgemeldet werden.";
   @override
   String get ERROR_WRONG_PASSWORD => "Das Passwort ist ungültig.";
   @override
@@ -92,7 +97,7 @@ class $de extends S {
   @override
   String get setting_darkMode_subtitle => "Dark mode aktivieren";
   @override
-  String get snackbar_user_loaded_failure => "Nutzer konnte nicht geladen werden";
+  String get snackbar_user_loaded_failure => "Nutzer konnte nicht geladen werden.";
   @override
   String get ERROR_INVALID_CREDENTIAL => "Ungültiger Login-Token. Bitte erneut anmelden.";
   @override
@@ -122,7 +127,11 @@ class $de extends S {
   @override
   String get ERROR_TOO_MANY_REQUESTS => "Es wurde zu oft versucht sich mit diesem Account anzumelden. Versuche es später noch einmal.";
   @override
+  String get snackbar_user_signout_success => "Nutzer abgemeldet.";
+  @override
   String get setting_darkMode_title => "Dark mode";
+  @override
+  String ERROR_WRONG_PROVIDER(String provider) => "Es ist bereits ein Account mit dieser E-Mail Adresse verknüpft. Nutzen Sie bitte $provider als Anmeldemethode.";
   @override
   String setting_language_subtitle(String languageCode) => "Aktuell ausgewählte Sprache: $languageCode";
 }

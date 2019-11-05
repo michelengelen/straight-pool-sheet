@@ -52,3 +52,17 @@ String getAuthErrorMessage(BuildContext context, String type) {
       break;
   }
 }
+
+String getProviderName(String providerURL) {
+  switch (providerURL) {
+    case 'facebook.com':
+      return 'facebook';
+      break;
+    case 'google.com':
+      return 'google';
+      break;
+    default:
+      return null;
+      break;
+  }
+}

@@ -11,7 +11,7 @@ import 'package:sps/redux/root_state.dart';
 class Profile extends StatelessWidget {
   const Profile({
     @required this.user,
-    @required this.changePassword,
+    this.changePassword,
   }) : super(key: Keys.profileScreen);
 
   final FirebaseUser user;
@@ -24,13 +24,15 @@ class Profile extends StatelessWidget {
       builder: (BuildContext context, Store<RootState> store) {
         final FirebaseUser user = store.state.auth.user;
         return Wrapper(
-          title: S.of(context).screen_profile_title,
+          title: S
+            .of(context)
+            .screen_profile_title,
           child: Center(
-              child: Column(
-            children: <Widget>[
-              Text(user.displayName + "'s Profile Page"),
-            ],
-          )),
+            child: Column(
+              children: <Widget>[
+                Text(user.displayName + "'s Profile Page"),
+              ],
+            )),
         );
       },
     );
