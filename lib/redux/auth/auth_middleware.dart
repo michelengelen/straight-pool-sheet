@@ -76,7 +76,7 @@ Middleware<RootState> _signInUser() {
 
 Middleware<RootState> _signUpUser() {
   return (Store<RootState> store, dynamic dynamicAction, NextDispatcher next) {
-    final SignIn action = dynamicAction;
+    final SignUp action = dynamicAction;
     final BuildContext context = action.context;
 
     next(action);
@@ -102,15 +102,14 @@ Middleware<RootState> _signUpUser() {
 
 Middleware<RootState> _signOutUser() {
   return (Store<RootState> store, dynamic dynamicAction, NextDispatcher next) {
-    final SignIn action = dynamicAction;
-    final BuildContext context = action.context;
+    final SignOut action = dynamicAction;
 
     next(action);
 
     store.dispatch(AppIsLoading());
     Future<dynamic>(() async {
       try {
-        await auth.signIn(context, action.email, action.password);
+        await auth.signOut();
       } on PlatformException catch (error) {
         return Future<void>.error(error);
       }

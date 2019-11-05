@@ -78,22 +78,35 @@ class DrawerMenuView extends StatelessWidget {
                 semanticLabel: S.of(context).icon_settings_semantic,
               ),
               tooltip: S.of(context).icon_settings_semantic,
-              onPressed: () {
-                if (currentRoute == Routes.settings) {
-                  Navigator.pop(context);
-                } else {
-                  Navigator.popAndPushNamed(context, Routes.settings);
-                }
-              },
+              onPressed: _getNavigation(Routes.settings),
             ),
           ],
         );
       }
-      return DrawerHeader(
-        child: const Text('#-# Welcome to SPS #-#'),
-        decoration: BoxDecoration(
-          color: Colors.blue,
+      return UserAccountsDrawerHeader(
+        accountName: const Text('Welcome to Straight Pool Sheet'),
+        accountEmail: Padding(
+          padding: const EdgeInsets.only(right: 12),
+          child: SizedBox(
+            width: double.infinity,
+            child: RaisedButton(
+              color: Theme.of(context).buttonColor,
+              child: Text(S.of(context).login_button_login,
+                style: TextStyle(fontSize: 20.0, color: Colors.white)),
+              onPressed: _getNavigation(Routes.home),
+            ),
+          ),
         ),
+        otherAccountsPictures: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.settings,
+              semanticLabel: S.of(context).icon_settings_semantic,
+            ),
+            tooltip: S.of(context).icon_settings_semantic,
+            onPressed: _getNavigation(Routes.settings),
+          ),
+        ],
       );
     }
 

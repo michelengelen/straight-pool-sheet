@@ -62,15 +62,12 @@ class SignUp extends CompleterAction {
 
 class SignOut extends CompleterAction {
   SignOut({
-    this.context,
     Completer<void> completer,
   }) : super(completer: completer);
 
-  final BuildContext context;
-
   @override
   String toString() {
-    return 'SignOut{context: $context}';
+    return 'SignOut{}';
   }
 }
 

@@ -32,6 +32,7 @@ class _LoginSignupState extends State<LoginSignup> {
   // Check if form is valid before perform login or signup
   bool validateAndSave() {
     final FormState form = _formKey.currentState;
+    print('#### $_formKey');
     if (form.validate()) {
       form.save();
       return true;
@@ -56,13 +57,7 @@ class _LoginSignupState extends State<LoginSignup> {
     super.initState();
   }
 
-  void resetForm() {
-    final FormState form = _formKey.currentState;
-    form.reset();
-  }
-
   void toggleFormMode() {
-    resetForm();
     setState(() {
       _isLoginForm = !_isLoginForm;
     });
@@ -82,7 +77,9 @@ class _LoginSignupState extends State<LoginSignup> {
                 endIndent: 12,
               ),
             ),
-            Text(S.of(context).login_separator),
+            Text(S
+              .of(context)
+              .login_separator),
             const Expanded(
               child: Divider(
                 thickness: 3,
@@ -103,7 +100,9 @@ class _LoginSignupState extends State<LoginSignup> {
         color: Colors.white,
         textColor: const Color.fromRGBO(122, 122, 122, 1),
         child: Text(
-          S.of(context).login_button_google,
+          S
+            .of(context)
+            .login_button_google,
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 20,
@@ -121,7 +120,9 @@ class _LoginSignupState extends State<LoginSignup> {
         color: const Color.fromRGBO(27, 76, 213, 1),
         textColor: Colors.white,
         child: Text(
-          S.of(context).login_button_facebook,
+          S
+            .of(context)
+            .login_button_facebook,
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 20,
@@ -137,13 +138,17 @@ class _LoginSignupState extends State<LoginSignup> {
           keyboardType: TextInputType.emailAddress,
           autofocus: false,
           decoration: InputDecoration(
-            hintText: S.of(context).login_input_email,
+            hintText: S
+              .of(context)
+              .login_input_email,
             prefixIcon: Icon(
               Icons.mail,
               color: Colors.grey,
             )),
           validator: (String value) =>
-          value.isEmpty ? S.of(context).login_input_email_error : null,
+          value.isEmpty ? S
+            .of(context)
+            .login_input_email_error : null,
           onSaved: (String value) => _email = value.trim(),
         ),
       );
@@ -157,13 +162,17 @@ class _LoginSignupState extends State<LoginSignup> {
           obscureText: true,
           autofocus: false,
           decoration: InputDecoration(
-            hintText: S.of(context).login_input_password,
+            hintText: S
+              .of(context)
+              .login_input_password,
             prefixIcon: Icon(
               Icons.lock,
               color: Colors.grey,
             )),
           validator: (String value) =>
-          value.isEmpty ? S.of(context).login_input_password_error : null,
+          value.isEmpty ? S
+            .of(context)
+            .login_input_password_error : null,
           onSaved: (String value) => _password = value.trim(),
         ),
       );
@@ -186,9 +195,11 @@ class _LoginSignupState extends State<LoginSignup> {
     Widget showPrimaryButton() {
       return Padding(
         padding: const EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
-        child: SizedBox(
+        child: Container(
           child: RaisedButton(
-            color: Theme.of(context).buttonColor,
+            color: Theme
+              .of(context)
+              .buttonColor,
             child: Text(
               _isLoginForm
                 ? S
@@ -208,17 +219,19 @@ class _LoginSignupState extends State<LoginSignup> {
       builder: (BuildContext context, AuthState auth) {
         return Container(
           padding: const EdgeInsets.all(32),
-          child: ListView(
-            children: <Widget>[
-              showEmailInput(),
-              showPasswordInput(),
-              showPrimaryButton(),
-              showSecondaryButton(),
-              showSeperator(),
-              showFacebookLoginButton(),
-              showGoogleLoginButton(),
-            ],
-          ),
+          child: Form(
+            key: _formKey,
+            child: ListView(
+              children: <Widget>[
+                showEmailInput(),
+                showPasswordInput(),
+                showPrimaryButton(),
+                showSecondaryButton(),
+                showSeperator(),
+                showFacebookLoginButton(),
+                showGoogleLoginButton(),
+              ],
+            ),),
         );
       });
   }

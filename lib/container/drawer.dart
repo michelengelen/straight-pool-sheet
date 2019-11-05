@@ -68,7 +68,7 @@ class _ViewModel {
         ),
       );
       store.dispatch(
-        SignOut(context: context, completer: completer),
+        SignOut(completer: completer),
       );
 
       return completer.future;
