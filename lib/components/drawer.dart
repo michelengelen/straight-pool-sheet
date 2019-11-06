@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:sps/constants/constants.dart';
+import 'package:sps/constants/images.dart';
 import 'package:sps/constants/routes.dart';
 import 'package:sps/generated/i18n.dart';
 import 'package:sps/redux/auth/auth_state.dart';
@@ -94,8 +95,8 @@ class DrawerMenuView extends StatelessWidget {
           color: Colors.black12,
           image: DecorationImage(
             image: darkMode
-              ? const AssetImage('assets/images/drawer_dark.png')
-              : const AssetImage('assets/images/color1.png'),
+              ? const AssetImage(ImageLinks.drawer_bg_dark)
+              : const AssetImage(ImageLinks.drawer_bg_light),
             fit: BoxFit.cover,
           ),
         ),
