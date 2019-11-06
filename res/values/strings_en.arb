@@ -1,5 +1,6 @@
 {
-  "app_title": "Straight Pool Sheet",
+  "app_title": "Pro Billard Tool",
+  "welcome_message": "Welcome to Pro Billard Tool",
   "screen_home_title": "Home",
   "icon_home_semantic": "go to Home Screen",
   "screen_login_title": "Sign in / Sign up",

@@ -32,7 +32,7 @@ class S implements WidgetsLocalizations {
   String get ERROR_USER_DISABLED => "User is disabled.";
   String get ERROR_USER_NOT_FOUND => "User not found.";
   String get ERROR_WRONG_PASSWORD => "The password is invalid.";
-  String get app_title => "Straight Pool Sheet";
+  String get app_title => "Pro Billard Tool";
   String get icon_home_semantic => "go to Home Screen";
   String get icon_logout_semantic => "Log out the current user";
   String get icon_new_game_semantic => "start a new game";
@@ -68,6 +68,7 @@ class S implements WidgetsLocalizations {
   String get snackbar_user_loaded_success => "User loaded successfully";
   String get snackbar_user_signout_failure => "Could not sign out user.";
   String get snackbar_user_signout_success => "Signed out user.";
+  String get welcome_message => "Welcome to Pro Billard Tool";
   String ERROR_WRONG_PROVIDER(String provider) => "There is already an account associated with this email address. Please use login via $provider instead.";
   String setting_language_subtitle(String languageCode) => "Currently selected language: $languageCode";
 }
@@ -143,6 +144,8 @@ class $de extends S {
   @override
   String get login_button_create_account => "Account erstellen";
   @override
+  String get welcome_message => "Pro Billard Tool";
+  @override
   String get icon_settings_semantic => "Zur Profilseite wechseln";
   @override
   String get login_input_password => "Passwort";
@@ -161,7 +164,7 @@ class $de extends S {
   @override
   String get ERROR_OPERATION_NOT_ALLOWED => "Diese Anmeldemethode wird nicht unterstützt. Nutzen Sie bitte eine der anderen Methoden.";
   @override
-  String get app_title => "14/1 Helper";
+  String get app_title => "Pro Billard Tool";
   @override
   String get icon_new_game_semantic => "Starte ein neues Spiel";
   @override

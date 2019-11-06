@@ -10,10 +10,12 @@ class DrawerMenuView extends StatelessWidget {
   const DrawerMenuView({
     this.onLogout,
     this.auth,
+    this.darkMode,
   });
 
   final Function(BuildContext context) onLogout;
   final AuthState auth;
+  final bool darkMode;
 
   String _getInitials(String name) {
     String value = 'A';
@@ -31,7 +33,8 @@ class DrawerMenuView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    print('+++++++ DarkMode?');
+    print(darkMode);
     String _getCurrentRouteName() {
       String currentRouteName;
 
@@ -58,57 +61,64 @@ class DrawerMenuView extends StatelessWidget {
         return UserAccountsDrawerHeader(
           accountName: Text(auth.user.displayName ?? 'No name is set for the user'),
           accountEmail: Text(auth.user.email),
-          currentAccountPicture: GestureDetector(
-            onTap: _getNavigation(Routes.profile),
-            child: auth.user.photoUrl != null
-                ? CircleAvatar(
-                    backgroundColor: Colors.blue,
-                    backgroundImage: CachedNetworkImageProvider(auth.user.photoUrl + queryParam),
-                  )
-                : CircleAvatar(
-                    backgroundColor: Colors.blue,
-                    child: Text(
-                      _getInitials(auth.user.displayName),
-                      style: TextStyle(fontSize: 40.0),
-                    ),
-                  ),
+          currentAccountPicture: auth.user.photoUrl != null
+            ? CircleAvatar(
+            backgroundColor: Colors.blue,
+            backgroundImage: CachedNetworkImageProvider(auth.user.photoUrl + queryParam),
+          )
+            : CircleAvatar(
+            backgroundColor: Colors.blue,
+            child: Text(
+              _getInitials(auth.user.displayName),
+              style: TextStyle(fontSize: 40.0),
+            ),
           ),
           otherAccountsPictures: <Widget>[
             IconButton(
               icon: Icon(
-                Icons.settings,
-                semanticLabel: S.of(context).icon_settings_semantic,
+                Icons.edit,
+                semanticLabel: S
+                  .of(context)
+                  .icon_profile_semantic,
               ),
-              tooltip: S.of(context).icon_settings_semantic,
-              onPressed: _getNavigation(Routes.settings),
+              tooltip: S
+                .of(context)
+                .icon_profile_semantic,
+              onPressed: _getNavigation(Routes.profile),
             ),
           ],
         );
       }
-      return UserAccountsDrawerHeader(
-        accountName: const Text('Welcome to Straight Pool Sheet'),
-        accountEmail: Padding(
-          padding: const EdgeInsets.only(right: 12),
-          child: SizedBox(
-            width: double.infinity,
-            child: RaisedButton(
-              color: Theme.of(context).buttonColor,
-              child: Text(S.of(context).login_button_login,
+      return DrawerHeader(
+        decoration: BoxDecoration(
+          color: Colors.black12,
+          image: DecorationImage(
+            image: darkMode
+              ? const AssetImage('assets/images/drawer_dark.png')
+              : const AssetImage('assets/images/color1.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Text(
+              S.of(context).welcome_message,
+              style: Theme.of(context).textTheme.title,
+            ),
+            RaisedButton(
+              color: Theme
+                .of(context)
+                .buttonColor,
+              child: Text(S
+                .of(context)
+                .login_button_login,
                 style: TextStyle(fontSize: 20.0, color: Colors.white)),
               onPressed: _getNavigation(Routes.login),
             ),
-          ),
-        ),
-        otherAccountsPictures: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.settings,
-              semanticLabel: S.of(context).icon_settings_semantic,
-            ),
-            tooltip: S.of(context).icon_settings_semantic,
-            onPressed: _getNavigation(Routes.settings),
-          ),
-        ],
+          ],
+        )
       );
     }
 
@@ -126,9 +136,13 @@ class DrawerMenuView extends StatelessWidget {
             leading: Icon(
               Icons.home,
               size: 24.0,
-              semanticLabel: S.of(context).icon_home_semantic,
+              semanticLabel: S
+                .of(context)
+                .icon_home_semantic,
             ),
-            title: Text(S.of(context).screen_home_title),
+            title: Text(S
+              .of(context)
+              .screen_home_title),
             selected: currentRoute == Routes.home,
             onTap: _getNavigation(Routes.home),
           ),
@@ -136,19 +150,41 @@ class DrawerMenuView extends StatelessWidget {
             leading: Icon(
               Icons.play_circle_filled,
               size: 24.0,
-              semanticLabel: S.of(context).icon_new_game_semantic,
+              semanticLabel: S
+                .of(context)
+                .icon_new_game_semantic,
             ),
-            title: Text(S.of(context).screen_new_game_title),
+            title: Text(S
+              .of(context)
+              .screen_new_game_title),
             selected: currentRoute == Routes.new_game,
             onTap: _getNavigation(Routes.new_game),
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.settings,
+              size: 24.0,
+              semanticLabel: S
+                .of(context)
+                .icon_settings_semantic,
+            ),
+            title: Text(S
+              .of(context)
+              .screen_settings_title),
+            selected: currentRoute == Routes.settings,
+            onTap: _getNavigation(Routes.settings),
           ),
           if (isUserLoggedIn) ListTile(
             leading: Icon(
               Icons.person_pin,
               size: 24.0,
-              semanticLabel: S.of(context).icon_profile_semantic,
+              semanticLabel: S
+                .of(context)
+                .icon_profile_semantic,
             ),
-            title: Text(S.of(context).screen_profile_title),
+            title: Text(S
+              .of(context)
+              .screen_profile_title),
             selected: currentRoute == Routes.profile,
             onTap: _getNavigation(Routes.profile),
           ),
@@ -157,9 +193,13 @@ class DrawerMenuView extends StatelessWidget {
               Icons.lock,
               color: Colors.red,
               size: 24.0,
-              semanticLabel: S.of(context).icon_logout_semantic,
+              semanticLabel: S
+                .of(context)
+                .icon_logout_semantic,
             ),
-            title: Text(S.of(context).logout),
+            title: Text(S
+              .of(context)
+              .logout),
             onTap: () {
               if (currentRoute == Routes.home) {
                 // use Navigators maybePop method, because it returns a Future
@@ -167,7 +207,7 @@ class DrawerMenuView extends StatelessWidget {
                 // would run into an error, because the state gets updated beforehand
                 Navigator.maybePop(context).then<void>((bool _) => onLogout(context));
               } else {
-                Navigator.popAndPushNamed(context, Routes.home).then<void>(onLogout);
+                Navigator.popAndPushNamed(context, Routes.login).then<void>(onLogout);
               }
             },
           ),

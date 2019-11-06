@@ -65,9 +65,8 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
-  # assets:
-  #   - localization/i18n_en.json
-  #   - localization/i18n_de.json
+  assets:
+    - assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

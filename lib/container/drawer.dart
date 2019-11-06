@@ -23,6 +23,7 @@ class DrawerMenu extends StatelessWidget {
         return DrawerMenuView(
           onLogout: vm.signOut,
           auth: vm.auth,
+          darkMode: vm.darkMode,
         );
       },
     );
@@ -33,10 +34,12 @@ class _ViewModel {
   _ViewModel({
     @required this.signOut,
     @required this.auth,
+    @required this.darkMode,
   });
 
   final Function signOut;
   final AuthState auth;
+  final bool darkMode;
 
   static _ViewModel fromStore(Store<RootState> store) {
     Future<void> _signOut(BuildContext context) {
@@ -66,6 +69,7 @@ class _ViewModel {
     return _ViewModel(
       signOut: _signOut,
       auth: store.state.auth,
+      darkMode: store.state.settings.darkMode,
     );
   }
 }

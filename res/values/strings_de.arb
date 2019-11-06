@@ -1,5 +1,6 @@
 {
-  "app_title": "14/1 Helper",
+  "app_title": "Pro Billard Tool",
+  "welcome_message": "Pro Billard Tool",
   "screen_home_title": "Startseite",
   "icon_home_semantic": "Zur Startseite wechseln",
   "screen_login_title": "Anmelden / Registrieren",
