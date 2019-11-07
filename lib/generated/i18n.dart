@@ -21,21 +21,55 @@ class S implements WidgetsLocalizations {
   @override
   TextDirection get textDirection => TextDirection.ltr;
 
-  String get app_title => "Straight Pool Sheet";
+  String get ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL => "There is already another account associated with this email address. Please use the service you used before to log in.";
+  String get ERROR_CANCELLED_BY_USER => "The user cancelled the authentication process.";
+  String get ERROR_CRITICAL => "A critical error occured. Please try again later";
+  String get ERROR_INVALID_CREDENTIAL => "Invalid login credentials provided.";
+  String get ERROR_INVALID_EMAIL => "The email address is invalid.";
+  String get ERROR_OPERATION_NOT_ALLOWED => "This log in method is not supported. Please use another one.";
+  String get ERROR_TOO_MANY_REQUESTS => "There were too many requests. Please wait a bit and try again later.";
+  String get ERROR_UNDEFINED => "Something went wrong. Please try again later.";
+  String get ERROR_USER_DISABLED => "User is disabled.";
+  String get ERROR_USER_NOT_FOUND => "User not found.";
+  String get ERROR_WRONG_PASSWORD => "The password is invalid.";
+  String get app_title => "Pro Billard Tool";
   String get icon_home_semantic => "go to Home Screen";
   String get icon_logout_semantic => "Log out the current user";
+  String get icon_new_game_semantic => "start a new game";
   String get icon_profile_semantic => "go to User Profile Screen";
   String get icon_settings_semantic => "go to Settings Screen";
   String get locales_de => "German";
   String get locales_en => "English";
+  String get login_button_create => "Sign up";
+  String get login_button_create_account => "Create an account";
+  String get login_button_facebook => "Login with facebook";
+  String get login_button_google => "Login with google";
+  String get login_button_has_account => "Already have an acount?";
+  String get login_button_login => "Login";
+  String get login_input_email => "Email";
+  String get login_input_email_error => "Please enter a valid email address";
+  String get login_input_password => "Password";
+  String get login_input_password_error => "Please enter a password";
+  String get login_separator => "OR";
   String get logout => "Logout";
   String get screen_home_title => "Home";
+  String get screen_login_title => "Sign in / Sign up";
+  String get screen_new_game_title => "New Game";
   String get screen_profile_title => "Profile";
   String get screen_settings_title => "Settings";
   String get setting_darkMode_subtitle => "Enable dark mode";
+  String get setting_darkMode_switched_off => "Dark mode disabled";
+  String get setting_darkMode_switched_on => "Dark mode enabled";
   String get setting_darkMode_title => "Dark mode";
   String get setting_language_switched => "Language switched to english";
   String get setting_language_title => "Language";
+  String get snackbar_retry => "Retry";
+  String get snackbar_user_loaded_failure => "Could not load user";
+  String get snackbar_user_loaded_success => "User loaded successfully";
+  String get snackbar_user_signout_failure => "Could not sign out user.";
+  String get snackbar_user_signout_success => "Signed out user.";
+  String get welcome_message => "Welcome to Pro Billard Tool";
+  String ERROR_WRONG_PROVIDER(String provider) => "There is already an account associated with this email address. Please use login via $provider instead.";
   String setting_language_subtitle(String languageCode) => "Currently selected language: $languageCode";
 }
 
@@ -46,27 +80,27 @@ class $de extends S {
   TextDirection get textDirection => TextDirection.ltr;
 
   @override
-  String get setting_language_switched => "Aktuelle Sprache zu deutsch geändert";
+  String get setting_darkMode_switched_off => "Dark mode deaktiviert";
   @override
   String get icon_home_semantic => "Zur Startseite wechseln";
   @override
-  String get icon_logout_semantic => "Den aktuellen Nutzer abmelden";
+  String get login_button_google => "Mit google anmelden";
   @override
-  String get app_title => "14/1 Helper";
-  @override
-  String get locales_en => "Englisch";
-  @override
-  String get screen_settings_title => "Einstellungen";
+  String get snackbar_user_loaded_success => "Nutzer erfolgreich geladen.";
   @override
   String get screen_profile_title => "Profil";
   @override
-  String get icon_profile_semantic => "Zur Profilseite wechseln";
+  String get snackbar_user_signout_failure => "Nutzer konnte nicht abgemeldet werden.";
   @override
-  String get locales_de => "Deutsch";
+  String get ERROR_WRONG_PASSWORD => "Das Passwort ist ungültig.";
+  @override
+  String get login_input_password_error => "Bitte ein Passwort eingeben";
+  @override
+  String get snackbar_retry => "Wiederholen";
   @override
   String get screen_home_title => "Startseite";
   @override
-  String get icon_settings_semantic => "Zur Profilseite wechseln";
+  String get login_separator => "ODER";
   @override
   String get setting_language_title => "Sprache";
   @override
@@ -74,7 +108,75 @@ class $de extends S {
   @override
   String get setting_darkMode_subtitle => "Dark mode aktivieren";
   @override
+  String get snackbar_user_loaded_failure => "Nutzer konnte nicht geladen werden.";
+  @override
+  String get ERROR_INVALID_CREDENTIAL => "Ungültiger Login-Token. Bitte erneut anmelden.";
+  @override
+  String get login_input_email_error => "Bitte eine gültige E-Mail Adresse eintragen";
+  @override
+  String get ERROR_INVALID_EMAIL => "Die E-Mail Adresse ist ungültig.";
+  @override
+  String get login_button_has_account => "Du hast schon einen Account?";
+  @override
+  String get setting_darkMode_switched_on => "Dark mode aktiviert";
+  @override
+  String get ERROR_UNDEFINED => "Operation fehlgeschlagen. Bitte versuchen Sie es erneut.";
+  @override
+  String get icon_profile_semantic => "Zur Profilseite wechseln";
+  @override
+  String get locales_de => "Deutsch";
+  @override
+  String get ERROR_CRITICAL => "Ein kritischer Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.";
+  @override
+  String get ERROR_TOO_MANY_REQUESTS => "Es wurde zu oft versucht sich mit diesem Account anzumelden. Versuche es später noch einmal.";
+  @override
+  String get login_button_create => "Registrieren";
+  @override
   String get setting_darkMode_title => "Dark mode";
+  @override
+  String get login_button_login => "Anmelden";
+  @override
+  String get icon_logout_semantic => "Den aktuellen Nutzer abmelden";
+  @override
+  String get locales_en => "Englisch";
+  @override
+  String get ERROR_USER_DISABLED => "Dieser Account wurde deaktiviert. Wenden Sie sich an den Support.";
+  @override
+  String get login_button_create_account => "Account erstellen";
+  @override
+  String get welcome_message => "Pro Billard Tool";
+  @override
+  String get icon_settings_semantic => "Zur Profilseite wechseln";
+  @override
+  String get login_input_password => "Passwort";
+  @override
+  String get screen_new_game_title => "Neues Spiel";
+  @override
+  String get login_input_email => "E-Mail";
+  @override
+  String get ERROR_CANCELLED_BY_USER => "Abbruch des Anmeldevorgangs durch den Nutzer.";
+  @override
+  String get ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL => "Es ist bereits ein Account mit dieser E-Mail Adresse verknüpft. Nutzen Sie bitte die korrekte Anmeldemethode.";
+  @override
+  String get screen_login_title => "Anmelden / Registrieren";
+  @override
+  String get setting_language_switched => "Aktuelle Sprache zu deutsch geändert";
+  @override
+  String get ERROR_OPERATION_NOT_ALLOWED => "Diese Anmeldemethode wird nicht unterstützt. Nutzen Sie bitte eine der anderen Methoden.";
+  @override
+  String get app_title => "Pro Billard Tool";
+  @override
+  String get icon_new_game_semantic => "Starte ein neues Spiel";
+  @override
+  String get screen_settings_title => "Einstellungen";
+  @override
+  String get ERROR_USER_NOT_FOUND => "Account nicht gefunden.";
+  @override
+  String get login_button_facebook => "Mit facebook anmelden";
+  @override
+  String get snackbar_user_signout_success => "Nutzer abgemeldet.";
+  @override
+  String ERROR_WRONG_PROVIDER(String provider) => "Es ist bereits ein Account mit dieser E-Mail Adresse verknüpft. Nutzen Sie bitte $provider als Anmeldemethode.";
   @override
   String setting_language_subtitle(String languageCode) => "Aktuell ausgewählte Sprache: $languageCode";
 }

@@ -4,7 +4,7 @@ import 'package:redux/redux.dart';
 
 import 'package:sps/constants/keys.dart';
 import 'package:sps/container/drawer.dart';
-import 'package:sps/redux/states/app_state.dart';
+import 'package:sps/redux/root_state.dart';
 
 class Wrapper extends StatelessWidget {
   const Wrapper({
@@ -17,30 +17,34 @@ class Wrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, bool>(
-      converter: (Store<AppState> store) => store.state.isLoading,
+    return StoreConnector<RootState, bool>(
+      converter: (Store<RootState> store) => store.state.view.isLoading,
       builder: (BuildContext context, bool isLoading) {
         return Scaffold(
           drawer: const DrawerMenu(),
           appBar: AppBar(
             title: Text(title),
           ),
-          body: AnimatedSwitcher(
-              duration: Duration(milliseconds: 600),
-              child: isLoading ?
-              Stack(
-                children: <Widget>[
-                  ModalBarrier(
-                    dismissible: false,
-                    color: Colors.black
-                  ),
-                  Center(
-                    child: const CircularProgressIndicator(),
-                  ),
-                ],
-              ) :
-              child,
-          ),
+          body: Stack(
+              children: <Widget>[
+                child,
+                AnimatedSwitcher(
+                  duration: Duration(milliseconds: 600),
+                  child: isLoading ?
+                  Stack(
+                    children: <Widget>[
+                      ModalBarrier(
+                        dismissible: false,
+                        color: Colors.black
+                      ),
+                      Center(
+                        child: const CircularProgressIndicator(),
+                      ),
+                    ],
+                  ) : null,
+                ),
+              ],
+          )
         );
       },
     );

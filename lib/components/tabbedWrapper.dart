@@ -3,7 +3,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:sps/constants/keys.dart';
 import 'package:sps/container/drawer.dart';
-import 'package:sps/redux/states/app_state.dart';
+import 'package:sps/redux/root_state.dart';
 
 @immutable
 class TabbedWrapper extends StatelessWidget {
@@ -17,8 +17,8 @@ class TabbedWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, bool>(
-      converter: (Store<AppState> store) => store.state.isLoading,
+    return StoreConnector<RootState, bool>(
+      converter: (Store<RootState> store) => store.state.view.isLoading,
       builder: (BuildContext context, bool isLoading) {
         return DefaultTabController(
           length: tabs.length,

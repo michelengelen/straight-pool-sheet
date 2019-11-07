@@ -2,28 +2,24 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import 'package:sps/components/welcome.dart';
 import 'package:sps/components/wrapper.dart';
 import 'package:sps/constants/keys.dart';
 import 'package:sps/generated/i18n.dart';
 import 'package:sps/redux/root_state.dart';
 
 @immutable
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({@required this.onInit}) : super(key: Keys.homeScreen);
-
-  final void Function() onInit;
+class NewGameScreen extends StatefulWidget {
+  const NewGameScreen() : super(key: Keys.newGameScreen);
 
   @override
-  HomeScreenState createState() {
-    return HomeScreenState();
+  NewGameScreenState createState() {
+    return NewGameScreenState();
   }
 }
 
-class HomeScreenState extends State<HomeScreen> {
+class NewGameScreenState extends State<NewGameScreen> {
   @override
   void initState() {
-    widget.onInit();
     super.initState();
   }
 
@@ -35,8 +31,12 @@ class HomeScreenState extends State<HomeScreen> {
       converter: (Store<RootState> store) => store.state.auth.user,
       builder: (BuildContext context, FirebaseUser user) {
         return Wrapper(
-          title: S.of(context).screen_home_title,
-          child: WelcomeComponent(user: user),
+          title: S
+            .of(context)
+            .screen_new_game_title,
+          child: Center(
+            child: const Text('New Game Screen'),
+          ),
         );
       },
     );
