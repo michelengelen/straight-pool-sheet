@@ -102,6 +102,7 @@ class _LoginSignupState extends State<LoginSignup> {
       return Padding(
         padding: const EdgeInsets.all(4),
         child: FloatingActionButton(
+          heroTag: 'google_login_hero',
           mini: true,
           elevation: 0,
           child: Icon(
@@ -120,6 +121,7 @@ class _LoginSignupState extends State<LoginSignup> {
       return Padding(
         padding: const EdgeInsets.all(4),
         child: FloatingActionButton(
+          heroTag: 'facebook_login_hero',
           mini: true,
           elevation: 0,
           child: Icon(
@@ -163,7 +165,7 @@ class _LoginSignupState extends State<LoginSignup> {
                   style: TextStyle(
                     color: Theme
                       .of(context)
-                      .primaryColor,
+                      .buttonColor,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -249,7 +251,7 @@ class _LoginSignupState extends State<LoginSignup> {
             padding: const EdgeInsets.all(0),
             textColor: Theme
               .of(context)
-              .primaryColor,
+              .buttonColor,
             child: Text(S
               .of(context)
               .login_forgot_password),
@@ -265,9 +267,6 @@ class _LoginSignupState extends State<LoginSignup> {
         padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
         child: RaisedButton(
           elevation: 5,
-          color: Theme
-            .of(context)
-            .primaryColor,
           child: Text(
             _isLoginForm
               ? S

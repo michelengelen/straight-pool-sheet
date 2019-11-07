@@ -5,6 +5,7 @@ import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sps/constants/routes.dart';
+import 'package:sps/constants/theme.dart';
 import 'package:sps/container/login.dart';
 import 'package:sps/container/profile.dart';
 import 'package:sps/container/settings.dart';
@@ -60,7 +61,7 @@ class SPS extends StatelessWidget {
             localeResolutionCallback:
             S.delegate.resolution(fallback: const Locale('en', '')),
             title: 'Straight Pool Sheet',
-            theme: settings.darkMode ? ThemeData.dark() : ThemeData.light(),
+            theme: settings.darkMode ? CustomTheme.dark() : CustomTheme.light(),
             routes: <String, Widget Function(BuildContext)>{
               Routes.home: (BuildContext context) {
                 return HomeScreen(
