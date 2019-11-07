@@ -50,6 +50,8 @@ dependencies:
   cached_network_image: ^1.1.2+1
   shared_preferences: ^0.5.4
 
+  font_awesome_flutter: ^8.5.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

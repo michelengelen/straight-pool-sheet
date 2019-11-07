@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:redux/redux.dart';
 import 'package:sps/components/wrapper.dart';
+import 'package:sps/constants/colors.dart';
 import 'package:sps/generated/i18n.dart';
 import 'package:sps/redux/auth/auth_state.dart';
 import 'package:sps/redux/root_state.dart';
@@ -26,6 +28,7 @@ class _LoginSignupState extends State<LoginSignup> {
   final GlobalKey _formKey = GlobalKey<FormState>();
 
   String _email;
+  bool _isEmailValid;
   String _password;
 
   bool _isLoginForm;
@@ -54,6 +57,7 @@ class _LoginSignupState extends State<LoginSignup> {
   @override
   void initState() {
     _isLoginForm = true;
+    _isEmailValid = false;
     super.initState();
   }
 
@@ -63,16 +67,18 @@ class _LoginSignupState extends State<LoginSignup> {
     });
   }
 
+  bool isEmailValid(String email) => RegExp(r'^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+').hasMatch(email);
+
   @override
   Widget build(BuildContext context) {
     Widget showSeperator() {
       return Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.fromLTRB(16, 32, 16, 32),
         child: Row(
           children: <Widget>[
             const Expanded(
               child: Divider(
-                thickness: 3,
+                thickness: 2,
                 indent: 24,
                 endIndent: 12,
               ),
@@ -82,7 +88,7 @@ class _LoginSignupState extends State<LoginSignup> {
               .login_separator),
             const Expanded(
               child: Divider(
-                thickness: 3,
+                thickness: 2,
                 indent: 12,
                 endIndent: 24,
               ),
@@ -93,62 +99,117 @@ class _LoginSignupState extends State<LoginSignup> {
     }
 
     Widget showGoogleLoginButton() {
-      return RaisedButton(
-        onPressed: () {
-          widget.onSignInSocial(context, 'G');
-        },
-        color: Colors.white,
-        textColor: const Color.fromRGBO(122, 122, 122, 1),
-        child: Text(
-          S
-            .of(context)
-            .login_button_google,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
+      return Padding(
+        padding: const EdgeInsets.all(4),
+        child: FloatingActionButton(
+          mini: true,
+          elevation: 0,
+          child: Icon(
+            FontAwesomeIcons.google,
+            color: Colors.white,
           ),
+          onPressed: () {
+            widget.onSignInSocial(context, 'G');
+          },
+          backgroundColor: CustomColors.google,
         ),
       );
     }
 
     Widget showFacebookLoginButton() {
-      return RaisedButton(
-        materialTapTargetSize: MaterialTapTargetSize.padded,
-        onPressed: () {
-          widget.onSignInSocial(context, 'FB');
-        },
-        color: const Color.fromRGBO(27, 76, 213, 1),
-        textColor: Colors.white,
-        child: Text(
-          S
-            .of(context)
-            .login_button_facebook,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
+      return Padding(
+        padding: const EdgeInsets.all(4),
+        child: FloatingActionButton(
+          mini: true,
+          elevation: 0,
+          child: Icon(
+            FontAwesomeIcons.facebookF,
+            color: Colors.white,
           ),
-        ));
+          onPressed: () {
+            widget.onSignInSocial(context, 'FB');
+          },
+          backgroundColor: CustomColors.facebook,
+        ),
+      );
+    }
+
+    Widget showCreateAccount() {
+      return Padding(
+        padding: const EdgeInsets.only(top: 12),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(_isLoginForm
+              ? S
+              .of(context)
+              .login_text_create
+              : S
+              .of(context)
+              .login_text_has_account
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 4),
+              child: InkWell(
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                child: Text(_isLoginForm
+                  ? S
+                  .of(context)
+                  .login_button_create
+                  : S
+                  .of(context)
+                  .login_button_has_account,
+                  style: TextStyle(
+                    color: Theme
+                      .of(context)
+                      .primaryColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                onTap: toggleFormMode,
+              ),
+            ),
+          ],
+        ),
+      );
     }
 
     Widget showEmailInput() {
       return Padding(
-        padding: const EdgeInsets.fromLTRB(0.0, 100.0, 0.0, 0.0),
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
         child: TextFormField(
           maxLines: 1,
           keyboardType: TextInputType.emailAddress,
           autofocus: false,
           decoration: InputDecoration(
-            hintText: S
+            suffixStyle: const TextStyle(
+              inherit: true,
+            ),
+            labelText: S
               .of(context)
               .login_input_email,
-            prefixIcon: Icon(
-              Icons.mail,
-              color: Colors.grey,
-            )),
+            isDense: true,
+            suffixIcon: _isEmailValid
+              ? Icon(
+              Icons.check,
+              color: Colors.green)
+              : Icon(Icons.email),
+          ),
           validator: (String value) =>
           value.isEmpty ? S
             .of(context)
             .login_input_email_error : null,
+          onChanged: (String value) {
+            bool validEmail;
+            if (value != null && isEmailValid(value.trim()))
+              validEmail = true;
+            else
+              validEmail = false;
+            setState(() {
+              _isEmailValid = validEmail;
+            });
+          },
           onSaved: (String value) => _email = value.trim(),
         ),
       );
@@ -156,19 +217,18 @@ class _LoginSignupState extends State<LoginSignup> {
 
     Widget showPasswordInput() {
       return Padding(
-        padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
         child: TextFormField(
           maxLines: 1,
           obscureText: true,
           autofocus: false,
           decoration: InputDecoration(
-            hintText: S
+            labelText: S
               .of(context)
               .login_input_password,
-            prefixIcon: Icon(
-              Icons.lock,
-              color: Colors.grey,
-            )),
+            suffixIcon: Icon(Icons.lock),
+            isDense: true,
+          ),
           validator: (String value) =>
           value.isEmpty ? S
             .of(context)
@@ -178,60 +238,99 @@ class _LoginSignupState extends State<LoginSignup> {
       );
     }
 
-    Widget showSecondaryButton() {
-      return FlatButton(
-        child: Text(
-          _isLoginForm
-            ? S
-            .of(context)
-            .login_button_create_account
-            : S
-            .of(context)
-            .login_button_has_account,
-          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)),
-        onPressed: toggleFormMode);
+    Widget showForgotPassword() {
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+        child: Align(
+          alignment: Alignment.centerRight,
+          child: FlatButton(
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            padding: const EdgeInsets.all(0),
+            textColor: Theme
+              .of(context)
+              .primaryColor,
+            child: Text(S
+              .of(context)
+              .login_forgot_password),
+            // TODO(michel): add forgot password screen
+            onPressed: () => print('Forgot password pressed!'),
+          ),
+        ),
+      );
     }
 
     Widget showPrimaryButton() {
       return Padding(
-        padding: const EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
-        child: Container(
-          child: RaisedButton(
-            color: Theme
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+        child: RaisedButton(
+          elevation: 5,
+          color: Theme
+            .of(context)
+            .primaryColor,
+          child: Text(
+            _isLoginForm
+              ? S
               .of(context)
-              .buttonColor,
-            child: Text(
-              _isLoginForm
-                ? S
-                .of(context)
-                .login_button_login
-                : S
-                .of(context)
-                .login_button_create,
-              style: TextStyle(fontSize: 20.0, color: Colors.white)),
-            onPressed: validateAndSubmit,
-          ),
-        ));
+              .login_button_login
+              : S
+              .of(context)
+              .login_button_create,
+            style: TextStyle(fontSize: 20.0, color: Colors.white)),
+          onPressed: validateAndSubmit,
+        ),
+      );
+    }
+
+    Widget showSocialLogins() {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+          showFacebookLoginButton(),
+          showGoogleLoginButton(),
+        ],
+      );
     }
 
     return StoreConnector<RootState, AuthState>(
       converter: (Store<RootState> store) => store.state.auth,
       builder: (BuildContext context, AuthState auth) {
         return Wrapper(
-          title: S.of(context).screen_login_title,
+          title: S
+            .of(context)
+            .screen_login_title,
           child: Container(
             padding: const EdgeInsets.all(32),
             child: Form(
               key: _formKey,
-              child: ListView(
+              child: Column(
                 children: <Widget>[
-                  showEmailInput(),
-                  showPasswordInput(),
-                  showPrimaryButton(),
-                  showSecondaryButton(),
-                  showSeperator(),
-                  showFacebookLoginButton(),
-                  showGoogleLoginButton(),
+                  const Expanded(
+                    flex: 1,
+                    child: Center(
+                      child: Icon(
+                        FontAwesomeIcons.table,
+                        size: 120.0,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 4,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        showEmailInput(),
+                        showPasswordInput(),
+                        showForgotPassword(),
+                        showPrimaryButton(),
+                        showSeperator(),
+                        showSocialLogins(),
+                        showCreateAccount(),
+                      ],
+                    )
+                  ),
                 ],
               ),),
           ),

@@ -40,17 +40,19 @@ class S implements WidgetsLocalizations {
   String get icon_settings_semantic => "go to Settings Screen";
   String get locales_de => "German";
   String get locales_en => "English";
-  String get login_button_create => "Sign up";
-  String get login_button_create_account => "Create an account";
+  String get login_button_create => "Sing up!";
   String get login_button_facebook => "Login with facebook";
   String get login_button_google => "Login with google";
-  String get login_button_has_account => "Already have an acount?";
-  String get login_button_login => "Login";
+  String get login_button_has_account => "Sign in!";
+  String get login_button_login => "Sign in";
+  String get login_forgot_password => "Forgot password?";
   String get login_input_email => "Email";
   String get login_input_email_error => "Please enter a valid email address";
   String get login_input_password => "Password";
   String get login_input_password_error => "Please enter a password";
-  String get login_separator => "OR";
+  String get login_separator => "Social Login";
+  String get login_text_create => "New to the App?";
+  String get login_text_has_account => "You already have an account?";
   String get logout => "Logout";
   String get screen_home_title => "Home";
   String get screen_login_title => "Sign in / Sign up";
@@ -100,11 +102,13 @@ class $de extends S {
   @override
   String get screen_home_title => "Startseite";
   @override
-  String get login_separator => "ODER";
+  String get login_separator => "Social Login";
   @override
   String get setting_language_title => "Sprache";
   @override
   String get logout => "Abmelden";
+  @override
+  String get login_text_create => "Neu hier?";
   @override
   String get setting_darkMode_subtitle => "Dark mode aktivieren";
   @override
@@ -112,11 +116,13 @@ class $de extends S {
   @override
   String get ERROR_INVALID_CREDENTIAL => "Ungültiger Login-Token. Bitte erneut anmelden.";
   @override
+  String get login_forgot_password => "Passwort vergessen?";
+  @override
   String get login_input_email_error => "Bitte eine gültige E-Mail Adresse eintragen";
   @override
   String get ERROR_INVALID_EMAIL => "Die E-Mail Adresse ist ungültig.";
   @override
-  String get login_button_has_account => "Du hast schon einen Account?";
+  String get login_button_has_account => "Anmelden";
   @override
   String get setting_darkMode_switched_on => "Dark mode aktiviert";
   @override
@@ -127,6 +133,8 @@ class $de extends S {
   String get locales_de => "Deutsch";
   @override
   String get ERROR_CRITICAL => "Ein kritischer Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.";
+  @override
+  String get login_text_has_account => "Du hast schon einen Account?";
   @override
   String get ERROR_TOO_MANY_REQUESTS => "Es wurde zu oft versucht sich mit diesem Account anzumelden. Versuche es später noch einmal.";
   @override
@@ -141,8 +149,6 @@ class $de extends S {
   String get locales_en => "Englisch";
   @override
   String get ERROR_USER_DISABLED => "Dieser Account wurde deaktiviert. Wenden Sie sich an den Support.";
-  @override
-  String get login_button_create_account => "Account erstellen";
   @override
   String get welcome_message => "Pro Billard Tool";
   @override
