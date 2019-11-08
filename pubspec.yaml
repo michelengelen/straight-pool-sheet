@@ -51,6 +51,7 @@ dependencies:
   shared_preferences: ^0.5.4
 
   font_awesome_flutter: ^8.5.0
+  flushbar: ^1.9.1
 
 dev_dependencies:
   flutter_test:

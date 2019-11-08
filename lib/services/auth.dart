@@ -96,7 +96,16 @@ class Auth implements BaseAuth {
       final AuthResult response = await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
       authResponse = generateAuthResponse(context, response);
     } on PlatformException catch (error) {
-      authResponse = generateAuthResponse(context, error);
+      final String provider = await checkAuthProvider(email);
+      print('######### ${error.code}');
+      print(error.code);
+      if (error.code == 'ERROR_EMAIL_ALREADY_IN_USE' && provider.isNotEmpty) {
+        final String providerName = getProviderName(provider);
+        authResponse = AuthResponse(
+          user: null, error: true, cancelled: false, message: S.of(context).ERROR_WRONG_PROVIDER(providerName));
+      } else {
+        authResponse = generateAuthResponse(context, error);
+      }
     }
     return authResponse;
   }

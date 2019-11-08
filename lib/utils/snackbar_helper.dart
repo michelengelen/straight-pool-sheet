@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
 class SnackBarContent {
@@ -22,59 +23,33 @@ Completer<void> snackBarCompleter(
   bool dismissable = true,
 }) {
   final Completer<void> completer = Completer<void>();
-  dynamic action;
 
   completer.future.then((_) {
     if (shouldPop) {
       Navigator.of(context).pop();
     }
 
-    if (success.action is Function) {
-      action = SnackBarAction(
-        label: success.actionLabel ?? 'X',
-        onPressed: success.action,
-      );
-    } else if (dismissable) {
-      action = SnackBarAction(
-        label: 'X',
-        onPressed: Scaffold.of(context).hideCurrentSnackBar,
-      );
-    }
-
-    Scaffold.of(context).hideCurrentSnackBar();
-    Scaffold.of(context).showSnackBar(SnackBar(
-      content: Text(success.message),
-      action: action,
-    ));
+    Flushbar<bool>(
+      title: success.message ?? 'SUCCESS',
+      message: success.message,
+      isDismissible: true,
+      duration: Duration(seconds: 4),
+      forwardAnimationCurve: Curves.bounceOut,
+      reverseAnimationCurve: Curves.decelerate,
+      flushbarStyle: FlushbarStyle.GROUNDED,
+      leftBarIndicatorColor: Colors.green[900],
+    )..show(context);
   }).catchError((dynamic error) {
-    if (failure.action is Function) {
-      action = SnackBarAction(
-        label: failure.actionLabel ?? 'X',
-        textColor: Colors.white70,
-        onPressed: failure.action,
-      );
-    } else if (dismissable) {
-      action = SnackBarAction(
-        label: 'X',
-        textColor: Colors.white70,
-        onPressed: Scaffold.of(context).hideCurrentSnackBar,
-      );
-    }
-
-    final String errorMessage = '${failure.message}${error.message.isNotEmpty ? ' - ${error.message}' : ''}';
-
-    Scaffold.of(context).hideCurrentSnackBar();
-    Scaffold.of(context).showSnackBar(SnackBar(
-      content: Text(
-        errorMessage,
-        style: TextStyle(
-          color: Colors.white70,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      action: action,
-      backgroundColor: Colors.red,
-    ));
+    Flushbar<bool>(
+      title: failure.message ?? 'ERROR',
+      message: error.message,
+      isDismissible: true,
+      duration: Duration(seconds: 4),
+      forwardAnimationCurve: Curves.bounceOut,
+      reverseAnimationCurve: Curves.decelerate,
+      flushbarStyle: FlushbarStyle.GROUNDED,
+      leftBarIndicatorColor: Colors.red[900],
+    )..show(context);
   });
 
   return completer;

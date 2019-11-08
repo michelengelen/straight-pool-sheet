@@ -29,6 +29,7 @@ class _LoginSignupState extends State<LoginSignup> with SingleTickerProviderStat
 
   String _email;
   String _password;
+  String _passwordCheck;
 
   bool _isEmailValid;
   bool _isPasswordValid;
@@ -48,12 +49,13 @@ class _LoginSignupState extends State<LoginSignup> with SingleTickerProviderStat
   }
 
   // Perform login or signup
-  Future<void> validateAndSubmit() async {
+  void validateAndSubmit(BuildContext context) {
     if (validateAndSave()) {
-      if (_isLoginForm) {
-        await widget.onSignIn(context, _email, _password);
-      } else {
-        await widget.onSignUp(context, _email, _password);
+      if (_isLoginForm && _isEmailValid && _isPasswordValid ) {
+        print('###################');
+        widget.onSignIn(context, _email, _password);
+      } else if (!_isLoginForm && _isEmailValid && _isPasswordValid && _isPasswordEqual) {
+        widget.onSignUp(context, _email, _password);
       }
     }
   }
@@ -61,6 +63,9 @@ class _LoginSignupState extends State<LoginSignup> with SingleTickerProviderStat
   @override
   void initState() {
     super.initState();
+    _email = null;
+    _password = null;
+    _passwordCheck = null;
     _isLoginForm = true;
     _isEmailValid = false;
     _isPasswordValid = false;
@@ -227,16 +232,14 @@ class _LoginSignupState extends State<LoginSignup> with SingleTickerProviderStat
             isDense: true,
             suffixIcon: _isPasswordValid ? Icon(Icons.check, color: Colors.green) : Icon(Icons.lock),
           ),
+          // TODO(michel): add proper password rules check
           validator: (String value) =>
-              value.isEmpty && value.trim().length <= 5 ? S.of(context).login_input_password_error : null,
+              value.isEmpty || value.trim().length <= 5 ? S.of(context).login_input_password_error : null,
           onChanged: (String value) {
-            bool validPassword;
-            if (value != null && value.trim().length > 5)
-              validPassword = true;
-            else
-              validPassword = false;
             setState(() {
-              _isPasswordValid = validPassword;
+              _password = value.trim();
+              _isPasswordValid = value != null && value.trim().length > 5;
+              _isPasswordEqual = !_isLoginForm && value.trim() == _passwordCheck;
             });
           },
           onSaved: (String value) => _password = value.trim(),
@@ -254,11 +257,16 @@ class _LoginSignupState extends State<LoginSignup> with SingleTickerProviderStat
             autofocus: false,
             decoration: InputDecoration(
               labelText: S.of(context).login_input_password_check,
-              suffixIcon: Icon(Icons.lock),
+              suffixIcon: _isPasswordEqual ? Icon(Icons.check, color: Colors.green) : Icon(Icons.compare_arrows),
               isDense: true,
             ),
-            validator: (String value) => value.isEmpty ? S.of(context).login_input_password_check_error : null,
-            onChanged: (String value) => _isPasswordEqual = value.trim() == _password,
+            validator: (String value) => !_isLoginForm && value.isEmpty ? S.of(context).login_input_password_check_error : null,
+            onChanged: (String value) {
+              setState(() {
+                _passwordCheck = value.trim();
+                _isPasswordEqual = value.trim() == _password;
+              });
+            },
           ),
         ),
         sizeFactor: CurvedAnimation(
@@ -285,16 +293,18 @@ class _LoginSignupState extends State<LoginSignup> with SingleTickerProviderStat
     }
 
     Widget showPrimaryButton() {
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 0),
-        child: RaisedButton(
-          elevation: 5,
-          child: Text(
+      return Builder(
+        builder: (BuildContext context) => Padding(
+          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 0),
+          child: RaisedButton(
+            elevation: 5,
+            child: Text(
               _isLoginForm
-                  ? S.of(context).login_button_login.toUpperCase()
-                  : S.of(context).login_button_create.toUpperCase(),
+                ? S.of(context).login_button_login.toUpperCase()
+                : S.of(context).login_button_create.toUpperCase(),
               style: TextStyle(fontSize: 16.0, color: Colors.white)),
-          onPressed: validateAndSubmit,
+            onPressed: () => validateAndSubmit(context),
+          ),
         ),
       );
     }
