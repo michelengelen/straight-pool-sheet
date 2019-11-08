@@ -40,10 +40,10 @@ class S implements WidgetsLocalizations {
   String get icon_settings_semantic => "go to Settings Screen";
   String get locales_de => "German";
   String get locales_en => "English";
-  String get login_button_create => "Sing up!";
+  String get login_button_create => "Sing up";
   String get login_button_facebook => "Login with facebook";
   String get login_button_google => "Login with google";
-  String get login_button_has_account => "Sign in!";
+  String get login_button_has_account => "Sign in";
   String get login_button_login => "Sign in";
   String get login_forgot_password => "Forgot password?";
   String get login_input_email => "Email";
@@ -52,7 +52,7 @@ class S implements WidgetsLocalizations {
   String get login_input_password_error => "Please enter a password";
   String get login_separator => "Social Login";
   String get login_text_create => "New to the App?";
-  String get login_text_has_account => "You already have an account?";
+  String get login_text_has_account => "Have an account?";
   String get logout => "Logout";
   String get screen_home_title => "Home";
   String get screen_login_title => "Sign in / Sign up";

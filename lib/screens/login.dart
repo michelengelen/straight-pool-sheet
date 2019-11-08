@@ -219,7 +219,7 @@ class _LoginSignupState extends State<LoginSignup> {
 
     Widget showPasswordInput() {
       return Padding(
-        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
         child: TextFormField(
           maxLines: 1,
           obscureText: true,
@@ -241,23 +241,20 @@ class _LoginSignupState extends State<LoginSignup> {
     }
 
     Widget showForgotPassword() {
-      return Padding(
-        padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-        child: Align(
-          alignment: Alignment.centerRight,
-          child: FlatButton(
-            splashColor: Colors.transparent,
-            highlightColor: Colors.transparent,
-            padding: const EdgeInsets.all(0),
-            textColor: Theme
-              .of(context)
-              .buttonColor,
-            child: Text(S
-              .of(context)
-              .login_forgot_password),
-            // TODO(michel): add forgot password screen
-            onPressed: () => print('Forgot password pressed!'),
-          ),
+      return Align(
+        alignment: Alignment.centerRight,
+        child: FlatButton(
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+          padding: const EdgeInsets.all(0),
+          textColor: Theme
+            .of(context)
+            .buttonColor,
+          child: Text(S
+            .of(context)
+            .login_forgot_password),
+          // TODO(michel): add forgot password screen
+          onPressed: () => print('Forgot password pressed!'),
         ),
       );
     }
@@ -272,10 +269,12 @@ class _LoginSignupState extends State<LoginSignup> {
               ? S
               .of(context)
               .login_button_login
+              .toUpperCase()
               : S
               .of(context)
-              .login_button_create,
-            style: TextStyle(fontSize: 20.0, color: Colors.white)),
+              .login_button_create
+              .toUpperCase(),
+            style: TextStyle(fontSize: 16.0, color: Colors.white)),
           onPressed: validateAndSubmit,
         ),
       );
@@ -305,17 +304,32 @@ class _LoginSignupState extends State<LoginSignup> {
               key: _formKey,
               child: Column(
                 children: <Widget>[
-                  const Expanded(
+                  Expanded(
                     flex: 1,
-                    child: Center(
-                      child: Icon(
-                        FontAwesomeIcons.table,
-                        size: 120.0,
-                      ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Icon(
+                          FontAwesomeIcons.table,
+                          size: 70.0,
+                        ),
+                        Text(
+                          'Welcome to Pro Billard Tool',
+                          style: Theme
+                            .of(context)
+                            .textTheme
+                            .headline,
+                          textAlign: TextAlign.center,
+                        ),
+                        const Text(
+                          'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.',
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
                     ),
                   ),
                   Expanded(
-                    flex: 4,
+                    flex: 2,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -8,7 +8,7 @@ class CustomTheme {
 
   static ThemeData light() => ThemeData(
     brightness: Brightness.light,
-    primarySwatch: Colors.lime,
-    buttonColor: Colors.lime,
+    primarySwatch: Colors.lightBlue,
+    buttonColor: Colors.lightBlue,
   );
 }
