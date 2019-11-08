@@ -6,8 +6,7 @@ import 'package:sps/services/auth.dart';
 
 final Auth auth = Auth();
 
-final Reducer<AuthState> authReducer =
-    combineReducers<AuthState>(<Reducer<AuthState>>[
+final Reducer<AuthState> authReducer = combineReducers<AuthState>(<Reducer<AuthState>>[
   TypedReducer<AuthState, SetUser>(_setUser),
   TypedReducer<AuthState, UnsetUser>(_unSetUser),
 ]);

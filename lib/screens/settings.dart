@@ -84,14 +84,12 @@ class Settings extends StatelessWidget {
                           final String message = _getSwitchedLanguageMessage(languageCode);
                           switchLocale(context, languageCode, message);
                         },
-                        itemBuilder: (BuildContext context) =>
-                            supportedLanguages
-                                .map((Locale item) => PopupMenuItem<String>(
-                                      value: item.languageCode,
-                                      child: Text(_getLanguageString(
-                                          context, item.languageCode)),
-                                    ))
-                                .toList(),
+                        itemBuilder: (BuildContext context) => supportedLanguages
+                            .map((Locale item) => PopupMenuItem<String>(
+                                  value: item.languageCode,
+                                  child: Text(_getLanguageString(context, item.languageCode)),
+                                ))
+                            .toList(),
                       ),
                     ),
                   ],

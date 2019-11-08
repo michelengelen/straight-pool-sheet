@@ -27,10 +27,7 @@ class ViewState {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) ||
-          other is ViewState &&
-              runtimeType == other.runtimeType &&
-              isLoading == other.isLoading;
+      identical(this, other) || other is ViewState && runtimeType == other.runtimeType && isLoading == other.isLoading;
 
   @override
   String toString() {

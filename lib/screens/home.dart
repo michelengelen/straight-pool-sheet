@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import 'package:sps/components/welcome.dart';
 import 'package:sps/components/wrapper.dart';
 import 'package:sps/constants/keys.dart';
 import 'package:sps/generated/i18n.dart';
@@ -36,7 +35,23 @@ class HomeScreenState extends State<HomeScreen> {
       builder: (BuildContext context, FirebaseUser user) {
         return Wrapper(
           title: S.of(context).screen_home_title,
-          child: WelcomeComponent(user: user),
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                flex: 1,
+                child: Center(
+                  child: Icon(
+                    Icons.home,
+                    size: 70.0,
+                  ),
+                ),
+              ),
+              const Expanded(
+                flex: 2,
+                child: Text('NULL'),
+              ),
+            ],
+          ),
         );
       },
     );

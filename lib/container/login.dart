@@ -4,10 +4,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import 'package:sps/screens/login.dart';
 import 'package:sps/generated/i18n.dart';
 import 'package:sps/redux/auth/auth_actions.dart';
 import 'package:sps/redux/root_state.dart';
+import 'package:sps/screens/login.dart';
 import 'package:sps/utils/snackbar_helper.dart';
 
 @immutable

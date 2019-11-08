@@ -1,5 +1,5 @@
-import 'package:sps/redux/root_state.dart';
 import 'package:sps/redux/auth/auth_reducer.dart';
+import 'package:sps/redux/root_state.dart';
 import 'package:sps/redux/settings/settings_reducer.dart';
 import 'package:sps/redux/view/view_reducer.dart';
 

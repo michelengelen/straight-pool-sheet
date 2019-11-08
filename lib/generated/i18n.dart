@@ -49,7 +49,9 @@ class S implements WidgetsLocalizations {
   String get login_input_email => "Email";
   String get login_input_email_error => "Please enter a valid email address";
   String get login_input_password => "Password";
-  String get login_input_password_error => "Please enter a password";
+  String get login_input_password_check => "Repeat Password";
+  String get login_input_password_check_error => "Passwords do not match";
+  String get login_input_password_error => "Please enter a valid password (min. 6 characters)";
   String get login_separator => "Social Login";
   String get login_text_create => "New to the App?";
   String get login_text_has_account => "Have an account?";
@@ -96,7 +98,7 @@ class $de extends S {
   @override
   String get ERROR_WRONG_PASSWORD => "Das Passwort ist ungültig.";
   @override
-  String get login_input_password_error => "Bitte ein Passwort eingeben";
+  String get login_input_password_error => "Bitte ein valides Passwort (mind. 6 Zeichen) eingeben";
   @override
   String get snackbar_retry => "Wiederholen";
   @override
@@ -152,6 +154,8 @@ class $de extends S {
   @override
   String get welcome_message => "Pro Billard Tool";
   @override
+  String get login_input_password_check => "Passwort wiederholen";
+  @override
   String get icon_settings_semantic => "Zur Profilseite wechseln";
   @override
   String get login_input_password => "Passwort";
@@ -161,6 +165,8 @@ class $de extends S {
   String get login_input_email => "E-Mail";
   @override
   String get ERROR_CANCELLED_BY_USER => "Abbruch des Anmeldevorgangs durch den Nutzer.";
+  @override
+  String get login_input_password_check_error => "Passwörter stimmen nicht überein";
   @override
   String get ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL => "Es ist bereits ein Account mit dieser E-Mail Adresse verknüpft. Nutzen Sie bitte die korrekte Anmeldemethode.";
   @override

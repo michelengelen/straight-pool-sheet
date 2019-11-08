@@ -45,20 +45,16 @@ class _ViewModel {
     final SettingsState settings = store.state.settings;
     final bool darkMode = store.state.settings.darkMode;
 
-    Future<void> _switchLocale(
-        BuildContext context, String languageCode, String message) {
+    Future<void> _switchLocale(BuildContext context, String languageCode, String message) {
       if (store.state.view.isLoading) {
         return Future<void>(null);
       }
       final Completer<void> completer = snackBarCompleter(
         context,
         SnackBarContent(message: message),
-        SnackBarContent(
-          message: 'Something went wrong!'
-        ),
+        SnackBarContent(message: 'Something went wrong!'),
       );
-      store.dispatch(ChangeLanguageAction(
-          languageCode: languageCode, completer: completer));
+      store.dispatch(ChangeLanguageAction(languageCode: languageCode, completer: completer));
       return completer.future;
     }
 
@@ -69,13 +65,9 @@ class _ViewModel {
       final Completer<void> completer = snackBarCompleter(
         context,
         SnackBarContent(
-          message: darkMode ?
-            S.of(context).setting_darkMode_switched_off :
-            S.of(context).setting_darkMode_switched_on,
+          message: darkMode ? S.of(context).setting_darkMode_switched_off : S.of(context).setting_darkMode_switched_on,
         ),
-        SnackBarContent(
-          message: 'Something went wrong!'
-        ),
+        SnackBarContent(message: 'Something went wrong!'),
       );
       store.dispatch(ToggleThemeAction(completer: completer));
       return completer.future;

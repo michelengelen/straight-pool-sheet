@@ -31,9 +31,7 @@ class NewGameScreenState extends State<NewGameScreen> {
       converter: (Store<RootState> store) => store.state.auth.user,
       builder: (BuildContext context, FirebaseUser user) {
         return Wrapper(
-          title: S
-            .of(context)
-            .screen_new_game_title,
+          title: S.of(context).screen_new_game_title,
           child: Center(
             child: const Text('New Game Screen'),
           ),

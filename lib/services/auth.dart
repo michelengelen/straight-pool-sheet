@@ -52,14 +52,13 @@ class Auth implements BaseAuth {
   AuthResponse generateAuthResponse(BuildContext context, dynamic result) {
     AuthResponse authResponse;
     if (result is AuthResult) {
-      authResponse = AuthResponse(
-        user: result.user, error: false, cancelled: false, message: null);
+      authResponse = AuthResponse(user: result.user, error: false, cancelled: false, message: null);
     } else if (result is PlatformException) {
-      authResponse = AuthResponse(
-        user: null, error: true, cancelled: null, message: getAuthErrorMessage(context, result.code));
+      authResponse =
+          AuthResponse(user: null, error: true, cancelled: null, message: getAuthErrorMessage(context, result.code));
     } else {
       authResponse = AuthResponse(
-        user: null, error: true, cancelled: false, message: getAuthErrorMessage(context, 'ERROR_UNDEFINED'));
+          user: null, error: true, cancelled: false, message: getAuthErrorMessage(context, 'ERROR_UNDEFINED'));
     }
     return authResponse;
   }
@@ -67,8 +66,7 @@ class Auth implements BaseAuth {
   Future<String> checkAuthProvider(String email) async {
     String provider;
     final List<String> providers = await _firebaseAuth.fetchSignInMethodsForEmail(email: email);
-    if (providers.isNotEmpty)
-      provider = providers[0];
+    if (providers.isNotEmpty) provider = providers[0];
     return provider;
   }
 
@@ -83,7 +81,7 @@ class Auth implements BaseAuth {
       if (error.code == 'ERROR_WRONG_PASSWORD' && provider.isNotEmpty) {
         final String providerName = getProviderName(provider);
         authResponse = AuthResponse(
-          user: null, error: true, cancelled: false, message: S.of(context).ERROR_WRONG_PROVIDER(providerName));
+            user: null, error: true, cancelled: false, message: S.of(context).ERROR_WRONG_PROVIDER(providerName));
       } else {
         authResponse = generateAuthResponse(context, error);
       }
@@ -111,8 +109,7 @@ class Auth implements BaseAuth {
   @override
   Future<FirebaseUser> getCurrentUser() async {
     final FirebaseUser user = await _firebaseAuth.currentUser();
-    if (user == null)
-      throw 'Could not load User!';
+    if (user == null) throw 'Could not load User!';
     return user;
   }
 
@@ -131,8 +128,7 @@ class Auth implements BaseAuth {
   @override
   Future<AuthResponse> handleFacebookLogin(BuildContext context) async {
     final FacebookLogin facebookLogin = FacebookLogin();
-    final FacebookLoginResult response =
-    await facebookLogin.logIn(<String>['email']);
+    final FacebookLoginResult response = await facebookLogin.logIn(<String>['email']);
     AuthResponse authResponse;
     switch (response.status) {
       case FacebookLoginStatus.loggedIn:
@@ -166,8 +162,7 @@ class Auth implements BaseAuth {
     ]);
 
     final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
-    final GoogleSignInAuthentication googleAuth =
-    await googleSignInAccount.authentication;
+    final GoogleSignInAuthentication googleAuth = await googleSignInAccount.authentication;
 
     final AuthCredential googleAuthCred = GoogleAuthProvider.getCredential(
       idToken: googleAuth.idToken,

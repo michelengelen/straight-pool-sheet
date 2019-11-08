@@ -23,13 +23,12 @@ import 'package:sps/screens/new_game.dart';
 Future<void> main() async {
   final SharedPreferences _sprefs = await SharedPreferences.getInstance();
 
-  final Store<RootState> store = Store<RootState>(appReducer,
-    initialState: RootState.initial(_sprefs),
-    middleware: <Middleware<RootState>>[
-      thunkMiddleware,
-      ...createStoreSettingsMiddleware(),
-      ...createStoreAuthMiddleware(),
-    ]);
+  final Store<RootState> store =
+      Store<RootState>(appReducer, initialState: RootState.initial(_sprefs), middleware: <Middleware<RootState>>[
+    thunkMiddleware,
+    ...createStoreSettingsMiddleware(),
+    ...createStoreAuthMiddleware(),
+  ]);
 
   runApp(SPS(store: store));
 }
@@ -58,8 +57,7 @@ class SPS extends StatelessWidget {
               GlobalMaterialLocalizations.delegate,
             ],
             supportedLocales: S.delegate.supportedLocales,
-            localeResolutionCallback:
-            S.delegate.resolution(fallback: const Locale('en', '')),
+            localeResolutionCallback: S.delegate.resolution(fallback: const Locale('en', '')),
             title: 'Straight Pool Sheet',
             theme: settings.darkMode ? CustomTheme.dark() : CustomTheme.light(),
             routes: <String, Widget Function(BuildContext)>{
@@ -67,11 +65,9 @@ class SPS extends StatelessWidget {
                 return HomeScreen(
                   onInit: () {
                     final Locale systemLocale = Localizations.localeOf(context);
-                    StoreProvider.of<RootState>(context).dispatch(
-                      ChangeLanguageAction(
-                        languageCode: systemLocale.languageCode));
                     StoreProvider.of<RootState>(context)
-                      .dispatch(LoadUserAction());
+                        .dispatch(ChangeLanguageAction(languageCode: systemLocale.languageCode));
+                    StoreProvider.of<RootState>(context).dispatch(LoadUserAction());
                   },
                 );
               },

@@ -14,13 +14,13 @@ class SnackBarContent {
   final String actionLabel;
 }
 
-Completer<void> snackBarCompleter(BuildContext context,
+Completer<void> snackBarCompleter(
+  BuildContext context,
   SnackBarContent success,
-  SnackBarContent failure,
-  {
-    bool shouldPop = false,
-    bool dismissable = true,
-  }) {
+  SnackBarContent failure, {
+  bool shouldPop = false,
+  bool dismissable = true,
+}) {
   final Completer<void> completer = Completer<void>();
   dynamic action;
 
@@ -37,9 +37,7 @@ Completer<void> snackBarCompleter(BuildContext context,
     } else if (dismissable) {
       action = SnackBarAction(
         label: 'X',
-        onPressed: Scaffold
-          .of(context)
-          .hideCurrentSnackBar,
+        onPressed: Scaffold.of(context).hideCurrentSnackBar,
       );
     }
 
@@ -59,9 +57,7 @@ Completer<void> snackBarCompleter(BuildContext context,
       action = SnackBarAction(
         label: 'X',
         textColor: Colors.white70,
-        onPressed: Scaffold
-          .of(context)
-          .hideCurrentSnackBar,
+        onPressed: Scaffold.of(context).hideCurrentSnackBar,
       );
     }
 

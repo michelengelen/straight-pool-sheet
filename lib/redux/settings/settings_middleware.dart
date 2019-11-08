@@ -23,10 +23,8 @@ Middleware<RootState> _changeLanguage() {
       final SharedPreferences _sprefs = await SharedPreferences.getInstance();
       _sprefs.setString('languageCode', action.languageCode);
       store.dispatch(ChangeLanguageActionSuccess(action.languageCode));
-    })
-    .then<void>((dynamic _) {
-      if (action.completer != null)
-        action.completer.complete();
+    }).then<void>((dynamic _) {
+      if (action.completer != null) action.completer.complete();
     });
   };
 }
@@ -42,10 +40,8 @@ Middleware<RootState> _toggleTheme() {
       final SharedPreferences _sprefs = await SharedPreferences.getInstance();
       _sprefs.setBool('darkMode', !previous);
       store.dispatch(ToggleThemeActionSuccess());
-    })
-    .then<void>((dynamic _) {
-      if (action.completer != null)
-        action.completer.complete();
+    }).then<void>((dynamic _) {
+      if (action.completer != null) action.completer.complete();
     });
   };
 }

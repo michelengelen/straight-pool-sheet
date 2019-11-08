@@ -42,8 +42,7 @@ Middleware<RootState> _loadUser() {
         store.dispatch(AppIsLoaded());
       });
     }).then<void>((dynamic _) {
-      if (action.completer != null)
-        action.completer.complete();
+      if (action.completer != null) action.completer.complete();
     });
   };
 }
@@ -58,8 +57,7 @@ Middleware<RootState> _signInUser() {
     store.dispatch(AppIsLoading());
     Future<AuthResponse>(() async {
       final AuthResponse authResponse = await auth.signIn(context, action.email, action.password);
-      if (authResponse.error || authResponse.cancelled)
-        return Future<AuthResponse>.error(authResponse);
+      if (authResponse.error || authResponse.cancelled) return Future<AuthResponse>.error(authResponse);
 
       return authResponse;
     }).then<void>((AuthResponse authResponse) {
@@ -84,8 +82,7 @@ Middleware<RootState> _signUpUser() {
     store.dispatch(AppIsLoading());
     Future<AuthResponse>(() async {
       final AuthResponse authResponse = await auth.signUp(context, action.email, action.password);
-      if (authResponse.error || authResponse.cancelled)
-        return Future<AuthResponse>.error(authResponse);
+      if (authResponse.error || authResponse.cancelled) return Future<AuthResponse>.error(authResponse);
 
       return authResponse;
     }).then<void>((AuthResponse authResponse) {
@@ -150,8 +147,7 @@ Middleware<RootState> _signInUserSocial() {
           );
           break;
       }
-      if (authResponse.error || authResponse.cancelled)
-        return Future<AuthResponse>.error(authResponse);
+      if (authResponse.error || authResponse.cancelled) return Future<AuthResponse>.error(authResponse);
 
       return authResponse;
     }).then<void>((AuthResponse authResponse) {
