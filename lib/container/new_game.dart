@@ -51,8 +51,12 @@ class _ViewModel {
       }
       final Completer<void> completer = snackBarCompleter(
         context,
-        SnackBarContent(message: message),
-        SnackBarContent(message: 'Something went wrong!'),
+        SnackBarContent(
+          message: message,
+        ),
+        SnackBarContent(
+          message: 'Something went wrong!',
+        ),
       );
       store.dispatch(ChangeLanguageAction(languageCode: languageCode, completer: completer));
       return completer.future;

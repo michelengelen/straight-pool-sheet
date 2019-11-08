@@ -5,14 +5,12 @@ import 'package:flutter/material.dart';
 
 class SnackBarContent {
   SnackBarContent({
+    this.title,
     @required this.message,
-    this.action,
-    this.actionLabel,
   });
 
+  final String title;
   final String message;
-  final Function action;
-  final String actionLabel;
 }
 
 Completer<void> snackBarCompleter(
@@ -23,6 +21,7 @@ Completer<void> snackBarCompleter(
   bool dismissable = true,
 }) {
   final Completer<void> completer = Completer<void>();
+  final bool isDark = Theme.of(context).brightness == Brightness.dark;
 
   completer.future.then((_) {
     if (shouldPop) {
@@ -30,25 +29,45 @@ Completer<void> snackBarCompleter(
     }
 
     Flushbar<bool>(
-      title: success.message ?? 'SUCCESS',
-      message: success.message,
+      titleText: success.title != null ? Text(
+        success.title.toUpperCase(),
+        style: Theme.of(context).textTheme.headline
+      ) : null,
+      messageText: Text(
+        success.message,
+        style: Theme.of(context).textTheme.body2
+      ),
+      icon: Icon(
+        Icons.check_circle_outline,
+        color: Colors.green,
+      ),
       isDismissible: true,
-      duration: Duration(seconds: 4),
-      forwardAnimationCurve: Curves.bounceOut,
+      duration: Duration(seconds: 6),
+      forwardAnimationCurve: Curves.easeOutQuint,
       reverseAnimationCurve: Curves.decelerate,
       flushbarStyle: FlushbarStyle.GROUNDED,
-      leftBarIndicatorColor: Colors.green[900],
+      backgroundColor: isDark ? Colors.grey[900] : Colors.grey[300],
     )..show(context);
   }).catchError((dynamic error) {
     Flushbar<bool>(
-      title: failure.message ?? 'ERROR',
-      message: error.message,
+      titleText: failure.title != null ? Text(
+        failure.title.toUpperCase(),
+        style: Theme.of(context).textTheme.headline
+      ) : null,
+      messageText: Text(
+        failure.message,
+        style: Theme.of(context).textTheme.body2
+      ),
+      icon: Icon(
+        Icons.error_outline,
+        color: Colors.red,
+      ),
       isDismissible: true,
-      duration: Duration(seconds: 4),
-      forwardAnimationCurve: Curves.bounceOut,
+      duration: Duration(seconds: 6),
+      forwardAnimationCurve: Curves.easeOutQuint,
       reverseAnimationCurve: Curves.decelerate,
       flushbarStyle: FlushbarStyle.GROUNDED,
-      leftBarIndicatorColor: Colors.red[900],
+      backgroundColor: isDark ? Colors.grey[900] : Colors.grey[300],
     )..show(context);
   });
 

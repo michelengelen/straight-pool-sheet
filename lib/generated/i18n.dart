@@ -21,6 +21,7 @@ class S implements WidgetsLocalizations {
   @override
   TextDirection get textDirection => TextDirection.ltr;
 
+  String get ERROR => "ERROR";
   String get ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL => "There is already another account associated with this email address. Please use the service you used before to log in.";
   String get ERROR_CANCELLED_BY_USER => "The user cancelled the authentication process.";
   String get ERROR_CRITICAL => "A critical error occured. Please try again later";
@@ -32,6 +33,7 @@ class S implements WidgetsLocalizations {
   String get ERROR_USER_DISABLED => "User is disabled.";
   String get ERROR_USER_NOT_FOUND => "User not found.";
   String get ERROR_WRONG_PASSWORD => "The password is invalid.";
+  String get SUCCESS => "SUCCESS";
   String get app_title => "Pro Billard Tool";
   String get icon_home_semantic => "go to Home Screen";
   String get icon_logout_semantic => "Log out the current user";
@@ -112,6 +114,8 @@ class $de extends S {
   @override
   String get login_text_create => "Neu hier?";
   @override
+  String get ERROR => "FEHLER";
+  @override
   String get setting_darkMode_subtitle => "Dark mode aktivieren";
   @override
   String get snackbar_user_loaded_failure => "Nutzer konnte nicht geladen werden.";
@@ -173,6 +177,8 @@ class $de extends S {
   String get screen_login_title => "Anmelden / Registrieren";
   @override
   String get setting_language_switched => "Aktuelle Sprache zu deutsch geändert";
+  @override
+  String get SUCCESS => "ERFOLG";
   @override
   String get ERROR_OPERATION_NOT_ALLOWED => "Diese Anmeldemethode wird nicht unterstützt. Nutzen Sie bitte eine der anderen Methoden.";
   @override

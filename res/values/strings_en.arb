@@ -52,5 +52,7 @@
   "ERROR_OPERATION_NOT_ALLOWED": "This log in method is not supported. Please use another one.",
   "ERROR_CANCELLED_BY_USER": "The user cancelled the authentication process.",
   "ERROR_UNDEFINED": "Something went wrong. Please try again later.",
-  "ERROR_CRITICAL": "A critical error occured. Please try again later"
+  "ERROR_CRITICAL": "A critical error occured. Please try again later",
+  "SUCCESS": "SUCCESS",
+  "ERROR": "ERROR"
 }

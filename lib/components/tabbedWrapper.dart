@@ -52,6 +52,7 @@ class TabbedWrapper extends StatelessWidget {
                           Builder(builder: (BuildContext context) => tab['view'](context)))
                       .toList(),
             ),
+            resizeToAvoidBottomPadding: false,
           ),
         );
       },

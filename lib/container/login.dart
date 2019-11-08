@@ -45,9 +45,11 @@ class _ViewModel {
       return snackBarCompleter(
         context,
         SnackBarContent(
+          title: S.of(context).SUCCESS,
           message: S.of(context).snackbar_user_loaded_success,
         ),
         SnackBarContent(
+          title: S.of(context).ERROR,
           message: S.of(context).snackbar_user_loaded_failure,
         ),
       );

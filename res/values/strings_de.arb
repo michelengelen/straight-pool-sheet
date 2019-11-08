@@ -53,4 +53,6 @@
   "ERROR_CANCELLED_BY_USER": "Abbruch des Anmeldevorgangs durch den Nutzer.",
   "ERROR_UNDEFINED": "Operation fehlgeschlagen. Bitte versuchen Sie es erneut.",
   "ERROR_CRITICAL": "Ein kritischer Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.",
+  "SUCCESS": "ERFOLG",
+  "ERROR": "FEHLER"
 }
