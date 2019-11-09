@@ -78,7 +78,7 @@ class Auth implements BaseAuth {
       authResponse = generateAuthResponse(context, response);
     } on PlatformException catch (error) {
       final String provider = await checkAuthProvider(email);
-      if (error.code == 'ERROR_WRONG_PASSWORD' && provider.isNotEmpty) {
+      if (error.code == 'ERROR_EMAIL_ALREADY_IN_USE' && provider.isNotEmpty) {
         final String providerName = getProviderName(provider);
         authResponse = AuthResponse(
             user: null, error: true, cancelled: false, message: S.of(context).ERROR_WRONG_PROVIDER(providerName));

@@ -25,40 +25,19 @@ class LoginSignup extends StatefulWidget {
 }
 
 class _LoginSignupState extends State<LoginSignup> with SingleTickerProviderStateMixin {
-  final GlobalKey _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   String _email;
   String _password;
   String _passwordCheck;
 
-  bool _isEmailValid;
-  bool _isPasswordValid;
-  bool _isPasswordEqual;
+  bool _validEmail;
+  bool _validPassword;
+  bool _validPasswordRepeat;
   bool _isLoginForm;
+  bool _formSaved;
 
   AnimationController _controller;
-
-  // Check if form is valid before perform login or signup
-  bool validateAndSave() {
-    final FormState form = _formKey.currentState;
-    if (form.validate()) {
-      form.save();
-      return true;
-    }
-    return false;
-  }
-
-  // Perform login or signup
-  void validateAndSubmit(BuildContext context) {
-    if (validateAndSave()) {
-      if (_isLoginForm && _isEmailValid && _isPasswordValid ) {
-        print('###################');
-        widget.onSignIn(context, _email, _password);
-      } else if (!_isLoginForm && _isEmailValid && _isPasswordValid && _isPasswordEqual) {
-        widget.onSignUp(context, _email, _password);
-      }
-    }
-  }
 
   @override
   void initState() {
@@ -67,9 +46,10 @@ class _LoginSignupState extends State<LoginSignup> with SingleTickerProviderStat
     _password = null;
     _passwordCheck = null;
     _isLoginForm = true;
-    _isEmailValid = false;
-    _isPasswordValid = false;
-    _isPasswordEqual = false;
+    _formSaved = false;
+    _validEmail = false;
+    _validPassword = false;
+    _validPasswordRepeat = false;
     _controller = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 1200),
@@ -89,13 +69,32 @@ class _LoginSignupState extends State<LoginSignup> with SingleTickerProviderStat
     });
   }
 
+  // Check if form is valid before perform login or signup
+  bool validateAndSave() {
+    final FormState form = _formKey.currentState;
+    _formSaved = true;
+    form.save();
+    return form.validate();
+  }
+
+  // Perform login or signup
+  void validateAndSubmit(BuildContext context) {
+    if (validateAndSave()) {
+      if (_isLoginForm && _validEmail && _validPassword) {
+        widget.onSignIn(context, _email, _password);
+      } else if (!_isLoginForm && _validEmail && _validPassword && _validPasswordRepeat) {
+        widget.onSignUp(context, _email, _password);
+      }
+    }
+  }
+
   bool isEmailValid(String email) => RegExp(r'^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+').hasMatch(email);
 
   @override
   Widget build(BuildContext context) {
     Widget showSeperator() {
       return Container(
-        padding: const EdgeInsets.fromLTRB(16, 32, 16, 32),
+        padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
         child: Row(
           children: <Widget>[
             const Expanded(
@@ -158,7 +157,7 @@ class _LoginSignupState extends State<LoginSignup> with SingleTickerProviderStat
 
     Widget showCreateAccount() {
       return Padding(
-        padding: const EdgeInsets.only(top: 12),
+        padding: const EdgeInsets.symmetric(vertical: 18),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -188,8 +187,9 @@ class _LoginSignupState extends State<LoginSignup> with SingleTickerProviderStat
 
     Widget showEmailInput() {
       return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 0),
+        padding: const EdgeInsets.all(0),
         child: TextFormField(
+          autovalidate: true,
           maxLines: 1,
           keyboardType: TextInputType.emailAddress,
           autofocus: false,
@@ -198,20 +198,16 @@ class _LoginSignupState extends State<LoginSignup> with SingleTickerProviderStat
               inherit: true,
             ),
             labelText: S.of(context).login_input_email,
+            helperText: ' ',
             isDense: true,
-            suffixIcon: _isEmailValid ? Icon(Icons.check, color: Colors.green) : Icon(Icons.email),
+            suffixIcon: _validEmail ? Icon(Icons.check, color: Colors.green) : Icon(Icons.email),
           ),
-          validator: (String value) => value.isEmpty ? S.of(context).login_input_email_error : null,
-          onChanged: (String value) {
-            bool validEmail;
-            if (value != null && isEmailValid(value.trim()))
-              validEmail = true;
-            else
-              validEmail = false;
-            setState(() {
-              _isEmailValid = validEmail;
-            });
-          },
+          validator: (String value) => _formSaved && !isEmailValid(value.trim())
+              ? S.of(context).login_input_email_error
+              : null,
+          onChanged: (String value) => setState(() {
+            _validEmail = value != null && isEmailValid(value.trim());
+          }),
           onSaved: (String value) => _email = value.trim(),
         ),
       );
@@ -219,8 +215,9 @@ class _LoginSignupState extends State<LoginSignup> with SingleTickerProviderStat
 
     Widget showPasswordInput() {
       return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 0),
+        padding: const EdgeInsets.all(0),
         child: TextFormField(
+          autovalidate: true,
           maxLines: 1,
           obscureText: true,
           autofocus: false,
@@ -229,19 +226,19 @@ class _LoginSignupState extends State<LoginSignup> with SingleTickerProviderStat
               inherit: true,
             ),
             labelText: S.of(context).login_input_password,
+            helperText: ' ',
             isDense: true,
-            suffixIcon: _isPasswordValid ? Icon(Icons.check, color: Colors.green) : Icon(Icons.lock),
+            suffixIcon: _validPassword ? Icon(Icons.check, color: Colors.green) : Icon(Icons.lock),
           ),
           // TODO(michel): add proper password rules check
-          validator: (String value) =>
-              value.isEmpty || value.trim().length <= 5 ? S.of(context).login_input_password_error : null,
-          onChanged: (String value) {
-            setState(() {
-              _password = value.trim();
-              _isPasswordValid = value != null && value.trim().length > 5;
-              _isPasswordEqual = !_isLoginForm && value.trim() == _passwordCheck;
-            });
-          },
+          validator: (String value) => _formSaved && value.trim().length <= 5
+              ? S.of(context).login_input_password_error
+              : null,
+          onChanged: (String value) => setState(() {
+            _password = value.trim();
+            _validPassword = value != null && value.trim().length > 5;
+            _validPasswordRepeat = !_isLoginForm && value.trim() == _passwordCheck;
+          }),
           onSaved: (String value) => _password = value.trim(),
         ),
       );
@@ -250,23 +247,24 @@ class _LoginSignupState extends State<LoginSignup> with SingleTickerProviderStat
     Widget showCheckPasswordInput() {
       return SizeTransition(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 0),
+          padding: const EdgeInsets.all(0),
           child: TextFormField(
+            autovalidate: true,
             maxLines: 1,
             obscureText: true,
             autofocus: false,
             decoration: InputDecoration(
               labelText: S.of(context).login_input_password_check,
-              suffixIcon: _isPasswordEqual ? Icon(Icons.check, color: Colors.green) : Icon(Icons.compare_arrows),
+              suffixIcon: _validPasswordRepeat ? Icon(Icons.check, color: Colors.green) : Icon(Icons.compare_arrows),
+              helperText: ' ',
               isDense: true,
             ),
-            validator: (String value) => !_isLoginForm && value.isEmpty ? S.of(context).login_input_password_check_error : null,
-            onChanged: (String value) {
-              setState(() {
-                _passwordCheck = value.trim();
-                _isPasswordEqual = value.trim() == _password;
-              });
-            },
+            validator: (String value) =>
+                !_isLoginForm && _formSaved && (value.isEmpty || value.trim() != _password) ? S.of(context).login_input_password_check_error : null,
+            onChanged: (String value) => setState(() {
+              _validPasswordRepeat = value.trim() == _password;
+            }),
+            onSaved: (String value) => _passwordCheck = value.trim(),
           ),
         ),
         sizeFactor: CurvedAnimation(
@@ -294,18 +292,20 @@ class _LoginSignupState extends State<LoginSignup> with SingleTickerProviderStat
 
     Widget showPrimaryButton() {
       return Builder(
-        builder: (BuildContext context) => Padding(
-          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 0),
-          child: RaisedButton(
-            elevation: 5,
-            child: Text(
-              _isLoginForm
-                ? S.of(context).login_button_login.toUpperCase()
-                : S.of(context).login_button_create.toUpperCase(),
-              style: TextStyle(fontSize: 16.0, color: Colors.white)),
-            onPressed: () => validateAndSubmit(context),
-          ),
-        ),
+        builder: (BuildContext context) => SizedBox(
+            width: double.infinity,
+            child: Padding(
+              padding: const EdgeInsets.all(0),
+              child: RaisedButton(
+                elevation: 5,
+                child: Text(
+                    _isLoginForm
+                        ? S.of(context).login_button_login.toUpperCase()
+                        : S.of(context).login_button_create.toUpperCase(),
+                    style: TextStyle(fontSize: 16.0, color: Colors.white)),
+                onPressed: () => validateAndSubmit(context),
+              ),
+            )),
       );
     }
 
@@ -337,37 +337,20 @@ class _LoginSignupState extends State<LoginSignup> with SingleTickerProviderStat
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
                           Icon(
-                            FontAwesomeIcons.table,
-                            size: 70.0,
-                          ),
-                          Text(
-                            'Welcome to Pro Billard Tool',
-                            style: Theme.of(context).textTheme.headline,
-                            textAlign: TextAlign.center,
-                          ),
-                          const Text(
-                            'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.',
-                            textAlign: TextAlign.center,
+                            FontAwesomeIcons.lock,
+                            size: 80.0,
                           ),
                         ],
                       ),
                     ),
-                    Expanded(
-                        flex: 3,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-                            showEmailInput(),
-                            showPasswordInput(),
-                            showCheckPasswordInput(),
-                            showForgotPassword(),
-                            showPrimaryButton(),
-                            showSeperator(),
-                            showSocialLogins(),
-                            showCreateAccount(),
-                          ],
-                        )),
+                    showEmailInput(),
+                    showPasswordInput(),
+                    showCheckPasswordInput(),
+                    showForgotPassword(),
+                    showPrimaryButton(),
+                    showSeperator(),
+                    showSocialLogins(),
+                    showCreateAccount(),
                   ],
                 ),
               ),

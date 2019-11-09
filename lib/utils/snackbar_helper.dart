@@ -31,7 +31,7 @@ Completer<void> snackBarCompleter(
     Flushbar<bool>(
       titleText: success.title != null ? Text(
         success.title.toUpperCase(),
-        style: Theme.of(context).textTheme.headline
+        style: Theme.of(context).textTheme.subhead
       ) : null,
       messageText: Text(
         success.message,
@@ -52,10 +52,10 @@ Completer<void> snackBarCompleter(
     Flushbar<bool>(
       titleText: failure.title != null ? Text(
         failure.title.toUpperCase(),
-        style: Theme.of(context).textTheme.headline
+        style: Theme.of(context).textTheme.subhead
       ) : null,
       messageText: Text(
-        failure.message,
+        error.message,
         style: Theme.of(context).textTheme.body2
       ),
       icon: Icon(
