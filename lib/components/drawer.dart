@@ -176,7 +176,7 @@ class DrawerMenuView extends StatelessWidget {
                   // would run into an error, because the state gets updated beforehand
                   Navigator.maybePop(context).then<void>((bool _) => onLogout(context));
                 } else {
-                  Navigator.popAndPushNamed(context, Routes.login).then<void>(onLogout);
+                  Navigator.popAndPushNamed(context, Routes.home).then<void>((Object _) => onLogout(context));
                 }
               },
             ),

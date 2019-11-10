@@ -26,11 +26,12 @@ class Profile extends StatelessWidget {
         return Wrapper(
           title: S.of(context).screen_profile_title,
           child: Center(
-              child: Column(
-            children: <Widget>[
-              Text(user.displayName + "'s Profile Page"),
-            ],
-          )),
+            child: Column(
+              children: <Widget>[
+                Text(user.displayName + "'s Profile Page"),
+              ],
+            ),
+          ),
         );
       },
     );

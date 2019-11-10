@@ -326,21 +326,26 @@ class _LoginSignupState extends State<LoginSignup> with SingleTickerProviderStat
           return Wrapper(
             title: S.of(context).screen_login_title,
             child: Container(
-              padding: const EdgeInsets.all(32),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    showEmailInput(),
-                    showPasswordInput(),
-                    showCheckPasswordInput(),
-                    showForgotPassword(),
-                    showPrimaryButton(),
-                    showSeperator(),
-                    showSocialLogins(),
-                    showCreateAccount(),
-                  ],
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+              child: Center(
+                child: SingleChildScrollView(
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        showEmailInput(),
+                        showPasswordInput(),
+                        showCheckPasswordInput(),
+                        showForgotPassword(),
+                        showPrimaryButton(),
+                        showSeperator(),
+                        showSocialLogins(),
+                        showCreateAccount(),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),

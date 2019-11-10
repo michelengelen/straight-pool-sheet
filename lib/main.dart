@@ -21,25 +21,28 @@ import 'package:sps/screens/home.dart';
 import 'package:sps/screens/new_game.dart';
 
 Future<void> main() async {
+  final GlobalKey navigatorKey = GlobalKey<NavigatorState>();
   final SharedPreferences _sprefs = await SharedPreferences.getInstance();
 
   final Store<RootState> store =
       Store<RootState>(appReducer, initialState: RootState.initial(_sprefs), middleware: <Middleware<RootState>>[
     thunkMiddleware,
     ...createStoreSettingsMiddleware(),
-    ...createStoreAuthMiddleware(),
+    ...createStoreAuthMiddleware(navigatorKey),
   ]);
 
-  runApp(SPS(store: store));
+  runApp(SPS(store: store, navigatorKey: navigatorKey));
 }
 
 @immutable
 class SPS extends StatelessWidget {
   const SPS({
     @required this.store,
+    @required this.navigatorKey,
   });
 
   final Store<RootState> store;
+  final GlobalKey navigatorKey;
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +52,7 @@ class SPS extends StatelessWidget {
         converter: (Store<RootState> store) => store.state.settings,
         builder: (BuildContext context, SettingsState settings) {
           return MaterialApp(
+            debugShowCheckedModeBanner: false,
             locale: Locale(settings.locale, ''),
             localizationsDelegates: <LocalizationsDelegate<dynamic>>[
               S.delegate,
@@ -60,6 +64,7 @@ class SPS extends StatelessWidget {
             localeResolutionCallback: S.delegate.resolution(fallback: const Locale('en', '')),
             title: 'Straight Pool Sheet',
             theme: settings.darkMode ? CustomTheme.dark() : CustomTheme.light(),
+            navigatorKey: navigatorKey,
             routes: <String, Widget Function(BuildContext)>{
               Routes.home: (BuildContext context) {
                 return HomeScreen(

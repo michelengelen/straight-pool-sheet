@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:redux/redux.dart';
+import 'package:sps/constants/routes.dart';
 import 'package:sps/generated/i18n.dart';
 import 'package:sps/redux/auth/auth_actions.dart';
 import 'package:sps/redux/root_state.dart';
@@ -10,12 +11,12 @@ import 'package:sps/services/auth.dart';
 
 final Auth auth = Auth();
 
-List<Middleware<RootState>> createStoreAuthMiddleware() {
-  final Middleware<RootState> loadUser = _loadUser();
-  final Middleware<RootState> signInUser = _signInUser();
-  final Middleware<RootState> signUpUser = _signUpUser();
-  final Middleware<RootState> signOutUser = _signOutUser();
-  final Middleware<RootState> signInUserSocial = _signInUserSocial();
+List<Middleware<RootState>> createStoreAuthMiddleware(GlobalKey navigatorKey) {
+  final Middleware<RootState> loadUser = _loadUser(navigatorKey);
+  final Middleware<RootState> signInUser = _signInUser(navigatorKey);
+  final Middleware<RootState> signUpUser = _signUpUser(navigatorKey);
+  final Middleware<RootState> signOutUser = _signOutUser(navigatorKey);
+  final Middleware<RootState> signInUserSocial = _signInUserSocial(navigatorKey);
 
   return <Middleware<RootState>>[
     TypedMiddleware<RootState, LoadUserAction>(loadUser),
@@ -26,7 +27,7 @@ List<Middleware<RootState>> createStoreAuthMiddleware() {
   ];
 }
 
-Middleware<RootState> _loadUser() {
+Middleware<RootState> _loadUser(GlobalKey navigatorKey) {
   return (Store<RootState> store, dynamic dynamicAction, NextDispatcher next) {
     final LoadUserAction action = dynamicAction;
 
@@ -41,16 +42,15 @@ Middleware<RootState> _loadUser() {
         store.dispatch(UnsetUser());
         store.dispatch(AppIsLoaded());
       });
-    }).then<void>((dynamic _) {
-      if (action.completer != null) action.completer.complete();
     });
   };
 }
 
-Middleware<RootState> _signInUser() {
+Middleware<RootState> _signInUser(GlobalKey navigatorKey) {
   return (Store<RootState> store, dynamic dynamicAction, NextDispatcher next) {
     final SignIn action = dynamicAction;
     final BuildContext context = action.context;
+    final NavigatorState nav = navigatorKey.currentState;
 
     next(action);
 
@@ -62,6 +62,7 @@ Middleware<RootState> _signInUser() {
       return authResponse;
     }).then<void>((AuthResponse authResponse) {
       store.dispatch(SetUser(authResponse.user));
+      nav.pushNamed(Routes.profile);
       store.dispatch(AppIsLoaded());
       action.completer.complete();
     }).catchError((Object authResponse) {
@@ -72,7 +73,7 @@ Middleware<RootState> _signInUser() {
   };
 }
 
-Middleware<RootState> _signUpUser() {
+Middleware<RootState> _signUpUser(GlobalKey navigatorKey) {
   return (Store<RootState> store, dynamic dynamicAction, NextDispatcher next) {
     final SignUp action = dynamicAction;
     final BuildContext context = action.context;
@@ -97,7 +98,7 @@ Middleware<RootState> _signUpUser() {
   };
 }
 
-Middleware<RootState> _signOutUser() {
+Middleware<RootState> _signOutUser(GlobalKey navigatorKey) {
   return (Store<RootState> store, dynamic dynamicAction, NextDispatcher next) {
     final SignOut action = dynamicAction;
 
@@ -121,10 +122,11 @@ Middleware<RootState> _signOutUser() {
   };
 }
 
-Middleware<RootState> _signInUserSocial() {
+Middleware<RootState> _signInUserSocial(GlobalKey navigatorKey) {
   return (Store<RootState> store, dynamic dynamicAction, NextDispatcher next) {
     final SignInSocial action = dynamicAction;
     final BuildContext context = action.context;
+    final NavigatorState nav = navigatorKey.currentState;
 
     next(action);
 
@@ -152,6 +154,7 @@ Middleware<RootState> _signInUserSocial() {
       return authResponse;
     }).then<void>((AuthResponse authResponse) {
       store.dispatch(SetUser(authResponse.user));
+      nav.pushNamed(Routes.profile);
       store.dispatch(AppIsLoaded());
       action.completer.complete();
     }).catchError((Object authResponse) {
