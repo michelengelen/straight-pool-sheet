@@ -42,7 +42,7 @@ class Wrapper extends StatelessWidget {
                 ),
               ],
             ),
-            resizeToAvoidBottomPadding: false
+//            resizeToAvoidBottomPadding: false
         );
       },
     );

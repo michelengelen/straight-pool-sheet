@@ -330,19 +330,8 @@ class _LoginSignupState extends State<LoginSignup> with SingleTickerProviderStat
               child: Form(
                 key: _formKey,
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Expanded(
-                      flex: 1,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          Icon(
-                            FontAwesomeIcons.lock,
-                            size: 80.0,
-                          ),
-                        ],
-                      ),
-                    ),
                     showEmailInput(),
                     showPasswordInput(),
                     showCheckPasswordInput(),
