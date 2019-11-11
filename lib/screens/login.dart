@@ -158,27 +158,25 @@ class _LoginSignupState extends State<LoginSignup> with SingleTickerProviderStat
     Widget showCreateAccount() {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 18),
-        child: Row(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(_isLoginForm ? S.of(context).login_text_create : S.of(context).login_text_has_account),
-            Padding(
-              padding: const EdgeInsets.only(left: 4),
-              child: InkWell(
-                splashColor: Colors.transparent,
-                highlightColor: Colors.transparent,
-                child: Text(
-                  _isLoginForm ? S.of(context).login_button_create : S.of(context).login_button_has_account,
-                  style: TextStyle(
-                    color: Theme.of(context).buttonColor,
-                    fontWeight: FontWeight.bold,
-                  ),
+            InkWell(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              child: Text(
+                _isLoginForm ? S.of(context).login_button_create : S.of(context).login_button_has_account,
+                style: TextStyle(
+                  color: Theme.of(context).buttonColor,
+                  fontWeight: FontWeight.bold,
                 ),
-                onTap: () {
-                  _isLoginForm ? _controller.forward() : _controller.reverse();
-                  toggleFormMode();
-                },
               ),
+              onTap: () {
+                _isLoginForm ? _controller.forward() : _controller.reverse();
+                toggleFormMode();
+              },
             ),
           ],
         ),
@@ -202,9 +200,8 @@ class _LoginSignupState extends State<LoginSignup> with SingleTickerProviderStat
             isDense: true,
             suffixIcon: _validEmail ? Icon(Icons.check, color: Colors.green) : Icon(Icons.email),
           ),
-          validator: (String value) => _formSaved && !isEmailValid(value.trim())
-              ? S.of(context).login_input_email_error
-              : null,
+          validator: (String value) =>
+              _formSaved && !isEmailValid(value.trim()) ? S.of(context).login_input_email_error : null,
           onChanged: (String value) => setState(() {
             _validEmail = value != null && isEmailValid(value.trim());
           }),
@@ -231,9 +228,8 @@ class _LoginSignupState extends State<LoginSignup> with SingleTickerProviderStat
             suffixIcon: _validPassword ? Icon(Icons.check, color: Colors.green) : Icon(Icons.lock),
           ),
           // TODO(michel): add proper password rules check
-          validator: (String value) => _formSaved && value.trim().length <= 5
-              ? S.of(context).login_input_password_error
-              : null,
+          validator: (String value) =>
+              _formSaved && value.trim().length <= 5 ? S.of(context).login_input_password_error : null,
           onChanged: (String value) => setState(() {
             _password = value.trim();
             _validPassword = value != null && value.trim().length > 5;
@@ -259,8 +255,9 @@ class _LoginSignupState extends State<LoginSignup> with SingleTickerProviderStat
               helperText: ' ',
               isDense: true,
             ),
-            validator: (String value) =>
-                !_isLoginForm && _formSaved && (value.isEmpty || value.trim() != _password) ? S.of(context).login_input_password_check_error : null,
+            validator: (String value) => !_isLoginForm && _formSaved && (value.isEmpty || value.trim() != _password)
+                ? S.of(context).login_input_password_check_error
+                : null,
             onChanged: (String value) => setState(() {
               _validPasswordRepeat = value.trim() == _password;
             }),
