@@ -55,14 +55,29 @@ class DrawerMenuView extends StatelessWidget {
 
     Widget _getDrawerHeader() {
       if (auth.status == AuthStatus.LOGGED_IN && auth.user != null) {
-        final String queryParam = auth.user.providerData[0].providerId.startsWith('facebook') ? '?width=400' : '';
+        print('###### USER in DRAWER!!!!');
+        print(auth.user.toString());
+        String avatarPicture;
+        final String provider = auth.user.providerData[0].providerId.split('.')[0];
+        switch (provider) {
+          case 'facebook':
+            avatarPicture = auth.user.photoUrl + '?width=400';
+            break;
+          case 'twitter':
+            avatarPicture = auth.user.photoUrl.replaceAll('_normal', '');
+            break;
+          case 'google':
+          default:
+            avatarPicture = auth.user.photoUrl;
+            break;
+        }
         return UserAccountsDrawerHeader(
           accountName: Text(auth.user.displayName ?? 'No name is set for the user'),
-          accountEmail: Text(auth.user.email),
+          accountEmail: auth.user.email != null ? Text(auth.user.email) : null,
           currentAccountPicture: auth.user.photoUrl != null
               ? CircleAvatar(
                   backgroundColor: Colors.blue,
-                  backgroundImage: CachedNetworkImageProvider(auth.user.photoUrl + queryParam),
+                  backgroundImage: CachedNetworkImageProvider(avatarPicture),
                 )
               : CircleAvatar(
                   backgroundColor: Colors.blue,

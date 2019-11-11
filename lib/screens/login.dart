@@ -117,6 +117,25 @@ class _LoginSignupState extends State<LoginSignup> with SingleTickerProviderStat
       );
     }
 
+    Widget showFacebookLoginButton() {
+      return Padding(
+        padding: const EdgeInsets.all(4),
+        child: FloatingActionButton(
+          heroTag: 'facebook_login_hero',
+          mini: true,
+          elevation: 0,
+          child: Icon(
+            FontAwesomeIcons.facebookF,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            widget.onSignInSocial(context, 'FB');
+          },
+          backgroundColor: CustomColors.facebook,
+        ),
+      );
+    }
+
     Widget showGoogleLoginButton() {
       return Padding(
         padding: const EdgeInsets.all(4),
@@ -136,21 +155,21 @@ class _LoginSignupState extends State<LoginSignup> with SingleTickerProviderStat
       );
     }
 
-    Widget showFacebookLoginButton() {
+    Widget showTwitterLoginButton() {
       return Padding(
         padding: const EdgeInsets.all(4),
         child: FloatingActionButton(
-          heroTag: 'facebook_login_hero',
+          heroTag: 'twitter_login_hero',
           mini: true,
           elevation: 0,
           child: Icon(
-            FontAwesomeIcons.facebookF,
+            FontAwesomeIcons.twitter,
             color: Colors.white,
           ),
           onPressed: () {
-            widget.onSignInSocial(context, 'FB');
+            widget.onSignInSocial(context, 'T');
           },
-          backgroundColor: CustomColors.facebook,
+          backgroundColor: CustomColors.twitter,
         ),
       );
     }
@@ -313,6 +332,7 @@ class _LoginSignupState extends State<LoginSignup> with SingleTickerProviderStat
         children: <Widget>[
           showFacebookLoginButton(),
           showGoogleLoginButton(),
+          showTwitterLoginButton(),
         ],
       );
     }

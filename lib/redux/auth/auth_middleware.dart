@@ -140,6 +140,9 @@ Middleware<RootState> _signInUserSocial(GlobalKey navigatorKey) {
         case 'G':
           authResponse = await auth.handleGoogleLogin(context);
           break;
+        case 'T':
+          authResponse = await auth.handleTwitterLogin(context);
+          break;
         default:
           authResponse = AuthResponse(
             user: null,
