@@ -55,7 +55,7 @@ class DrawerMenuView extends StatelessWidget {
 
     Widget _getDrawerHeader() {
       if (auth.status == AuthStatus.LOGGED_IN && auth.user != null) {
-        print('###### USER in DRAWER!!!!');
+        print('###### USER from DRAWER!!!!');
         print(auth.user.toString());
         String avatarPicture;
         final String provider = auth.user.providerData[0].providerId.split('.')[0];
