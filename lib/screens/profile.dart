@@ -24,15 +24,14 @@ class Profile extends StatelessWidget {
       builder: (BuildContext context, Store<RootState> store) {
         final FirebaseUser user = store.state.auth.user;
         return Wrapper(
-          title: S
-            .of(context)
-            .screen_profile_title,
+          title: S.of(context).screen_profile_title,
           child: Center(
             child: Column(
               children: <Widget>[
                 Text(user.displayName + "'s Profile Page"),
               ],
-            )),
+            ),
+          ),
         );
       },
     );

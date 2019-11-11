@@ -34,10 +34,7 @@ class AuthState {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) ||
-          other is AuthState &&
-              runtimeType == other.runtimeType &&
-              user == other.user;
+      identical(this, other) || other is AuthState && runtimeType == other.runtimeType && user == other.user;
 
   @override
   String toString() {

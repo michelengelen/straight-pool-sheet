@@ -12,3 +12,8 @@ class Keys {
   static const Key loginScreen = Key('__loginScreen__');
   static const Key newGameScreen = Key('__newGameScreen__');
 }
+
+class TwitterKeys {
+  static const String apiKey = 'e42XGF32i3a7DwA8v0HX3naJr';
+  static const String apiSecret = 'pQsTYillhWqxgSlZgZefpujnSk22gq1KFWRJCF6skKBYczXHjE';
+}

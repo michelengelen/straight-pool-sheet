@@ -49,14 +49,12 @@ class _ViewModel {
       final Completer<void> completer = snackBarCompleter(
         context,
         SnackBarContent(
-          message: S
-            .of(context)
-            .snackbar_user_signout_success,
+          title: S.of(context).SUCCESS,
+          message: S.of(context).snackbar_user_signout_success,
         ),
         SnackBarContent(
-          message: S
-            .of(context)
-            .snackbar_user_signout_failure,
+          title: S.of(context).ERROR,
+          message: S.of(context).snackbar_user_signout_failure,
         ),
       );
       store.dispatch(

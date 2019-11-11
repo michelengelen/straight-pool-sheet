@@ -5,6 +5,7 @@ import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sps/constants/routes.dart';
+import 'package:sps/constants/theme.dart';
 import 'package:sps/container/login.dart';
 import 'package:sps/container/profile.dart';
 import 'package:sps/container/settings.dart';
@@ -20,26 +21,28 @@ import 'package:sps/screens/home.dart';
 import 'package:sps/screens/new_game.dart';
 
 Future<void> main() async {
+  final GlobalKey navigatorKey = GlobalKey<NavigatorState>();
   final SharedPreferences _sprefs = await SharedPreferences.getInstance();
 
-  final Store<RootState> store = Store<RootState>(appReducer,
-    initialState: RootState.initial(_sprefs),
-    middleware: <Middleware<RootState>>[
-      thunkMiddleware,
-      ...createStoreSettingsMiddleware(),
-      ...createStoreAuthMiddleware(),
-    ]);
+  final Store<RootState> store =
+      Store<RootState>(appReducer, initialState: RootState.initial(_sprefs), middleware: <Middleware<RootState>>[
+    thunkMiddleware,
+    ...createStoreSettingsMiddleware(),
+    ...createStoreAuthMiddleware(navigatorKey),
+  ]);
 
-  runApp(SPS(store: store));
+  runApp(SPS(store: store, navigatorKey: navigatorKey));
 }
 
 @immutable
 class SPS extends StatelessWidget {
   const SPS({
     @required this.store,
+    @required this.navigatorKey,
   });
 
   final Store<RootState> store;
+  final GlobalKey navigatorKey;
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +52,7 @@ class SPS extends StatelessWidget {
         converter: (Store<RootState> store) => store.state.settings,
         builder: (BuildContext context, SettingsState settings) {
           return MaterialApp(
+            debugShowCheckedModeBanner: false,
             locale: Locale(settings.locale, ''),
             localizationsDelegates: <LocalizationsDelegate<dynamic>>[
               S.delegate,
@@ -57,20 +61,18 @@ class SPS extends StatelessWidget {
               GlobalMaterialLocalizations.delegate,
             ],
             supportedLocales: S.delegate.supportedLocales,
-            localeResolutionCallback:
-            S.delegate.resolution(fallback: const Locale('en', '')),
+            localeResolutionCallback: S.delegate.resolution(fallback: const Locale('en', '')),
             title: 'Straight Pool Sheet',
-            theme: settings.darkMode ? ThemeData.dark() : ThemeData.light(),
+            theme: settings.darkMode ? CustomTheme.dark() : CustomTheme.light(),
+            navigatorKey: navigatorKey,
             routes: <String, Widget Function(BuildContext)>{
               Routes.home: (BuildContext context) {
                 return HomeScreen(
                   onInit: () {
                     final Locale systemLocale = Localizations.localeOf(context);
-                    StoreProvider.of<RootState>(context).dispatch(
-                      ChangeLanguageAction(
-                        languageCode: systemLocale.languageCode));
                     StoreProvider.of<RootState>(context)
-                      .dispatch(LoadUserAction());
+                        .dispatch(ChangeLanguageAction(languageCode: systemLocale.languageCode));
+                    StoreProvider.of<RootState>(context).dispatch(LoadUserAction());
                   },
                 );
               },

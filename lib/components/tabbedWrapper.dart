@@ -31,10 +31,7 @@ class TabbedWrapper extends StatelessWidget {
                     ? <Tab>[
                         const Tab(child: CircularProgressIndicator()),
                       ]
-                    : tabs
-                        .map<Tab>((Map<dynamic, dynamic> tab) =>
-                            Tab(icon: tab['icon']))
-                        .toList(),
+                    : tabs.map<Tab>((Map<dynamic, dynamic> tab) => Tab(icon: tab['icon'])).toList(),
               ),
               title: Text(title),
             ),
@@ -51,10 +48,11 @@ class TabbedWrapper extends StatelessWidget {
                       )
                     ]
                   : tabs
-                      .map<Widget>((Map<dynamic, dynamic> tab) => Builder(
-                          builder: (BuildContext context) => tab['view'](context)))
+                      .map<Widget>((Map<dynamic, dynamic> tab) =>
+                          Builder(builder: (BuildContext context) => tab['view'](context)))
                       .toList(),
             ),
+            resizeToAvoidBottomPadding: false,
           ),
         );
       },

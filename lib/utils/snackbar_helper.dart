@@ -1,84 +1,74 @@
 import 'dart:async';
 
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
 class SnackBarContent {
   SnackBarContent({
+    this.title,
     @required this.message,
-    this.action,
-    this.actionLabel,
   });
 
+  final String title;
   final String message;
-  final Function action;
-  final String actionLabel;
 }
 
-Completer<void> snackBarCompleter(BuildContext context,
+Completer<void> snackBarCompleter(
+  BuildContext context,
   SnackBarContent success,
-  SnackBarContent failure,
-  {
-    bool shouldPop = false,
-    bool dismissable = true,
-  }) {
+  SnackBarContent failure, {
+  bool shouldPop = false,
+  bool dismissable = true,
+}) {
   final Completer<void> completer = Completer<void>();
-  dynamic action;
+  final bool isDark = Theme.of(context).brightness == Brightness.dark;
 
   completer.future.then((_) {
     if (shouldPop) {
       Navigator.of(context).pop();
     }
 
-    if (success.action is Function) {
-      action = SnackBarAction(
-        label: success.actionLabel ?? 'X',
-        onPressed: success.action,
-      );
-    } else if (dismissable) {
-      action = SnackBarAction(
-        label: 'X',
-        onPressed: Scaffold
-          .of(context)
-          .hideCurrentSnackBar,
-      );
-    }
-
-    Scaffold.of(context).hideCurrentSnackBar();
-    Scaffold.of(context).showSnackBar(SnackBar(
-      content: Text(success.message),
-      action: action,
-    ));
-  }).catchError((dynamic error) {
-    if (failure.action is Function) {
-      action = SnackBarAction(
-        label: failure.actionLabel ?? 'X',
-        textColor: Colors.white70,
-        onPressed: failure.action,
-      );
-    } else if (dismissable) {
-      action = SnackBarAction(
-        label: 'X',
-        textColor: Colors.white70,
-        onPressed: Scaffold
-          .of(context)
-          .hideCurrentSnackBar,
-      );
-    }
-
-    final String errorMessage = '${failure.message}${error.message.isNotEmpty ? ' - ${error.message}' : ''}';
-
-    Scaffold.of(context).hideCurrentSnackBar();
-    Scaffold.of(context).showSnackBar(SnackBar(
-      content: Text(
-        errorMessage,
-        style: TextStyle(
-          color: Colors.white70,
-          fontWeight: FontWeight.bold,
-        ),
+    Flushbar<bool>(
+      titleText: success.title != null ? Text(
+        success.title.toUpperCase(),
+        style: Theme.of(context).textTheme.subhead
+      ) : null,
+      messageText: Text(
+        success.message,
+        style: Theme.of(context).textTheme.body2
       ),
-      action: action,
-      backgroundColor: Colors.red,
-    ));
+      icon: Icon(
+        Icons.check_circle_outline,
+        color: Colors.green,
+      ),
+      isDismissible: true,
+      duration: Duration(seconds: 6),
+      forwardAnimationCurve: Curves.easeOutQuint,
+      reverseAnimationCurve: Curves.decelerate,
+      flushbarStyle: FlushbarStyle.GROUNDED,
+      backgroundColor: isDark ? Colors.grey[900] : Colors.grey[300],
+    )..show(context);
+  }).catchError((dynamic error) {
+    Flushbar<bool>(
+      titleText: failure.title != null ? Text(
+        failure.title.toUpperCase(),
+        style: Theme.of(context).textTheme.subhead
+      ) : null,
+      messageText: Text(
+        error.message,
+        style: Theme.of(context).textTheme.body2
+      ),
+      icon: Icon(
+        Icons.error_outline,
+        color: Colors.red,
+      ),
+      isDismissible: true,
+      duration: Duration(seconds: 6),
+      forwardAnimationCurve: Curves.easeOutQuint,
+      reverseAnimationCurve: Curves.decelerate,
+      flushbarStyle: FlushbarStyle.GROUNDED,
+      backgroundColor: isDark ? Colors.grey[900] : Colors.grey[300],
+    )..show(context);
   });
 
   return completer;

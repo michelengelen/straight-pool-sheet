@@ -32,6 +32,7 @@
 			<array>
 				<string>fb273836016784078</string>
 				<string>com.googleusercontent.apps.606764946846-u2404iqah9aahccf19ipd0nrlfiukdnf</string>
+				<string>twitterkit-e42XGF32i3a7DwA8v0HX3naJr</string>
 			</array>
 		</dict>
 	</array>
@@ -47,6 +48,8 @@
 		<string>fb-messenger-share-api</string>
 		<string>fbauth2</string>
 		<string>fbshareextension</string>
+		<string>twitter</string>
+		<string>twitterauth</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>

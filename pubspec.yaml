@@ -42,6 +42,8 @@ dependencies:
 
   flutter_facebook_login: ^3.0.0
   google_sign_in: ^4.0.7
+  flutter_twitter_login:
+    git: git://github.com/eudangeld/flutter_twitter_login.git
 
   redux: ^3.0.0
   redux_thunk: ^0.2.1
@@ -49,6 +51,9 @@ dependencies:
 
   cached_network_image: ^1.1.2+1
   shared_preferences: ^0.5.4
+
+  font_awesome_flutter: ^8.5.0
+  flushbar: ^1.9.1
 
 dev_dependencies:
   flutter_test:

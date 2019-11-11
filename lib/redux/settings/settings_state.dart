@@ -18,10 +18,7 @@ class SettingsState {
   final bool darkMode;
   final String locale;
 
-  SettingsState copyWith({
-    bool darkMode,
-    String locale
-  }) {
+  SettingsState copyWith({bool darkMode, String locale}) {
     return SettingsState(
       darkMode: darkMode ?? this.darkMode,
       locale: locale ?? this.locale,
@@ -34,10 +31,10 @@ class SettingsState {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is SettingsState &&
-              runtimeType == other.runtimeType &&
-              darkMode == other.darkMode &&
-              locale == other.locale;
+      other is SettingsState &&
+          runtimeType == other.runtimeType &&
+          darkMode == other.darkMode &&
+          locale == other.locale;
 
   @override
   String toString() {
