@@ -8,6 +8,7 @@ class Keys {
   // Home Screens
   static const Key homeScreen = Key('__homeScreen__');
   static const Key profileScreen = Key('__profileScreen__');
+  static const Key editProfileScreen = Key('__editProfileScreen__');
   static const Key settingsScreen = Key('__settingsScreen__');
   static const Key loginScreen = Key('__loginScreen__');
   static const Key newGameScreen = Key('__newGameScreen__');

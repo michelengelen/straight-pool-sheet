@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:redux/redux.dart';
 import 'package:sps/constants/routes.dart';
@@ -99,12 +100,14 @@ Middleware<RootState> _signUpUser(GlobalKey navigatorKey) {
 }
 
 Middleware<RootState> _signOutUser(GlobalKey navigatorKey) {
-  return (Store<RootState> store, dynamic dynamicAction, NextDispatcher next) {
+  return (Store<RootState> store, dynamic dynamicAction, NextDispatcher next) async {
     final SignOut action = dynamicAction;
+    final NavigatorState nav = navigatorKey.currentState;
 
     next(action);
 
     store.dispatch(AppIsLoading());
+
     Future<dynamic>(() async {
       try {
         await auth.signOut();
@@ -112,10 +115,12 @@ Middleware<RootState> _signOutUser(GlobalKey navigatorKey) {
         return Future<void>.error(error);
       }
     }).then<void>((dynamic _) {
+      nav.pushNamedAndRemoveUntil(Routes.home, (Route<dynamic> route) => false);
       store.dispatch(UnsetUser());
       store.dispatch(AppIsLoaded());
       action.completer.complete();
     }).catchError((Object response) {
+      nav.maybePop(nav.context);
       action.completer.completeError(response);
       store.dispatch(AppIsLoaded());
     });

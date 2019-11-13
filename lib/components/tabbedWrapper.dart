@@ -27,30 +27,33 @@ class TabbedWrapper extends StatelessWidget {
             appBar: AppBar(
               bottomOpacity: 1,
               bottom: TabBar(
-                tabs: isLoading
-                    ? <Tab>[
-                        const Tab(child: CircularProgressIndicator()),
-                      ]
-                    : tabs.map<Tab>((Map<dynamic, dynamic> tab) => Tab(icon: tab['icon'])).toList(),
+                tabs: tabs.map<Tab>((Map<dynamic, dynamic> tab) => Tab(icon: tab['icon'])).toList(),
               ),
               title: Text(title),
             ),
-            body: TabBarView(
-              children: isLoading
-                  ? <Widget>[
-                      Stack(
-                        children: <Widget>[
-                          ModalBarrier(dismissible: false, color: Colors.black),
-                          Center(
-                            child: const CircularProgressIndicator(),
-                          ),
-                        ],
-                      )
-                    ]
-                  : tabs
+            body: Stack(
+              alignment: Alignment.topCenter,
+              children: <Widget>[
+                TabBarView(
+                  children: tabs
                       .map<Widget>((Map<dynamic, dynamic> tab) =>
                           Builder(builder: (BuildContext context) => tab['view'](context)))
                       .toList(),
+                ),
+                AnimatedSwitcher(
+                  duration: Duration(milliseconds: 600),
+                  child: isLoading
+                      ? Stack(
+                          children: <Widget>[
+                            ModalBarrier(dismissible: false, color: Colors.black),
+                            Center(
+                              child: const CircularProgressIndicator(),
+                            ),
+                          ],
+                        )
+                      : null,
+                ),
+              ],
             ),
             resizeToAvoidBottomPadding: false,
           ),

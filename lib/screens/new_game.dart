@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:sps/components/wrapper.dart';
+import 'package:sps/constants/images.dart';
 import 'package:sps/constants/keys.dart';
 import 'package:sps/generated/i18n.dart';
 import 'package:sps/redux/root_state.dart';
@@ -32,9 +33,24 @@ class NewGameScreenState extends State<NewGameScreen> {
       builder: (BuildContext context, FirebaseUser user) {
         return Wrapper(
           title: S.of(context).screen_new_game_title,
-          child: Center(
-            child: const Text('New Game Screen'),
-          ),
+          child: Card(
+            child: ListView(
+              children: <Widget>[
+                ListTile(
+                  title: const Text('New Game Screen'),
+                ),
+                ListTile(
+                  title: const Text('New Game Screen'),
+                ),
+                ListTile(
+                  title: const Text('New Game Screen'),
+                ),
+                ListTile(
+                  title: const Text('New Game Screen'),
+                ),
+              ],
+            )
+          )
         );
       },
     );

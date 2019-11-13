@@ -106,7 +106,6 @@ class Auth implements BaseAuth {
       authResponse = generateAuthResponse(context, response);
     } on PlatformException catch (error) {
       final String provider = await checkAuthProvider(email);
-      print('######### ${error.code}');
       print(error.code);
       if (error.code == 'ERROR_EMAIL_ALREADY_IN_USE' && provider.isNotEmpty) {
         final String providerName = getProviderName(provider);

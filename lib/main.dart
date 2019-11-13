@@ -72,7 +72,8 @@ class SPS extends StatelessWidget {
                     final Locale systemLocale = Localizations.localeOf(context);
                     StoreProvider.of<RootState>(context)
                         .dispatch(ChangeLanguageAction(languageCode: systemLocale.languageCode));
-                    StoreProvider.of<RootState>(context).dispatch(LoadUserAction());
+                    if (StoreProvider.of<RootState>(context).state.auth.user == null)
+                      StoreProvider.of<RootState>(context).dispatch(LoadUserAction());
                   },
                 );
               },

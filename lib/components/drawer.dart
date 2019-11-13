@@ -5,6 +5,7 @@ import 'package:sps/constants/images.dart';
 import 'package:sps/constants/routes.dart';
 import 'package:sps/generated/i18n.dart';
 import 'package:sps/redux/auth/auth_state.dart';
+import 'package:sps/utils/utils.dart';
 
 @immutable
 class DrawerMenuView extends StatelessWidget {
@@ -33,8 +34,6 @@ class DrawerMenuView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('+++++++ DarkMode?');
-    print(darkMode);
     String _getCurrentRouteName() {
       String currentRouteName;
 
@@ -57,20 +56,7 @@ class DrawerMenuView extends StatelessWidget {
       if (auth.status == AuthStatus.LOGGED_IN && auth.user != null) {
         print('###### USER from DRAWER!!!!');
         print(auth.user.toString());
-        String avatarPicture;
-        final String provider = auth.user.providerData[0].providerId.split('.')[0];
-        switch (provider) {
-          case 'facebook':
-            avatarPicture = auth.user.photoUrl + '?width=400';
-            break;
-          case 'twitter':
-            avatarPicture = auth.user.photoUrl.replaceAll('_normal', '');
-            break;
-          case 'google':
-          default:
-            avatarPicture = auth.user.photoUrl;
-            break;
-        }
+        final String avatarPicture = getProfilePictureUrl(auth.user);
         return UserAccountsDrawerHeader(
           accountName: Text(auth.user.displayName ?? 'No name is set for the user'),
           accountEmail: auth.user.email != null ? Text(auth.user.email) : null,
@@ -184,16 +170,7 @@ class DrawerMenuView extends StatelessWidget {
                 semanticLabel: S.of(context).icon_logout_semantic,
               ),
               title: Text(S.of(context).logout),
-              onTap: () {
-                if (currentRoute == Routes.home) {
-                  // use Navigators maybePop method, because it returns a Future
-                  // If we would use .pop() here the rendering of the Profile Page
-                  // would run into an error, because the state gets updated beforehand
-                  Navigator.maybePop(context).then<void>((bool _) => onLogout(context));
-                } else {
-                  Navigator.popAndPushNamed(context, Routes.home).then<void>((Object _) => onLogout(context));
-                }
-              },
+              onTap: () => onLogout(context),
             ),
         ],
       ),

@@ -20,29 +20,28 @@ class Wrapper extends StatelessWidget {
       converter: (Store<RootState> store) => store.state.view.isLoading,
       builder: (BuildContext context, bool isLoading) {
         return Scaffold(
-            drawer: const DrawerMenu(),
-            appBar: AppBar(
-              title: Text(title),
-            ),
-            body: Stack(
-              children: <Widget>[
-                child,
-                AnimatedSwitcher(
-                  duration: Duration(milliseconds: 600),
-                  child: isLoading
-                      ? Stack(
-                          children: <Widget>[
-                            ModalBarrier(dismissible: false, color: Colors.black),
-                            Center(
-                              child: const CircularProgressIndicator(),
-                            ),
-                          ],
-                        )
-                      : null,
-                ),
-              ],
-            ),
-//            resizeToAvoidBottomPadding: false
+          drawer: const DrawerMenu(),
+          appBar: AppBar(
+            title: Text(title),
+          ),
+          body: Stack(
+            children: <Widget>[
+              child,
+              AnimatedSwitcher(
+                duration: Duration(milliseconds: 600),
+                child: isLoading
+                    ? Stack(
+                        children: <Widget>[
+                          ModalBarrier(dismissible: false, color: Colors.black),
+                          Center(
+                            child: const CircularProgressIndicator(),
+                          ),
+                        ],
+                      )
+                    : null,
+              ),
+            ],
+          ),
         );
       },
     );
