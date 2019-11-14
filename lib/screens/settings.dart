@@ -56,7 +56,7 @@ class Settings extends StatelessWidget {
                   context: context,
                   tiles: <Widget>[
                     ListTile(
-                      title: Text(
+                      title: const Text(
                         'App-Settings',
                         style: TextStyle(
                           fontSize: 24,

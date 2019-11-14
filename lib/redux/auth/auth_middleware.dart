@@ -115,12 +115,12 @@ Middleware<RootState> _signOutUser(GlobalKey navigatorKey) {
         return Future<void>.error(error);
       }
     }).then<void>((dynamic _) {
-      nav.pushNamedAndRemoveUntil(Routes.home, (Route<dynamic> route) => false);
-      store.dispatch(UnsetUser());
-      store.dispatch(AppIsLoaded());
       action.completer.complete();
+      nav.pushNamedAndRemoveUntil(Routes.home, (Route<dynamic> route) => false).then((Object _) {
+        store.dispatch(UnsetUser());
+        store.dispatch(AppIsLoaded());
+      });
     }).catchError((Object response) {
-      nav.maybePop(nav.context);
       action.completer.completeError(response);
       store.dispatch(AppIsLoaded());
     });

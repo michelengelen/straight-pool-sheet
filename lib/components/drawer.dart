@@ -8,17 +8,22 @@ import 'package:sps/redux/auth/auth_state.dart';
 import 'package:sps/utils/utils.dart';
 
 @immutable
-class DrawerMenuView extends StatelessWidget {
+class DrawerMenuView extends StatefulWidget {
   const DrawerMenuView({
     this.onLogout,
     this.auth,
     this.darkMode,
-  });
+  }) : super();
 
   final Function(BuildContext context) onLogout;
   final AuthState auth;
   final bool darkMode;
 
+  @override
+  State<StatefulWidget> createState() => _DrawerMenuViewState();
+}
+
+class _DrawerMenuViewState extends State<DrawerMenuView> {
   String _getInitials(String name) {
     String value = 'A';
     if (name == null) return value;
@@ -33,7 +38,13 @@ class DrawerMenuView extends StatelessWidget {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    print('#### context from drawer: ${context.toString()}');
     String _getCurrentRouteName() {
       String currentRouteName;
 
@@ -53,14 +64,14 @@ class DrawerMenuView extends StatelessWidget {
     }
 
     Widget _getDrawerHeader() {
-      if (auth.status == AuthStatus.LOGGED_IN && auth.user != null) {
+      if (widget.auth.status == AuthStatus.LOGGED_IN && widget.auth.user != null) {
         print('###### USER from DRAWER!!!!');
-        print(auth.user.toString());
-        final String avatarPicture = getProfilePictureUrl(auth.user);
+        print(widget.auth.user.toString());
+        final String avatarPicture = getProfilePictureUrl(widget.auth.user);
         return UserAccountsDrawerHeader(
-          accountName: Text(auth.user.displayName ?? 'No name is set for the user'),
-          accountEmail: auth.user.email != null ? Text(auth.user.email) : null,
-          currentAccountPicture: auth.user.photoUrl != null
+          accountName: Text(widget.auth.user.displayName ?? 'No name is set for the user'),
+          accountEmail: widget.auth.user.email != null ? Text(widget.auth.user.email) : null,
+          currentAccountPicture: widget.auth.user.photoUrl != null
               ? CircleAvatar(
                   backgroundColor: Colors.blue,
                   backgroundImage: CachedNetworkImageProvider(avatarPicture),
@@ -68,7 +79,7 @@ class DrawerMenuView extends StatelessWidget {
               : CircleAvatar(
                   backgroundColor: Colors.blue,
                   child: Text(
-                    _getInitials(auth.user.displayName),
+                    _getInitials(widget.auth.user.displayName),
                     style: TextStyle(fontSize: 40.0),
                   ),
                 ),
@@ -88,8 +99,9 @@ class DrawerMenuView extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.black12,
             image: DecorationImage(
-              image:
-                  darkMode ? const AssetImage(ImageLinks.drawer_bg_dark) : const AssetImage(ImageLinks.drawer_bg_light),
+              image: widget.darkMode
+                  ? const AssetImage(ImageLinks.drawer_bg_dark)
+                  : const AssetImage(ImageLinks.drawer_bg_light),
               fit: BoxFit.cover,
             ),
           ),
@@ -110,7 +122,7 @@ class DrawerMenuView extends StatelessWidget {
           ));
     }
 
-    final bool isUserLoggedIn = auth.status == AuthStatus.LOGGED_IN;
+    final bool isUserLoggedIn = widget.auth.status == AuthStatus.LOGGED_IN;
     return Drawer(
       // Add a ListView to the drawer. This ensures the user can scroll
       // through the options in the drawer if there isn't enough vertical
@@ -170,7 +182,7 @@ class DrawerMenuView extends StatelessWidget {
                 semanticLabel: S.of(context).icon_logout_semantic,
               ),
               title: Text(S.of(context).logout),
-              onTap: () => onLogout(context),
+              onTap: () => widget.onLogout(context),
             ),
         ],
       ),

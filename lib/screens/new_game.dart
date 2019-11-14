@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:sps/components/wrapper.dart';
-import 'package:sps/constants/images.dart';
 import 'package:sps/constants/keys.dart';
 import 'package:sps/generated/i18n.dart';
 import 'package:sps/redux/root_state.dart';
