@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter_twitter_login/flutter_twitter_login.dart';
-import 'package:sps/constants/keys.dart';
 import 'package:sps/generated/i18n.dart';
 import 'package:sps/utils/auth_helper.dart';
 
@@ -30,11 +28,6 @@ class AuthResponse {
   }
 }
 
-final TwitterLogin twitterInstance = TwitterLogin(
-  consumerKey: TwitterKeys.apiKey,
-  consumerSecret : TwitterKeys.apiSecret,
-);
-
 abstract class BaseAuth {
   Future<AuthResponse> signIn(BuildContext context, String email, String password);
 
@@ -51,8 +44,6 @@ abstract class BaseAuth {
   Future<AuthResponse> handleGoogleLogin(BuildContext context);
 
   Future<AuthResponse> handleFacebookLogin(BuildContext context);
-
-  Future<AuthResponse> handleTwitterLogin(BuildContext context);
 }
 
 class Auth implements BaseAuth {
@@ -191,39 +182,6 @@ class Auth implements BaseAuth {
       authResponse = generateAuthResponse(context, response);
     } on PlatformException catch (error) {
       authResponse = generateAuthResponse(context, error);
-    }
-
-    return authResponse;
-  }
-
-  @override
-  Future<AuthResponse> handleTwitterLogin(BuildContext context) async {
-    final TwitterLoginResult _twitterLoginResult = await twitterInstance.authorize();
-    final TwitterLoginStatus _twitterLoginStatus = _twitterLoginResult.status;
-
-    AuthResponse authResponse;
-    switch (_twitterLoginStatus) {
-      case TwitterLoginStatus.loggedIn:
-        final TwitterSession _currentUserTwitterSession = _twitterLoginResult.session;
-        final AuthCredential _twitterAuthCredential = TwitterAuthProvider.getCredential(
-          authToken: _currentUserTwitterSession?.token ?? '',
-          authTokenSecret: _currentUserTwitterSession?.secret ?? ''
-        );
-
-        try {
-          final AuthResult response = await _firebaseAuth.signInWithCredential(_twitterAuthCredential);
-          authResponse = generateAuthResponse(context, response);
-        } on PlatformException catch (error) {
-          authResponse = generateAuthResponse(context, error);
-        }
-        break;
-      case TwitterLoginStatus.cancelledByUser:
-        authResponse = generateAuthResponse(context, PlatformException(code: 'ERROR_CANCELLED_BY_USER'));
-        break;
-      case TwitterLoginStatus.error:
-      default:
-        authResponse = generateAuthResponse(context, PlatformException(code: 'ERROR_UNDEFINED'));
-        break;
     }
 
     return authResponse;

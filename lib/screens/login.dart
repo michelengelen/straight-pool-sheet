@@ -155,25 +155,6 @@ class _LoginSignupState extends State<LoginSignup> with SingleTickerProviderStat
       );
     }
 
-    Widget showTwitterLoginButton() {
-      return Padding(
-        padding: const EdgeInsets.all(4),
-        child: FloatingActionButton(
-          heroTag: 'twitter_login_hero',
-          mini: true,
-          elevation: 0,
-          child: Icon(
-            FontAwesomeIcons.twitter,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            widget.onSignInSocial(context, 'T');
-          },
-          backgroundColor: CustomColors.twitter,
-        ),
-      );
-    }
-
     Widget showCreateAccount() {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 18),
@@ -332,7 +313,6 @@ class _LoginSignupState extends State<LoginSignup> with SingleTickerProviderStat
         children: <Widget>[
           showFacebookLoginButton(),
           showGoogleLoginButton(),
-          showTwitterLoginButton(),
         ],
       );
     }
