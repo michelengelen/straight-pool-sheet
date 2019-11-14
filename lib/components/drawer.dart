@@ -44,7 +44,6 @@ class _DrawerMenuViewState extends State<DrawerMenuView> {
 
   @override
   Widget build(BuildContext context) {
-    print('#### context from drawer: ${context.toString()}');
     String _getCurrentRouteName() {
       String currentRouteName;
 
@@ -65,8 +64,6 @@ class _DrawerMenuViewState extends State<DrawerMenuView> {
 
     Widget _getDrawerHeader() {
       if (widget.auth.status == AuthStatus.LOGGED_IN && widget.auth.user != null) {
-        print('###### USER from DRAWER!!!!');
-        print(widget.auth.user.toString());
         final String avatarPicture = getProfilePictureUrl(widget.auth.user);
         return UserAccountsDrawerHeader(
           accountName: Text(widget.auth.user.displayName ?? 'No name is set for the user'),

@@ -67,7 +67,6 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    print(' ### ### ### widget.user: ${widget.user}');
     final String avatarPictureUrl = getProfilePictureUrl(widget.user);
 
     return StoreConnector<RootState, Store<RootState>>(

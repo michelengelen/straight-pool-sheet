@@ -62,10 +62,10 @@ Middleware<RootState> _signInUser(GlobalKey navigatorKey) {
 
       return authResponse;
     }).then<void>((AuthResponse authResponse) {
+      action.completer.complete();
       store.dispatch(SetUser(authResponse.user));
       nav.pushNamed(Routes.profile);
       store.dispatch(AppIsLoaded());
-      action.completer.complete();
     }).catchError((Object authResponse) {
       action.completer.completeError(authResponse);
       store.dispatch(UnsetUser());
@@ -88,9 +88,9 @@ Middleware<RootState> _signUpUser(GlobalKey navigatorKey) {
 
       return authResponse;
     }).then<void>((AuthResponse authResponse) {
+      action.completer.complete();
       store.dispatch(SetUser(authResponse.user));
       store.dispatch(AppIsLoaded());
-      action.completer.complete();
     }).catchError((Object authResponse) {
       action.completer.completeError(authResponse);
       store.dispatch(UnsetUser());
@@ -161,10 +161,10 @@ Middleware<RootState> _signInUserSocial(GlobalKey navigatorKey) {
 
       return authResponse;
     }).then<void>((AuthResponse authResponse) {
+      action.completer.complete();
       store.dispatch(SetUser(authResponse.user));
       nav.pushNamed(Routes.profile);
       store.dispatch(AppIsLoaded());
-      action.completer.complete();
     }).catchError((Object authResponse) {
       action.completer.completeError(authResponse);
       store.dispatch(UnsetUser());
